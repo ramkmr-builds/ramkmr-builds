@@ -1,4 +1,7 @@
-# 💫 About Me:
+# 💫 Hi 👋, I'm Ram Kumar
+
+I'm a tech enthusiast who closely follows developments in hardware, software, and emerging AI tools. Once my Java + DSA fundamentals are strong, I plan to move into Python, machine learning, and cloud/deployment basics to work toward real-world AI/Data Science projects. Open to connecting with fellow learners, seniors, and professionals in the tech and AI/Data Science space.
+
 ⭐ GenAi Engineer -> AI Tech Lead -> GenAI Leader ⭐
 
 
