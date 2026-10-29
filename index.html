@@ -40,6 +40,7 @@ select,textarea,input{width:100%;padding:10px;border:1px solid var(--line);borde
  <div class="card"><h2>Monitoring stations</h2><svg id="map" viewBox="0 0 360 200" role="img" aria-label="Schematic map of Ganga stations"></svg>
  <p class="leg">Tap a station. Green = within limits, yellow = 1 limit crossed, red = 2 or more. Schematic map, not to scale.</p></div>
  <div class="card" id="det"></div>
+ <div class="card" id="cp"></div>
  <div class="card" id="hot"></div>
 </section>
 <section id="f" class="sec"><div class="card"><h2>Report a pollution source</h2>
@@ -51,7 +52,7 @@ select,textarea,input{width:100%;padding:10px;border:1px solid var(--line);borde
  <button class="btn s" id="gps" type="button">Use my GPS location</button>
  <button class="btn" id="sub" type="button">Submit report</button><p class="note" id="msg"></p></div></section>
 <section id="l" class="sec"><div id="list"></div><p class="note" id="mode"></p></section>
-<section id="o" class="sec"><div class="card"><h2>Source investigation</h2><p class="leg">Compares readings upstream and downstream of each drain or factory outlet. A big drop flags the outlet for inspection.</p><label>Flag when BOD rises by at least <b id="tv">2</b> mg/L</label><input type="range" id="tr" min="1" max="6" step="0.5" value="2"></div><div id="so"></div></section>
+<section id="o" class="sec"><div class="card"><h2>Source investigation</h2><p class="leg">Compares readings upstream and downstream of each drain or factory outlet. A big drop flags the outlet for inspection.</p><label>Flag when BOD rises by at least <b id="tv">2</b> mg/L</label><input type="range" id="tr" min="1" max="6" step="0.5" value="2"></div><div id="so"></div><div id="cps"></div></section>
 <section id="a" class="sec"><div id="al"></div></section>
 <section id="i" class="sec">
 <div class="card"><h2>IoT-Based Ganga Pollution Detection, Source Identification and Alert System</h2><p class="leg">Detect pollution, map affected areas, find possible sources and alert the authorities.</p></div>
@@ -68,7 +69,7 @@ var SB_URL="https://jhzkbrznuvvswkmujphw.supabase.co",SB_KEY="sb_publishable_8ha
 var sb=null;
 var CATS=["Drain / sewage","Industrial discharge","Waste dumping","Dead animals","Other"];
 var $=function(i){return document.getElementById(i)},NS="http://www.w3.org/2000/svg";
-var S=[],OUT=[],R=[],V=[],C=[],RT=[],SER=[],sel=0,selId="patna",cat=0,thr=2,cid="",ST={};
+var S=[],OUT=[],R=[],V=[],C=[],RT=[],SER=[],CP=[],sel=0,selId="patna",cat=0,thr=2,cid="",ST={};
 var FL=["New","Inspecting","Verified","Action taken"];
 try{ST=JSON.parse(localStorage.getItem("gda")||"{}")}catch(e){}
 try{cid=localStorage.getItem("gdc");if(!cid){cid="u"+Math.random().toString(36).slice(2,9);localStorage.setItem("gdc",cid)}}catch(e){cid="u"+Math.random().toString(36).slice(2,9)}
@@ -109,7 +110,7 @@ function map(){var m=$("map");m.innerHTML="";if(!S.length)return;var d="M-10 "+(
   el("circle",{cx:s.x,cy:s.y,r:i==sel?13:9,fill:"#fff",stroke:i==sel?"#0b3c5d":"none","stroke-width":2},g);
   el("circle",{cx:s.x,cy:s.y,r:7,fill:COL[stat(s)]},g);
   var t=el("text",{x:s.x,y:s.y+22,"text-anchor":"middle","font-size":10,"font-weight":700,fill:"var(--ink)"},g);t.textContent=s.n;
-  g.onclick=async function(){sel=i;selId=s.id;map();det();try{await loadSeries();det()}catch(e){}}})}
+  g.onclick=async function(){sel=i;selId=s.id;map();det();cpc();try{await loadSeries();det()}catch(e){}}})}
 function avg(id){var a=RT.filter(function(x){return x.station_id==id});return a.length?{m:a.reduce(function(p,x){return p+x.rating},0)/a.length,n:a.length}:null}
 function det(){var s=cur();if(!s){$("det").innerHTML="No stations found.";return}
  var v=viol(s),st=stat(s),h='<div class="r"><h2>'+esc(s.n)+' station</h2><span class="pill '+(st=="nodata"?"rep":st)+'">'+(st=="nodata"?"no data":st)+'</span></div><div class="grid">';
@@ -148,6 +149,24 @@ function render(){$("cnt").textContent=R.length?"("+R.length+")":"";
   return'<div class="card"><div class="r"><b>'+esc(r.category)+'</b><span class="pill rep">'+esc(r.status||"reported")+'</span></div><div class="note" style="margin:2px 0 6px">Near '+esc(sname(r.station_id))+(r.location_text?" · "+esc(r.location_text):"")+" · "+esc(new Date(r.created_at).toLocaleDateString())+"</div>"+(r.description?"<div>"+esc(r.description)+"</div>":"")+'<button class="btn s" data-r="'+esc(r.id)+'">'+(me?"✓ ":"")+"I see this too ("+n+")</button>"+cs.map(function(c){return'<div class="cm">'+esc(c.body)+"</div>"}).join("")+'<div class="cmf"><input maxlength="200" placeholder="Add a comment" data-i="'+esc(r.id)+'"><button type="button" class="chip" data-c="'+esc(r.id)+'">Post</button></div></div>'}).join(""):'<div class="card">No reports yet. Be the first to report.</div>';
  document.querySelectorAll("#list [data-r]").forEach(function(b){b.onclick=function(){vote(b.dataset.r)}});
  document.querySelectorAll("#list [data-c]").forEach(function(b){b.onclick=function(){var i=$("list").querySelector('input[data-i="'+b.dataset.c+'"]');cmt(b.dataset.c,i.value)}})}
+// ----- real CPCB annual data (not live) -----
+async function loadCpcb(){try{var r=await sb.from("cpcb_annual").select("*").order("year",{ascending:false}).order("site_name");if(r.error)throw r.error;
+ CP=r.data.map(function(x){var o={};for(var k in x)o[k]=/_(min|max)$/.test(k)?num(x[k]):x[k];return o})}catch(e){CP=[]}}
+function fmt(v){return v==null?"–":v.toLocaleString("en-IN")}
+var CPP=[["Dissolved oxygen (mg/L)","do","above 5",function(r){return r.do_min!=null&&r.do_min<5}],["BOD (mg/L)","bod","below 3",function(r){return r.bod_max!=null&&r.bod_max>3}],["pH","ph","6.5–8.5",function(r){return(r.ph_min!=null&&r.ph_min<6.5)||(r.ph_max!=null&&r.ph_max>8.5)}],["Fecal coliform (MPN/100 mL)","fecal_coliform","below 2500",function(r){return r.fecal_coliform_max!=null&&r.fecal_coliform_max>2500}],["Temperature (°C)","temp","",function(){return false}]];
+function cpc(){var s=cur(),box=$("cp");if(!s){box.innerHTML="";return}
+ var a=CP.filter(function(x){return x.station_id==s.id});
+ if(!a.length){box.innerHTML='<h2>CPCB annual data (real, not live)</h2><p class="note">No CPCB data loaded for '+esc(s.n)+' yet.</p>';return}
+ var yr=Math.max.apply(0,a.map(function(x){return x.year}));a=a.filter(function(x){return x.year==yr});
+ box.innerHTML='<h2>CPCB '+yr+' annual data (real, not live)</h2><p class="note" style="margin:0 0 4px">Real values from the CPCB report. The cards above still use demo readings.</p>'+a.map(function(r){
+  var rows=CPP.map(function(p){var bad=p[3](r);return'<tr><td>'+p[0]+'</td><td'+(bad?' style="color:var(--poor);font-weight:700"':'')+'>'+fmt(r[p[1]+"_min"])+' – '+fmt(r[p[1]+"_max"])+'</td><td>'+p[2]+'</td></tr>'}).join("");
+  return'<div style="margin-top:10px"><div class="r"><b>'+esc(r.site_name)+'</b><span class="pill rep">'+esc(r.side)+'</span></div><table class="tb"><tr><td>Parameter</td><td>Lowest – highest in year</td><td>CPCB limit</td></tr>'+rows+'</table></div>'}).join("")+
+  '<p class="note">Source: <a href="'+esc(a[0].source_url||"#")+'" target="_blank" rel="noopener">'+esc(a[0].source)+'</a>. Red = a limit was crossed at some time in the year. Blank = below detection limit or not reported.</p>'}
+function cpsrc(){var by={};CP.forEach(function(r){(by[r.station_id]=by[r.station_id]||[]).push(r)});var h="",yr="";
+ S.forEach(function(s){var a=by[s.id]||[],u=a.filter(function(x){return x.side=="u/s"})[0],d=a.filter(function(x){return x.side=="d/s"})[0];if(!u||!d||u.year!=d.year)return;yr=u.year;
+  var rows=[["BOD highest (mg/L)","bod_max"],["Dissolved oxygen lowest (mg/L)","do_min"],["Fecal coliform highest (MPN/100 mL)","fecal_coliform_max"]].map(function(r){var a1=u[r[1]],b=d[r[1]],c=(a1==null||b==null)?null:b-a1;return"<tr><td>"+r[0]+"</td><td>"+fmt(a1)+"</td><td>"+fmt(b)+"</td><td><b>"+(c==null?"–":(c>0?"+":"")+fmt(Math.round(c*100)/100))+"</b></td></tr>"}).join("");
+  h+='<div class="card"><b>'+esc(s.n)+' ('+u.year+')</b><div class="note" style="margin:2px 0 0">'+esc(u.site_name)+' → '+esc(d.site_name)+'</div><table class="tb"><tr><td></td><td>Upstream</td><td>Downstream</td><td>Change</td></tr>'+rows+'</table></div>'});
+ $("cps").innerHTML=h?'<div class="card"><h2>Real CPCB data: upstream vs downstream ('+yr+')</h2><p class="leg">Yearly values from CPCB monitoring sites, not live readings. Different sites are sampled at different times, so a difference here suggests where to look. It does not prove who is responsible.</p></div>'+h:""}
 // ----- hotspots, source investigation, alerts -----
 function sc(s){return Math.max(0,(s.BOD||0)-3)+Math.max(0,s.DO==null?0:5-s.DO)*1.5+(s.T>50?1:0)}
 function flag(o){return o.dn.BOD!=null&&o.up.BOD!=null&&(o.dn.BOD-o.up.BOD>=thr||(o.up.DO!=null&&o.dn.DO!=null&&o.up.DO-o.dn.DO>=1.5))}
@@ -162,21 +181,23 @@ function alr(){var L=alerts().sort(function(a,b){return(a.sev=="high"?0:1)-(b.se
  $("al").innerHTML=L.map(function(a){var s=ST[a.id]||0;return'<div class="card" style="border-left:4px solid '+(a.sev=="high"?"var(--poor)":"var(--mod)")+'"><div class="r"><b>'+(a.sev=="high"?"High":"Medium")+' priority</b><span class="pill '+(s==3?"good":s?"moderate":"rep")+'">'+FL[s]+'</span></div><div style="margin:4px 0">'+esc(a.msg)+"</div>"+(s<3?'<button class="btn s" data-id="'+esc(a.id)+'">Mark as: '+FL[s+1]+"</button>":"")+"</div>"}).join("")+'<p class="note">Alerts are calculated live from the latest readings. SMS and email sending is simulated. Status changes are saved on this device only until admin login is added.</p>';
  document.querySelectorAll("#al [data-id]").forEach(function(b){b.onclick=function(){var id=b.dataset.id;ST[id]=(ST[id]||0)+1;try{localStorage.setItem("gda",JSON.stringify(ST))}catch(e){}alr()}})}
 $("tr").oninput=function(){thr=+this.value;$("tv").textContent=thr;src();alr()};
-function all(){map();det();render();hot();src();alr();
+function all(){map();det();cpc();render();hot();src();cpsrc();alr();
  var d=S.some(function(s){return s.demo})||OUT.some(function(o){return o.demo});$("demo").style.display=d?"block":"none"}
 // ----- start + realtime -----
 function status(t){$("mode").textContent=t}
 async function refreshReadings(){try{await loadCore();await loadSeries();all()}catch(e){status("Could not refresh readings: "+(e.message||e))}}
+async function refreshCpcb(){try{await loadCpcb();cpc();cpsrc()}catch(e){}}
 async function refreshCommunity(){try{await loadCommunity();render();det()}catch(e){status("Could not refresh reports: "+(e.message||e))}}
 function later(fn){clearTimeout(later[fn.name]);later[fn.name]=setTimeout(fn,400)}
 async function start(){
  if(!window.supabase){status("Could not load the Supabase library. Check your internet.");$("det").textContent="Could not connect to the database.";return}
  sb=window.supabase.createClient(SB_URL,SB_KEY,{global:{fetch:function(u,o){o=o||{};if(typeof Headers!="undefined"&&o.headers instanceof Headers){var h={};o.headers.forEach(function(v,k){h[k]=v});o.headers=h}return fetch(u,o)}}});
- try{await loadCore();await loadSeries();await loadCommunity()}catch(e){$("det").textContent="Could not load data from the database: "+(e.message||e);status("Database error. Please refresh.");return}
+ try{await loadCore();await loadSeries();await loadCommunity();await loadCpcb()}catch(e){$("det").textContent="Could not load data from the database: "+(e.message||e);status("Database error. Please refresh.");return}
  $("rs").innerHTML=S.map(function(s){return'<option value="'+esc(s.id)+'">'+esc(s.n)+'</option>'}).join("");$("rs").value=selId;all();
  status("Connected to the database.");
  var ch=sb.channel("gd-live");
  ["readings","outlet_readings"].forEach(function(t){ch.on("postgres_changes",{event:"*",schema:"public",table:t},function(){later(refreshReadings)})});
+ ch.on("postgres_changes",{event:"*",schema:"public",table:"cpcb_annual"},function(){later(refreshCpcb)});
  ["reports","report_votes","report_comments","station_ratings"].forEach(function(t){ch.on("postgres_changes",{event:"*",schema:"public",table:t},function(){later(refreshCommunity)})});
  ch.subscribe(function(s){if(s=="SUBSCRIBED")status("Live: new readings, reports, votes and comments appear automatically.");else if(s=="CHANNEL_ERROR"||s=="TIMED_OUT")status("Connected, but live updates are off. Refresh the page to see new data.")})}
 start();
