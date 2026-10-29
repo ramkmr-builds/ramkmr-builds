@@ -186,6 +186,8 @@ function all(){map();det();cpc();render();hot();src();cpsrc();alr();
 // ----- start + realtime -----
 function status(t){$("mode").textContent=t}
 async function refreshReadings(){try{await loadCore();await loadSeries();all()}catch(e){status("Could not refresh readings: "+(e.message||e))}}
+var live=false;
+function refreshAll(){refreshReadings();refreshCommunity();refreshCpcb()}
 async function refreshCpcb(){try{await loadCpcb();cpc();cpsrc()}catch(e){}}
 async function refreshCommunity(){try{await loadCommunity();render();det()}catch(e){status("Could not refresh reports: "+(e.message||e))}}
 function later(fn){clearTimeout(later[fn.name]);later[fn.name]=setTimeout(fn,400)}
@@ -199,6 +201,9 @@ async function start(){
  ["readings","outlet_readings"].forEach(function(t){ch.on("postgres_changes",{event:"*",schema:"public",table:t},function(){later(refreshReadings)})});
  ch.on("postgres_changes",{event:"*",schema:"public",table:"cpcb_annual"},function(){later(refreshCpcb)});
  ["reports","report_votes","report_comments","station_ratings"].forEach(function(t){ch.on("postgres_changes",{event:"*",schema:"public",table:t},function(){later(refreshCommunity)})});
- ch.subscribe(function(s){if(s=="SUBSCRIBED")status("Live: new readings, reports, votes and comments appear automatically.");else if(s=="CHANNEL_ERROR"||s=="TIMED_OUT")status("Connected, but live updates are off. Refresh the page to see new data.")})}
+ ch.subscribe(function(s){live=(s=="SUBSCRIBED");if(live)status("Live: new readings, reports, votes and comments appear automatically.");else if(s=="CHANNEL_ERROR"||s=="TIMED_OUT"||s=="CLOSED")status("Live connection lost. Checking for new data every 15 seconds.")});
+ setInterval(function(){if(!live&&!document.hidden)refreshAll()},15000);
+ document.addEventListener("visibilitychange",function(){if(!document.hidden)refreshAll()});
+ window.addEventListener("online",refreshAll)}
 start();
 </script></body></html>
