@@ -32,7 +32,7 @@ select,textarea,input{width:100%;padding:10px;border:1px solid var(--line);borde
 .btn.s{background:var(--bg);color:var(--teal);border:1px solid var(--line);margin-top:6px;padding:8px;font-size:13px}
 .note{font-size:12px;color:var(--mut);margin-top:8px}.r{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
 .leg{font-size:12px;color:var(--mut)}.tb{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}.tb td{padding:5px 2px;border-top:1px solid var(--line)}.tb tr:first-child td{color:var(--mut);border-top:0}.bar{height:8px;border-radius:6px;background:var(--bg);margin-top:4px}.bar div{height:8px;border-radius:6px}input[type=range]{padding:0}.ph{max-width:100%;border-radius:10px;margin-top:8px}.cm{font-size:13px;background:var(--bg);border-radius:8px;padding:6px 8px;margin-top:6px}.cmf{display:flex;gap:6px;margin-top:8px}.cmf input{flex:1}.cmf .chip{background:var(--teal);color:#fff;border-color:var(--teal)}.del{background:none;border:0;color:var(--poor);font-size:12px;font-weight:600;cursor:pointer;padding:2px 6px;border-radius:6px}.del:hover{background:var(--bg)}.cm{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}.mine{font-size:11px;color:var(--teal);font-weight:700;margin-left:6px}
-#toast{display:none;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));max-width:560px;margin:0 auto;background:var(--navy);color:#fff;padding:10px 14px;border-radius:10px;font-size:13px;z-index:20}</style></head><body>
+#toast{display:none;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));max-width:560px;margin:0 auto;background:var(--navy);color:#fff;padding:10px 14px;border-radius:10px;font-size:13px;z-index:20}body.gate nav,body.gate .sec,body.gate .demo{display:none!important}body.gate #lb{display:block!important}</style></head><body class="gate">
 <header><h1>GangaDrishti</h1><p class="tag">See the pollution. Trace the source. Drive action.</p></header>
 <div class="demo" id="demo" style="display:none">Demo data: station readings are illustrative, not real CPCB values.</div>
 <nav><button class="on" data-t="d">Dashboard</button><button data-t="f">Report</button><button data-t="l">Cleanup Board <span id="cnt"></span></button><button data-t="lb">Login</button><button data-t="adm" style="display:none">Admin</button></nav>
@@ -53,7 +53,7 @@ select,textarea,input{width:100%;padding:10px;border:1px solid var(--line);borde
  <button class="btn s" id="gps" type="button">Use my GPS location</button>
  <button class="btn" id="sub" type="button">Submit report</button><p class="note" id="msg"></p></div></section>
 <section id="l" class="sec"><div id="list"></div><p class="note" id="mode"></p></section>
-<section id="lb" class="sec"></section>
+<section id="lb" class="sec"><div class="card">Loading…</div></section>
 <section id="adm" class="sec"></section>
 
 
@@ -208,12 +208,13 @@ async function refreshAlerts(){try{await loadAlerts();alr()}catch(e){}}
 async function refreshCommunity(){try{await loadCommunity();render();det()}catch(e){status("Could not refresh reports: "+(e.message||e))}}
 function later(fn){clearTimeout(later[fn.name]);later[fn.name]=setTimeout(fn,400)}
 async function start(){
- if(!window.supabase){status("Could not load the Supabase library. Check your internet.");$("det").textContent="Could not connect to the database.";return}
+ if(!window.supabase){document.body.classList.remove("gate");status("Could not load the Supabase library. Check your internet.");$("det").textContent="Could not connect to the database.";return}
  sb=window.supabase.createClient(SB_URL,SB_KEY,{global:{fetch:function(u,o){o=o||{};if(typeof Headers!="undefined"&&o.headers instanceof Headers){var h={};o.headers.forEach(function(v,k){h[k]=v});o.headers=h}return fetch(u,o)}}});
+ X.init();
  var nop=function(){},pCom=loadCommunity(),pCp=loadCpcb();pCom.catch(nop);
  try{await loadCore()}catch(e){$("det").textContent="Could not load data from the database: "+(e.message||e);status("Database error. Please refresh.");return}
  $("rs").innerHTML=S.map(function(s){return'<option value="'+esc(s.id)+'">'+esc(s.n)+'</option>'}).join("");$("rs").value=selId;all();
- status("Connected to the database.");X.init();
+ status("Connected to the database.");
  try{await Promise.all([loadSeries(),pCom])}catch(e){status("Could not load all data. Please refresh.")}
  await pCp;
  all();
@@ -227,7 +228,7 @@ async function start(){
  window.addEventListener("online",refreshAll)}
 // ===== SwachhSetu merged in: accounts, cleanup tasks, points, leaderboard, community =====
 var X=(function(){
-var uid=null,P=[],A=[],adm=false,L=[],admf="open",mode="login",bad=0,tm,
+var uid=null,P=[],A=[],adm=false,L=[],admf="open",mode="login",bad=0,tm,ready=false,
 BG=[[10,"First Step"],[50,"Ghat Friend"],[120,"Ganga Guardian"],[250,"Namami Hero"]],
 QU=["Small steps at the ghat today become a cleaner Ganga tomorrow.","One bag of waste picked up is one less bag in the river.","Be the reason a ghat looks better than you found it.","Every report is a promise that someone will care."],
 PC={reported:"rep",assigned:"moderate",cleaned:"good",rejected:"poor"},
@@ -238,13 +239,13 @@ function shrink(f){return new Promise(function(ok,no){var r=new FileReader();r.o
 async function up(f){var b=await shrink(f),p=(uid||cid)+"/"+Date.now()+".jpg",r=await sb.storage.from("report-photos").upload(p,b,{contentType:"image/jpeg"});if(r.error)throw r.error;return sb.storage.from("report-photos").getPublicUrl(p).data.publicUrl}
 async function pull(){try{var q=await Promise.all([sb.from("profiles").select("id,name,role,pts").order("pts",{ascending:false}).limit(100),sb.from("activity").select("*").order("created_at",{ascending:false}).limit(30)]);q.forEach(function(r){if(r.error)throw r.error});P=q[0].data;A=q[1].data;bad=0;if(adm){var lg2=await sb.from("points_ledger").select("user_id,delta,reason,created_at").order("created_at",{ascending:false}).limit(30);L=lg2.error?[]:lg2.data}else L=[]}catch(e){bad=1}draw();render()}
 function lat(){clearTimeout(tm);tm=setTimeout(pull,400)}
-function init(){sb.auth.onAuthStateChange(function(e,s){uid=s&&s.user?s.user.id:null;setTimeout(chk,0)});pull();
+function init(){sb.auth.onAuthStateChange(function(e,s){uid=s&&s.user?s.user.id:null;ready=true;draw();setTimeout(chk,0)});pull();
  sb.channel("ss-live").on("postgres_changes",{event:"*",schema:"public",table:"profiles"},lat).on("postgres_changes",{event:"INSERT",schema:"public",table:"activity"},function(p){if(uid&&p.new.actor!==uid)toast("🔔 "+p.new.text);lat()}).subscribe()}
-function draw(){var l=$("lb");if(!l)return;var m=me(),ae=document.activeElement,h="";
+function draw(){var l=$("lb");if(!l)return;document.body.classList.toggle("gate",!uid);var m=me(),ae=document.activeElement,h="";
  if(!(ae&&/INPUT|SELECT/.test(ae.tagName)&&l.contains(ae))){
   if(bad)h='<div class="card"><h2>Accounts and points</h2><p class="note">Run the one-time database setup (swachhsetu_migration.sql) to turn on accounts and cleanup tasks.</p></div>';
   else{var lg=mode=="login";
-   if(!uid)h='<div class="card"><h2>'+(lg?"Log in":"Create account")+'</h2>'+(lg?"":'<label>Full name</label><input id="ax-n" maxlength="30">')+'<label>Email</label><input id="ax-e" type="email"><label>Password (min 6 characters)</label><input id="ax-p" type="password">'+(lg?"":'<label>Join as</label><select id="ax-r"><option value="citizen">Citizen (report waste)</option><option value="volunteer">Volunteer (clean waste)</option></select>')+'<button class="btn" onclick="X.sub()">'+(lg?"Log in":"Register")+'</button><button class="btn s" onclick="X.mode()">'+(lg?"Create a new account":"I already have an account")+'</button><p class="note">Accounts are optional. Log in to earn points for reports and cleanups.</p></div>';
+   if(!ready)h='<div class="card">Loading…</div>';else if(!uid)h='<div class="card"><h2>'+(lg?"Log in":"Create account")+'</h2>'+(lg?"":'<label>Full name</label><input id="ax-n" maxlength="30">')+'<label>Email</label><input id="ax-e" type="email"><label>Password (min 6 characters)</label><input id="ax-p" type="password">'+(lg?"":'<label>Join as</label><select id="ax-r"><option value="citizen">Citizen (report waste)</option><option value="volunteer">Volunteer (clean waste)</option></select>')+'<button class="btn" onclick="X.sub()">'+(lg?"Log in":"Register")+'</button><button class="btn s" onclick="X.mode()">'+(lg?"Create a new account":"I already have an account")+'</button><p class="note">Log in or create an account to view the dashboard, report pollution and earn points.</p></div>';
    else if(m){var nx=BG.find(function(b){return m.pts<b[0]}),got=BG.filter(function(b){return m.pts>=b[0]});
     h='<div class="card"><div class="r"><h2>'+esc(m.name)+': '+m.pts+' points</h2><button class="del" onclick="X.out()">Log out</button></div><div class="chips">'+["citizen","volunteer"].map(function(r){return'<button class="chip'+(m.role==r?" on":"")+'" onclick="X.role(\''+r+'\')">'+r+'</button>'}).join("")+'</div>'+(nx?'<div class="bar"><div style="width:'+Math.min(100,m.pts/nx[0]*100)+'%;background:var(--teal)"></div></div><p class="note">'+(nx[0]-m.pts)+' more points for "'+nx[1]+'"</p>':'<p>All badges earned!</p>')+'<p>'+(got.length?got.map(function(b){return'<span class="pill good">🏅 '+b[1]+'</span> '}).join(""):'<span class="note">No badges yet.</span>')+'</p><p class="note">Report +10 · Accept a cleanup +5 · Finish a cleanup with an after photo +30. Volunteers accept tasks in the Cleanup Board tab.</p></div>'}
   }
