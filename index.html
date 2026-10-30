@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://jhzkbrznuvvswkmujphw.supabase.co" crossorigin><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <title>GangaDrishti – Live Ganga Water Quality & Citizen Reports</title>
 <style>
 :root{--bg:#f3f7fa;--card:#fff;--ink:#1f2d3a;--mut:#64768a;--line:#d5dee5;--navy:#0b3c5d;--teal:#1d8a99;--good:#2e9e5b;--mod:#d99a00;--poor:#d64545;--water:#9ccbe8;--map:#e8f1f6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -39,7 +40,7 @@ select,textarea,input{width:100%;padding:10px;border:1px solid var(--line);borde
 <section id="d" class="sec on">
  <div class="card"><h2>Monitoring stations</h2><svg id="map" viewBox="0 0 360 200" role="img" aria-label="Schematic map of Ganga stations"></svg>
  <p class="leg">Tap a station. Green = within limits, yellow = 1 limit crossed, red = 2 or more. Schematic map, not to scale.</p></div>
- <div class="card" id="det"></div>
+ <div class="card" id="det">Loading station data…</div>
  <div class="card" id="cp"></div>
  <div class="card" id="hot"></div>
 </section>
@@ -135,11 +136,19 @@ $("gps").onclick=function(){if(!navigator.geolocation){$("msg").textContent="GPS
 async function ins(table,row){var r=await sb.from(table).insert(row);if(r.error&&r.error.code!="23505"){toast("Could not save: "+r.error.message);return false}
  if(r.error){toast("You have already done this.");return false}return true}
 async function rpc(fn,args,okMsg){var r=await sb.rpc(fn,args);if(r.error){toast("Could not delete: "+r.error.message);return false}if(okMsg)toast(okMsg);return true}
-async function vote(rid){if(V.some(function(x){return x.report_id==rid&&x.client_id==cid})){if(await rpc("remove_my_vote",{p_report_id:String(rid),p_client_id:cid})){await loadCommunity();render()}return}if(await ins("report_votes",{report_id:rid,client_id:cid})){await loadCommunity();render()}}
+async function vote(rid){var had=V.some(function(x){return x.report_id==rid&&x.client_id==cid}),old=V;
+ V=had?V.filter(function(x){return!(x.report_id==rid&&x.client_id==cid)}):V.concat([{report_id:rid,client_id:cid}]);render();
+ var ok=had?await rpc("remove_my_vote",{p_report_id:String(rid),p_client_id:cid}):await ins("report_votes",{report_id:rid,client_id:cid});
+ if(!ok)V=old;loadCommunity().then(render,render)}
 async function delReport(rid){if(!confirm("Delete this report? Its comments and votes will be removed too."))return;if(await rpc("delete_my_report",{p_id:String(rid),p_client_id:cid},"Report deleted.")){await loadCommunity();render()}}
 async function delCmt(id){if(!confirm("Delete this comment?"))return;if(await rpc("delete_my_comment",{p_id:String(id),p_client_id:cid},"Comment deleted.")){await loadCommunity();render()}}
 async function delRating(sid){if(await rpc("remove_my_rating",{p_station_id:String(sid),p_client_id:cid},"Rating removed.")){await loadCommunity();det()}}
-async function cmt(rid,text){text=(text||"").trim().slice(0,200);if(!text)return;if(await ins("report_comments",{report_id:rid,body:text,client_id:cid})){var bx=document.querySelector('#list input[data-i="'+rid+'"]');if(bx){bx.value="";bx.blur()}await loadCommunity();render()}}
+async function cmt(rid,text){text=(text||"").trim().slice(0,200);if(!text)return;
+ var bx=document.querySelector('#list input[data-i="'+rid+'"]');if(bx){bx.value="";bx.blur()}
+ var t={id:"tmp"+Date.now(),report_id:rid,body:text,created_at:new Date().toISOString(),client_id:cid};C=C.concat([t]);render();
+ var ok=await ins("report_comments",{report_id:rid,body:text,client_id:cid});
+ if(!ok)C=C.filter(function(x){return x!==t});
+ loadCommunity().then(render,render)}
 async function rate(id,v){if(await ins("station_ratings",{station_id:id,rating:v,client_id:cid})){await loadCommunity();det()}}
 $("sub").onclick=async function(){var b=this;b.disabled=true;
  var row={category:CATS[cat],station_id:$("rs").value,description:$("rd").value.trim().slice(0,500),location_text:$("rl").value.trim().slice(0,100),client_id:cid};
@@ -202,10 +211,13 @@ function later(fn){clearTimeout(later[fn.name]);later[fn.name]=setTimeout(fn,400
 async function start(){
  if(!window.supabase){status("Could not load the Supabase library. Check your internet.");$("det").textContent="Could not connect to the database.";return}
  sb=window.supabase.createClient(SB_URL,SB_KEY,{global:{fetch:function(u,o){o=o||{};if(typeof Headers!="undefined"&&o.headers instanceof Headers){var h={};o.headers.forEach(function(v,k){h[k]=v});o.headers=h}return fetch(u,o)}}});
- try{await loadCore();await loadSeries();await loadCommunity();await loadCpcb()}catch(e){$("det").textContent="Could not load data from the database: "+(e.message||e);status("Database error. Please refresh.");return}
- try{await loadAlerts()}catch(e){}
+ var nop=function(){},pCom=loadCommunity(),pCp=loadCpcb(),pAl=loadAlerts();pCom.catch(nop);pAl.catch(nop);
+ try{await loadCore()}catch(e){$("det").textContent="Could not load data from the database: "+(e.message||e);status("Database error. Please refresh.");return}
  $("rs").innerHTML=S.map(function(s){return'<option value="'+esc(s.id)+'">'+esc(s.n)+'</option>'}).join("");$("rs").value=selId;all();
  status("Connected to the database.");X.init();
+ try{await Promise.all([loadSeries(),pCom])}catch(e){status("Could not load all data. Please refresh.")}
+ await pCp;try{await pAl}catch(e){}
+ all();
  var ch=sb.channel("gd-live");
  ["readings","outlet_readings"].forEach(function(t){ch.on("postgres_changes",{event:"*",schema:"public",table:t},function(){later(refreshReadings)})});
  ch.on("postgres_changes",{event:"*",schema:"public",table:"cpcb_annual"},function(){later(refreshCpcb)});
