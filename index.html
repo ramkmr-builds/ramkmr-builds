@@ -2,6 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="preconnect" href="https://jhzkbrznuvvswkmujphw.supabase.co" crossorigin><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
 <title>GangaDrishti – Live Ganga Water Quality & Citizen Reports</title>
 <style>
 :root{--bg:#f3f7fa;--card:#fff;--ink:#1f2d3a;--mut:#64768a;--line:#d5dee5;--navy:#0b3c5d;--teal:#1d8a99;--good:#2e9e5b;--mod:#d99a00;--poor:#d64545;--water:#9ccbe8;--map:#e8f1f6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -32,14 +33,13 @@ select,textarea,input{width:100%;padding:10px;border:1px solid var(--line);borde
 .btn.s{background:var(--bg);color:var(--teal);border:1px solid var(--line);margin-top:6px;padding:8px;font-size:13px}
 .note{font-size:12px;color:var(--mut);margin-top:8px}.r{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
 .leg{font-size:12px;color:var(--mut)}.tb{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}.tb td{padding:5px 2px;border-top:1px solid var(--line)}.tb tr:first-child td{color:var(--mut);border-top:0}.bar{height:8px;border-radius:6px;background:var(--bg);margin-top:4px}.bar div{height:8px;border-radius:6px}input[type=range]{padding:0}.ph{max-width:100%;border-radius:10px;margin-top:8px}.cm{font-size:13px;background:var(--bg);border-radius:8px;padding:6px 8px;margin-top:6px}.cmf{display:flex;gap:6px;margin-top:8px}.cmf input{flex:1}.cmf .chip{background:var(--teal);color:#fff;border-color:var(--teal)}.del{background:none;border:0;color:var(--poor);font-size:12px;font-weight:600;cursor:pointer;padding:2px 6px;border-radius:6px}.del:hover{background:var(--bg)}.cm{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}.mine{font-size:11px;color:var(--teal);font-weight:700;margin-left:6px}
-#toast{display:none;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));max-width:560px;margin:0 auto;background:var(--navy);color:#fff;padding:10px 14px;border-radius:10px;font-size:13px;z-index:20}body.gate nav,body.gate .sec,body.gate .demo{display:none!important}body.gate #lb{display:block!important}</style></head><body class="gate">
+#toast{display:none;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));max-width:560px;margin:0 auto;background:var(--navy);color:#fff;padding:10px 14px;border-radius:10px;font-size:13px;z-index:20}body.gate nav,body.gate .sec,body.gate .demo{display:none!important}body.gate #lb{display:block!important}#map{position:relative;z-index:0}.leaflet-tooltip{font:700 11px system-ui,sans-serif}</style></head><body class="gate">
 <header><h1>GangaDrishti</h1><p class="tag">See the pollution. Trace the source. Drive action.</p></header>
-<div class="demo" id="demo" style="display:none">Demo data: station readings are illustrative, not real CPCB values.</div>
 <nav><button class="on" data-t="d">Dashboard</button><button data-t="f">Report</button><button data-t="l">Cleanup Board <span id="cnt"></span></button><button data-t="lb">Login</button><button data-t="adm" style="display:none">Admin</button></nav>
 <main>
 <section id="d" class="sec on">
- <div class="card"><h2>Monitoring stations</h2><svg id="map" viewBox="0 0 360 200" role="img" aria-label="Schematic map of Ganga stations"></svg>
- <p class="leg">Tap a station. Green = within limits, yellow = 1 limit crossed, red = 2 or more. Schematic map, not to scale.</p></div>
+ <div class="card"><h2>Monitoring stations</h2><div id="map" style="height:300px;border-radius:10px;overflow:hidden" role="region" aria-label="Map of Ganga monitoring stations"></div>
+ <p class="leg">Tap a pin. Green = within limits, yellow = 1 limit crossed, red = 2 or more. Pins update live.</p></div>
  <div class="card" id="det">Loading station data…</div>
  <div class="card" id="cp"></div>
  <div class="card" id="hot"></div>
@@ -59,6 +59,7 @@ select,textarea,input{width:100%;padding:10px;border:1px solid var(--line);borde
 
 </main>
 <div id="toast" role="status"></div>
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
 // ===== Supabase config (publishable key is safe in the browser; never put a secret/service key here) =====
@@ -99,15 +100,15 @@ async function loadCommunity(){
  q.forEach(function(r){if(r.error)throw r.error});R=q[0].data;V=q[1].data;C=q[2].data;RT=q[3].data}
 function sname(id){var s=S.filter(function(x){return x.id==id})[0];return s?s.n:"Unknown"}
 // ----- map + station details -----
-function map(){var m=$("map");m.innerHTML="";if(!S.length)return;var d="M-10 "+(S[0].y-10)+" L"+S[0].x+" "+S[0].y;
- for(var i=0;i<S.length-1;i++){var a=S[i],b=S[i+1];d+=" Q"+a.x+" "+a.y+" "+(a.x+b.x)/2+" "+(a.y+b.y)/2}
- d+=" L"+S[S.length-1].x+" "+S[S.length-1].y+" L370 "+(S[S.length-1].y+8);
- el("path",{d:d,fill:"none",stroke:"var(--water)","stroke-width":10,"stroke-linecap":"round","stroke-linejoin":"round"},m);
- S.forEach(function(s,i){var g=el("g",{"class":"st",tabindex:0},m);
-  el("circle",{cx:s.x,cy:s.y,r:i==sel?13:9,fill:"#fff",stroke:i==sel?"#0b3c5d":"none","stroke-width":2},g);
-  el("circle",{cx:s.x,cy:s.y,r:7,fill:COL[stat(s)]},g);
-  var t=el("text",{x:s.x,y:s.y+22,"text-anchor":"middle","font-size":10,"font-weight":700,fill:"var(--ink)"},g);t.textContent=s.n;
-  g.onclick=async function(){sel=i;selId=s.id;map();det();cpc();try{await loadSeries();det()}catch(e){}}})}
+var LM=null,LL=null;
+function fitMap(){if(!LM||!S.length)return;LM.invalidateSize();var b=S.map(function(s){return[s.lat,s.lng]});if(b.length==1)LM.setView(b[0],12);else LM.fitBounds(b,{padding:[35,35],maxZoom:12})}
+function map(){var m=$("map");if(!S.length)return;
+ if(!window.L){m.innerHTML='<p class="note" style="padding:12px">Map could not load. Check your internet.</p>';return}
+ if(!LM){m.innerHTML="";LM=L.map(m,{scrollWheelZoom:false,preferCanvas:true});L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:"&copy; OpenStreetMap contributors"}).addTo(LM);LL=L.layerGroup().addTo(LM);LM.setView([S[0].lat,S[0].lng],10);setTimeout(fitMap,60)}
+ LL.clearLayers();
+ S.forEach(function(s,i){var k=L.circleMarker([s.lat,s.lng],{radius:i==sel?13:9,color:i==sel?"#0b3c5d":"#fff",weight:i==sel?3:2,fillColor:COL[stat(s)],fillOpacity:1}).addTo(LL);
+  k.bindTooltip(s.n,{permanent:true,direction:"top",offset:[0,-8]});
+  k.on("click",async function(){sel=i;selId=s.id;map();det();cpc();try{await loadSeries();det()}catch(e){}})})}
 function avg(id){var a=RT.filter(function(x){return x.station_id==id});return a.length?{m:a.reduce(function(p,x){return p+x.rating},0)/a.length,n:a.length}:null}
 function det(){var s=cur();if(!s){$("det").innerHTML="No stations found.";return}
  var v=viol(s),st=stat(s),h='<div class="r"><h2>'+esc(s.n)+' station</h2><span class="pill '+(st=="nodata"?"rep":st)+'">'+(st=="nodata"?"no data":st)+'</span></div><div class="grid">';
@@ -117,7 +118,7 @@ function det(){var s=cur();if(!s){$("det").innerHTML="No stations found.";return
  h+=(v.length?v.map(function(x){return'<div class="al">'+esc(x)+'</div>'}).join(""):(st=="nodata"?'<div class="al" style="border-color:var(--mut)">No readings yet</div>':'<div class="al" style="border-color:var(--good)">All parameters within limits</div>'));
  var my=RT.filter(function(x){return x.station_id==s.id&&x.client_id==cid})[0],av=avg(s.id);
  h+='<h2 style="margin-top:12px">How does the ghat look today?</h2><div class="chips" id="rt">'+[1,2,3,4,5].map(function(i){return'<button type="button" class="chip'+(my&&my.rating==i?" on":"")+'" data-s="'+i+'">'+i+" ★</button>"}).join("")+'</div><p class="note">'+(av?"Citizen rating: "+av.m.toFixed(1)+" / 5 from "+av.n+(av.n==1?" person":" people"):"No citizen ratings yet. Be the first.")+(my?" You rated "+my.rating+" (one rating per person per station).":"")+"</p>"+(my?'<button type="button" class="del" id="rmr" style="padding-left:0">Remove my rating</button>':"");
- h+='<button class="btn s" id="go">Report pollution near '+esc(s.n)+'</button>';$("det").innerHTML=h;
+ h+='<a class="btn s" style="display:block;text-decoration:none;text-align:center" href="https://www.google.com/maps/search/?api=1&query='+s.lat+','+s.lng+'" target="_blank" rel="noopener">Open in Google Maps</a>';h+='<button class="btn s" id="go">Report pollution near '+esc(s.n)+'</button>';$("det").innerHTML=h;
  document.querySelectorAll("#rt [data-s]").forEach(function(b){b.onclick=function(){rate(s.id,+b.dataset.s)}});
  if($("rmr"))$("rmr").onclick=function(){delRating(s.id)};
  var c=$("ch"),a=SER,y=function(v){v=Math.max(3,Math.min(9,v));return 100-(v-3)*(90/6)};
@@ -126,7 +127,7 @@ function det(){var s=cur();if(!s){$("det").innerHTML="No stations found.";return
  if(a.length>1){var p=a.map(function(v,i){return(8+i*(304/(a.length-1))).toFixed(1)+","+y(v).toFixed(1)}).join(" ");el("polyline",{points:p,fill:"none",stroke:"#1d8a99","stroke-width":2.5,"stroke-linejoin":"round"},c)}
  else{var n=el("text",{x:160,y:60,"text-anchor":"middle","font-size":11,fill:"var(--mut)"},c);n.textContent="Not enough readings yet"}
  $("go").onclick=function(){$("rs").value=s.id;tab("f")}}
-function tab(t){document.querySelectorAll(".sec").forEach(function(e){e.classList.toggle("on",e.id==t)});document.querySelectorAll("nav button").forEach(function(b){b.classList.toggle("on",b.dataset.t==t)});try{history.replaceState(null,"","#"+t)}catch(e){}window.scrollTo(0,0)}
+function tab(t){document.querySelectorAll(".sec").forEach(function(e){e.classList.toggle("on",e.id==t)});document.querySelectorAll("nav button").forEach(function(b){b.classList.toggle("on",b.dataset.t==t)});try{history.replaceState(null,"","#"+t)}catch(e){}if(t=="d")setTimeout(fitMap,60);window.scrollTo(0,0)}
 document.querySelectorAll("nav button").forEach(function(b){b.onclick=function(){tab(b.dataset.t)}});
 (function(){var h=location.hash.slice(1),e=h&&document.getElementById(h);if(e&&e.classList.contains("sec"))tab(h)})();
 function chips(){$("rc").innerHTML="";CATS.forEach(function(c,i){var b=document.createElement("button");b.type="button";b.className="chip"+(i==cat?" on":"");b.textContent=c;b.onclick=function(){cat=i;chips()};$("rc").appendChild(b)})}chips();
@@ -195,8 +196,7 @@ function alerts(){var L=[];S.forEach(function(s){viol(s).forEach(function(v){L.p
 function alr(){if(!$("al"))return;var L=alerts().sort(function(a,b){return(a.sev=="high"?0:1)-(b.sev=="high"?0:1)});$("acnt").textContent="("+L.length+")";
  $("al").innerHTML=L.map(function(a){var s=ST[a.id]||0;return'<div class="card" style="border-left:4px solid '+(a.sev=="high"?"var(--poor)":"var(--mod)")+'"><div class="r"><b>'+(a.sev=="high"?"High":"Medium")+' priority</b><span class="pill '+(s==3?"good":s?"moderate":"rep")+'">'+FL[s]+'</span></div><div style="margin:4px 0">'+esc(a.msg)+"</div>"+(s<3&&X.adm()?'<button class="btn s" data-id="'+esc(a.id)+'">Mark as: '+FL[s+1]+"</button>":"")+"</div>"}).join("")+'<p class="note">Alerts are calculated live from the latest readings. SMS and email sending is simulated. Only admins can change the status, and everyone sees the same status.</p>';
  document.querySelectorAll("#al [data-id]").forEach(function(b){b.onclick=function(){var id=b.dataset.id;X.setAlert(id,(ST[id]||0)+1)}})}
-function all(){map();det();cpc();render();hot();src();cpsrc();alr();
- var d=S.some(function(s){return s.demo})||OUT.some(function(o){return o.demo});$("demo").style.display=d?"block":"none"}
+function all(){map();det();cpc();render();hot();src();cpsrc();alr()}
 // ----- start + realtime -----
 function status(t){$("mode").textContent=t}
 async function refreshReadings(){try{await loadCore();await loadSeries();all()}catch(e){status("Could not refresh readings: "+(e.message||e))}}
@@ -241,27 +241,16 @@ async function pull(){try{var q=await Promise.all([sb.from("profiles").select("i
 function lat(){clearTimeout(tm);tm=setTimeout(pull,400)}
 function init(){sb.auth.onAuthStateChange(function(e,s){uid=s&&s.user?s.user.id:null;ready=true;draw();setTimeout(chk,0)});pull();
  sb.channel("ss-live").on("postgres_changes",{event:"*",schema:"public",table:"profiles"},lat).on("postgres_changes",{event:"INSERT",schema:"public",table:"activity"},function(p){if(uid&&p.new.actor!==uid)toast("🔔 "+p.new.text);lat()}).subscribe()}
-function draw(){var l=$("lb");if(!l)return;document.body.classList.toggle("gate",!uid);var m=me(),ae=document.activeElement,h="";
+function draw(){var l=$("lb");if(!l)return;var wasG=document.body.classList.contains("gate");document.body.classList.toggle("gate",!uid);if(wasG&&uid)setTimeout(fitMap,60);var m=me(),ae=document.activeElement,h="";
  if(!(ae&&/INPUT|SELECT/.test(ae.tagName)&&l.contains(ae))){
   if(bad)h='<div class="card"><h2>Accounts and points</h2><p class="note">Run the one-time database setup (swachhsetu_migration.sql) to turn on accounts and cleanup tasks.</p></div>';
   else{var lg=mode=="login";
-   if(!ready)h='<div class="card">Loading…</div>';else if(!uid&&mode=="phone")h=phoneCard();else if(!uid)h='<div class="card"><h2>'+(lg?"Log in":"Create account")+'</h2>'+(lg?"":'<label>Full name</label><input id="ax-n" maxlength="30">')+'<label>Email</label><input id="ax-e" type="email"><label>Password (min 6 characters)</label><input id="ax-p" type="password">'+(lg?"":'<label>Join as</label><select id="ax-r"><option value="citizen">Citizen (report waste)</option><option value="volunteer">Volunteer (clean waste)</option></select>')+'<button class="btn" onclick="X.sub()">'+(lg?"Log in":"Register")+'</button><button class="btn s" onclick="X.mode()">'+(lg?"Create a new account":"I already have an account")+'</button><p class="note">Log in or create an account to view the dashboard, report pollution and earn points.</p>'+social()+'</div>';
+   if(!ready)h='<div class="card">Loading…</div>';else if(!uid)h='<div class="card"><h2>'+(lg?"Log in":"Create account")+'</h2>'+(lg?"":'<label>Full name</label><input id="ax-n" maxlength="30">')+'<label>Email</label><input id="ax-e" type="email"><label>Password (min 6 characters)</label><input id="ax-p" type="password">'+(lg?"":'<label>Join as</label><select id="ax-r"><option value="citizen">Citizen (report waste)</option><option value="volunteer">Volunteer (clean waste)</option></select>')+'<button class="btn" onclick="X.sub()">'+(lg?"Log in":"Register")+'</button><button class="btn s" onclick="X.mode()">'+(lg?"Create a new account":"I already have an account")+'</button><p class="note">Log in or create an account to view the dashboard, report pollution and earn points.</p></div>';
    else if(m){var nx=BG.find(function(b){return m.pts<b[0]}),got=BG.filter(function(b){return m.pts>=b[0]});
     h='<div class="card"><div class="r"><h2>'+esc(m.name)+': '+m.pts+' points</h2><button class="del" onclick="X.out()">Log out</button></div><div class="chips">'+["citizen","volunteer"].map(function(r){return'<button class="chip'+(m.role==r?" on":"")+'" onclick="X.role(\''+r+'\')">'+r+'</button>'}).join("")+'</div>'+(nx?'<div class="bar"><div style="width:'+Math.min(100,m.pts/nx[0]*100)+'%;background:var(--teal)"></div></div><p class="note">'+(nx[0]-m.pts)+' more points for "'+nx[1]+'"</p>':'<p>All badges earned!</p>')+'<p>'+(got.length?got.map(function(b){return'<span class="pill good">🏅 '+b[1]+'</span> '}).join(""):'<span class="note">No badges yet.</span>')+'</p><p class="note">Report +10 · Accept a cleanup +5 · Finish a cleanup with an after photo +30. Volunteers accept tasks in the Cleanup Board tab.</p></div>'}
   }
-  l.innerHTML=h;var pe=$("ax-p");if(pe)pe.onkeydown=function(e){if(e.key==="Enter")X.sub()};var oe=$("ax-o");if(oe)oe.onkeydown=function(e){if(e.key==="Enter")X.verify()}}
+  l.innerHTML=h;var pe=$("ax-p");if(pe)pe.onkeydown=function(e){if(e.key==="Enter")X.sub()}}
  var nb=document.querySelector('nav button[data-t="lb"]');if(nb)nb.textContent=m?"👤 "+String(m.name).split(" ")[0]:"Login"}
-var ph="",otp=false;
-function friendly(x){var m=String(x&&x.message||x);return /not enabled|Unsupported|provider/i.test(m)?"This login method is not turned on yet. The admin must enable it in Supabase.":/sms|twilio|phone/i.test(m)&&/provider|config|not/i.test(m)?"Phone login is not set up yet. The admin must connect an SMS provider in Supabase.":m}
-function social(){return '<div class="note" style="text-align:center;margin:14px 0 6px">or continue with</div><div class="grid"><button type="button" class="btn s" onclick="X.oauth(\'google\')">Google</button><button type="button" class="btn s" onclick="X.oauth(\'github\')">GitHub</button></div><button type="button" class="btn s" onclick="X.setMode(\'phone\')">📱 Phone number (OTP)</button>'}
-function phoneCard(){return '<div class="card"><h2>Login with phone</h2>'+(otp?'<label>Enter the code sent to '+esc(ph)+'</label><input id="ax-o" inputmode="numeric" maxlength="8" autocomplete="one-time-code"><button class="btn" onclick="X.verify()">Verify and log in</button><button class="btn s" onclick="X.phoneBack()">Change number</button>':'<label>Phone number (with country code)</label><input id="ax-ph" type="tel" inputmode="tel" value="+91"><label>Your name (for new accounts)</label><input id="ax-pn" maxlength="30"><button class="btn" onclick="X.sendOtp()">Send OTP</button>')+'<button class="btn s" onclick="X.setMode(\'login\')">Back to email login</button></div>'}
-async function oauth(p){try{var r=await sb.auth.signInWithOAuth({provider:p,options:{redirectTo:location.origin+location.pathname}});if(r.error)throw r.error}catch(x){toast(friendly(x))}}
-async function sendOtp(){var n=$("ax-ph").value.replace(/[\s-]+/g,"");if(!/^\+\d{8,15}$/.test(n)){toast("Enter the number with country code, like +919876543210");return}
- try{var nm=$("ax-pn").value.trim(),r=await sb.auth.signInWithOtp({phone:n,options:{data:nm?{name:nm.slice(0,30)}:{}}});if(r.error)throw r.error;ph=n;otp=true;toast("OTP sent");draw()}catch(x){toast(friendly(x))}}
-async function verify(){var t=$("ax-o").value.trim();if(!/^\d{4,8}$/.test(t)){toast("Enter the code from the SMS");return}
- try{var r=await sb.auth.verifyOtp({phone:ph,token:t,type:"sms"});if(r.error)throw r.error;otp=false;tab("d")}catch(x){toast(friendly(x))}}
-function phoneBack(){otp=false;draw()}
-function setMode(m){mode=m;otp=false;draw()}
 async function sub(){var e=$("ax-e").value.trim(),p=$("ax-p").value;try{
  if(mode=="login"){var r=await sb.auth.signInWithPassword({email:e,password:p});if(r.error)throw r.error;tab("d")}
  else{var n=$("ax-n").value.trim();if(!n){toast("Enter your name");return}var r2=await sb.auth.signUp({email:e,password:p,options:{data:{name:n,role:$("ax-r").value}}});if(r2.error)throw r2.error;if(r2.data.session)tab("d");toast(r2.data.session?"Welcome, "+n+"!":"Account created. Confirm the email we sent, then log in.")}
@@ -308,7 +297,7 @@ function admDraw(force){var box=$("adm");if(!box)return;if(!adm){box.innerHTML="
  var go=$("ad-go");if(go)go.onclick=function(){var u=$("ad-u").value,d=parseInt($("ad-d").value,10),r=$("ad-r").value.trim();if(!u||!d){toast("Pick a member and enter the points");return}
   aRpc("admin_adjust_points",{p_user:u,p_delta:d,p_reason:r},"Points updated.").then(function(ok){if(ok){$("ad-d").value="";$("ad-r").value=""}})}}
 var _r=window.render;window.render=function(){_r();bind();admDraw()};
-return{init:init,sub:sub,oauth:oauth,sendOtp:sendOtp,verify:verify,phoneBack:phoneBack,setMode:setMode,role:role,pill:pill,media:media,up:up,adm:function(){return adm},setAlert:setAlert,
+return{init:init,sub:sub,role:role,pill:pill,media:media,up:up,adm:function(){return adm},setAlert:setAlert,
  mode:function(){mode=mode=="login"?"register":"login";draw()},
  out:function(){sb.auth.signOut()},
  pledge:function(){try{localStorage.setItem("ss_pledge","1")}catch(e){}draw();toast("Thank you for the pledge!")},
