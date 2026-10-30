@@ -33,11 +33,37 @@ select,textarea,input{width:100%;padding:10px;border:1px solid var(--line);borde
 .btn.s{background:var(--bg);color:var(--teal);border:1px solid var(--line);margin-top:6px;padding:8px;font-size:13px}
 .note{font-size:12px;color:var(--mut);margin-top:8px}.r{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
 .leg{font-size:12px;color:var(--mut)}.tb{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}.tb td{padding:5px 2px;border-top:1px solid var(--line)}.tb tr:first-child td{color:var(--mut);border-top:0}.bar{height:8px;border-radius:6px;background:var(--bg);margin-top:4px}.bar div{height:8px;border-radius:6px}input[type=range]{padding:0}.ph{max-width:100%;border-radius:10px;margin-top:8px}.cm{font-size:13px;background:var(--bg);border-radius:8px;padding:6px 8px;margin-top:6px}.cmf{display:flex;gap:6px;margin-top:8px}.cmf input{flex:1}.cmf .chip{background:var(--teal);color:#fff;border-color:var(--teal)}.del{background:none;border:0;color:var(--poor);font-size:12px;font-weight:600;cursor:pointer;padding:2px 6px;border-radius:6px}.del:hover{background:var(--bg)}.cm{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}.mine{font-size:11px;color:var(--teal);font-weight:700;margin-left:6px}
-#toast{display:none;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));max-width:560px;margin:0 auto;background:var(--navy);color:#fff;padding:10px 14px;border-radius:10px;font-size:13px;z-index:20}body.gate nav,body.gate .sec,body.gate .demo{display:none!important}body.gate #lb{display:block!important}#map{position:relative;z-index:0;height:100%}#mw{position:relative;z-index:0;height:300px;border-radius:10px;overflow:hidden}#mw.full{position:fixed;inset:0;height:auto;z-index:1000;border-radius:0}#mx,#mc{position:absolute;z-index:1001;border:0;border-radius:99px;padding:8px 14px;background:var(--navy);color:#fff;font:700 13px inherit;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.3)}#mx{right:8px;bottom:8px}#mc{display:none;right:10px;top:calc(10px + env(safe-area-inset-top,0px))}#mw.full #mx{display:none}#mw.full #mc{display:block}#mi{display:none;position:absolute;z-index:1001;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));max-width:420px;margin:0 auto;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:10px 12px;box-shadow:0 2px 10px rgba(0,0,0,.3)}#mw.full #mi.on{display:block}#mw:not(.full) #map{cursor:pointer}.leaflet-tooltip{font:700 11px system-ui,sans-serif}</style></head><body class="gate">
-<header><h1>GangaDrishti</h1><p class="tag">See the pollution. Trace the source. Drive action.</p></header>
-<nav><button class="on" data-t="d">Dashboard</button><button data-t="f">Report</button><button data-t="l">Cleanup Board <span id="cnt"></span></button><button data-t="lb">Login</button><button data-t="adm" style="display:none">Admin</button></nav>
+#toast{display:none;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));max-width:560px;margin:0 auto;background:var(--navy);color:#fff;padding:10px 14px;border-radius:10px;font-size:13px;z-index:20}body.gate nav,body.gate .sec,body.gate .demo{display:none!important}body.gate #lb{display:block!important}#map{position:relative;z-index:0;height:100%}#mw{position:relative;z-index:0;height:300px;border-radius:10px;overflow:hidden}#mw.full{position:fixed;inset:0;height:auto;z-index:1000;border-radius:0}#mx,#mc{position:absolute;z-index:1001;border:0;border-radius:99px;padding:8px 14px;background:var(--navy);color:#fff;font:700 13px inherit;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.3)}#mx{right:8px;bottom:8px}#mc{display:none;right:10px;top:calc(10px + env(safe-area-inset-top,0px))}#mw.full #mx{display:none}#mw.full #mc{display:block}#mi{display:none;position:absolute;z-index:1001;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));max-width:420px;margin:0 auto;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:10px 12px;box-shadow:0 2px 10px rgba(0,0,0,.3)}#mw.full #mi.on{display:block}#mw:not(.full) #map{cursor:pointer}.leaflet-tooltip{font:700 11px system-ui,sans-serif}
+body{background:radial-gradient(800px 380px at 90% -60px,rgba(29,138,153,.22),transparent 70%),radial-gradient(600px 400px at -10% 35%,rgba(11,60,93,.10),transparent 70%),var(--bg);background-attachment:fixed;padding-bottom:104px}
+header{position:relative;overflow:hidden;background:linear-gradient(135deg,#082a40 0%,#0b3c5d 45%,#1d8a99 100%);padding:22px 16px 40px}
+header::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 85% 20%,rgba(255,255,255,.14),transparent 45%),repeating-radial-gradient(circle at 110% 120%,rgba(255,255,255,.06) 0 2px,transparent 2px 26px)}
+.hw{position:relative;max-width:760px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.logo{display:grid;place-items:center;width:46px;height:46px;border-radius:14px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(4px)}
+.logo .ic{stroke:#fff;width:26px;height:26px}
+h1{font:700 26px Georgia,serif;letter-spacing:.3px}.tag{color:#d3eaf2}
+.wave{position:absolute;left:0;bottom:-1px;width:100%;height:26px}
+.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+nav{position:fixed;top:auto;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));max-width:560px;margin:0 auto;gap:4px;padding:6px;justify-content:space-around;background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:0 10px 30px rgba(11,60,93,.22);z-index:900}
+nav button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 10px;border:0;border-radius:16px;font:600 11px inherit;min-width:64px;transition:background .2s,color .2s,transform .15s}
+nav button:active{transform:scale(.94)}
+nav button.on{color:#fff;background:linear-gradient(135deg,var(--teal),#2aa6a0);box-shadow:0 4px 12px rgba(29,138,153,.4)}
+.card{border-radius:16px;box-shadow:0 2px 10px rgba(11,60,93,.07)}
+.card h2{display:flex;align-items:center;gap:8px}.card h2::before{content:"";flex:none;width:4px;height:16px;border-radius:4px;background:linear-gradient(var(--teal),var(--navy))}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.kp{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 4px;text-align:center;box-shadow:0 2px 8px rgba(11,60,93,.06)}
+.kp b{display:block;font-size:22px;line-height:1.2}.kp span{font-size:11px;color:var(--mut)}
+.p{border-radius:12px;background:linear-gradient(160deg,var(--card),var(--bg))}
+.btn{background:linear-gradient(135deg,var(--good),var(--teal));box-shadow:0 4px 12px rgba(29,138,153,.3)}.btn.s{box-shadow:none;background:var(--bg)}
+.chip{transition:all .15s}.chip:hover{border-color:var(--teal)}
+.sec.on{animation:fi .3s ease}@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.sec.on{animation:none}}
+.ft{text-align:center;font-size:12px;color:var(--mut);padding:8px 16px 0}
+#toast{bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+</style></head><body class="gate">
+<header><div class="hw"><span class="logo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s6 6.2 6 10.5A6 6 0 0 1 6 13.5C6 9.2 12 3 12 3z"/><path d="M9 14.5a3 3 0 0 0 3 2.5"/></svg></span><div><h1>GangaDrishti</h1><p class="tag">See the pollution. Trace the source. Drive action.</p></div></div><svg class="wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 30C240 60 480 0 720 30s480 30 720 0V60H0z" fill="var(--bg)"/></svg></header>
+<nav><button class="on" data-t="d"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8v8H3zM13 3h8v5h-8zM13 11h8v10h-8zM3 14h8v7H3z"/></svg><span class="lb">Dashboard</span></button><button data-t="f"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3zM12 10v4M12 17h.01"/></svg><span class="lb">Report</span></button><button data-t="l"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg><span class="lb">Cleanup <span id="cnt"></span></span></button><button data-t="lb"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span class="lb">Login</span></button><button data-t="adm" style="display:none"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3z"/></svg><span class="lb">Admin</span></button></nav>
 <main>
-<section id="d" class="sec on">
+<section id="d" class="sec on"><div class="kpis" id="kp"></div>
  <div class="card"><h2>Monitoring stations</h2><div id="mw"><div id="map" role="region" aria-label="Map of Ganga monitoring stations"></div><button type="button" id="mx" aria-label="Open full screen map">⤢ Open full map</button><button type="button" id="mc" aria-label="Close map">✕ Close</button><div id="mi"></div></div>
  <p class="leg">Tap the map to open it full screen, then drag, pinch or scroll to move and zoom. Tap a pin for details. Green = within limits, yellow = 1 limit crossed, red = 2 or more, grey = no readings yet. Pins update live.</p></div>
  <div class="card" id="det">Loading station data…</div>
@@ -58,7 +84,7 @@ select,textarea,input{width:100%;padding:10px;border:1px solid var(--line);borde
 
 
 </main>
-<div id="toast" role="status"></div>
+<footer class="ft">Water quality data: CPCB / NWMP. Citizen reports are community-submitted.</footer><div id="toast" role="status"></div>
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
@@ -123,7 +149,7 @@ function det(){var s=cur();if(!s){$("det").innerHTML="No stations found.";return
  var v=viol(s),st=stat(s),h='<div class="r"><h2>'+esc(s.n)+' station</h2><span class="pill '+(st=="nodata"?"rep":st)+'">'+(st=="nodata"?"no data":st)+'</span></div><div class="grid">';
  [["pH",s.pH,"",s.pH!=null&&(s.pH<6.5||s.pH>8.5)],["Dissolved oxygen",s.DO,"mg/L",s.DO!=null&&s.DO<5],["BOD",s.BOD,"mg/L",s.BOD!=null&&s.BOD>3],["Turbidity",s.T,"NTU",false]].forEach(function(p){
   h+='<div class="p '+(p[3]?"bad":"ok")+'"><small>'+p[0]+'</small><b>'+show(p[1])+'</b> <small style="display:inline">'+p[2]+'</small></div>'});
- h+='</div>'+(s.at?'<p class="note">Last reading: '+esc(new Date(s.at).toLocaleString())+'</p>':'')+'<h2 style="margin-top:12px">Dissolved oxygen, last 24 readings</h2><svg id="ch" viewBox="0 0 320 110"></svg>';
+ h+='</div>'+(s.at?'<p class="note">Last reading: '+esc(new Date(s.at).toLocaleString())+'</p>':(s.ann?'<p class="note">No live sensor here yet. Showing the worst values recorded in the CPCB '+s.ann+' annual data (lowest oxygen, highest BOD).</p>':''))+'<h2 style="margin-top:12px">Dissolved oxygen, last 24 readings</h2><svg id="ch" viewBox="0 0 320 110"></svg>';
  h+=(v.length?v.map(function(x){return'<div class="al">'+esc(x)+'</div>'}).join(""):(st=="nodata"?'<div class="al" style="border-color:var(--mut)">No readings yet</div>':'<div class="al" style="border-color:var(--good)">All parameters within limits</div>'));
  var my=RT.filter(function(x){return x.station_id==s.id&&x.client_id==cid})[0],av=avg(s.id);
  h+='<h2 style="margin-top:12px">How does the ghat look today?</h2><div class="chips" id="rt">'+[1,2,3,4,5].map(function(i){return'<button type="button" class="chip'+(my&&my.rating==i?" on":"")+'" data-s="'+i+'">'+i+" ★</button>"}).join("")+'</div><p class="note">'+(av?"Citizen rating: "+av.m.toFixed(1)+" / 5 from "+av.n+(av.n==1?" person":" people"):"No citizen ratings yet. Be the first.")+(my?" You rated "+my.rating+" (one rating per person per station).":"")+"</p>"+(my?'<button type="button" class="del" id="rmr" style="padding-left:0">Remove my rating</button>':"");
@@ -201,18 +227,26 @@ function hot(){var a=S.slice().sort(function(x,y){return sc(y)-sc(x)});
 function src(){if(!$("so"))return;var a=OUT.slice().sort(function(x,y){return((y.dn.BOD||0)-(y.up.BOD||0))-((x.dn.BOD||0)-(x.up.BOD||0))});
  $("so").innerHTML=a.map(function(o){var f=flag(o),rows=[["BOD (mg/L)","BOD"],["Dissolved oxygen (mg/L)","DO"],["pH","pH"],["Turbidity (NTU)","T"]].map(function(r){var u=o.up[r[1]],d=o.dn[r[1]],c=(u==null||d==null)?null:d-u;return"<tr><td>"+r[0]+"</td><td>"+show(u)+"</td><td>"+show(d)+"</td><td><b>"+(c==null?"–":(c>0?"+":"")+c.toFixed(1))+"</b></td></tr>"}).join("");
   return'<div class="card"><div class="r"><div><b>'+esc(o.n)+'</b><div class="note" style="margin:0">'+esc(o.t)+'</div></div><span class="pill '+(f?"poor":"good")+'">'+(f?"Inspect":"Normal")+'</span></div><table class="tb"><tr><td></td><td>Upstream</td><td>Downstream</td><td>Change</td></tr>'+rows+"</table>"+(f?'<div class="al">Water quality drops sharply after this outlet. Possible source: send for inspection and sampling.</div>':"")+"</div>"}).join("")+'<p class="note">A change between two points suggests a possible source. It does not prove who is responsible. Other drains, river flow and weather also matter, so samples and inspection are needed.</p>'}
-function alerts(){var L=[];S.forEach(function(s){viol(s).forEach(function(v){L.push({id:"s-"+s.id+"-"+v.slice(0,3),sev:stat(s)=="poor"?"high":"medium",msg:s.n+" station: "+v})})});
+function alerts(){var L=[];S.forEach(function(s){if(s.ann)return;viol(s).forEach(function(v){L.push({id:"s-"+s.id+"-"+v.slice(0,3),sev:stat(s)=="poor"?"high":"medium",msg:s.n+" station: "+v})})});
  OUT.forEach(function(o){if(flag(o))L.push({id:"o-"+o.id,sev:"high",msg:o.n+": water quality drops sharply downstream. Possible source, inspect."})});return L}
 function alr(){if(!$("al"))return;var L=alerts().sort(function(a,b){return(a.sev=="high"?0:1)-(b.sev=="high"?0:1)});$("acnt").textContent="("+L.length+")";
  $("al").innerHTML=L.map(function(a){var s=ST[a.id]||0;return'<div class="card" style="border-left:4px solid '+(a.sev=="high"?"var(--poor)":"var(--mod)")+'"><div class="r"><b>'+(a.sev=="high"?"High":"Medium")+' priority</b><span class="pill '+(s==3?"good":s?"moderate":"rep")+'">'+FL[s]+'</span></div><div style="margin:4px 0">'+esc(a.msg)+"</div>"+(s<3&&X.adm()?'<button class="btn s" data-id="'+esc(a.id)+'">Mark as: '+FL[s+1]+"</button>":"")+"</div>"}).join("")+'<p class="note">Alerts are calculated live from the latest readings. SMS and email sending is simulated. Only admins can change the status, and everyone sees the same status.</p>';
  document.querySelectorAll("#al [data-id]").forEach(function(b){b.onclick=function(){var id=b.dataset.id;X.setAlert(id,(ST[id]||0)+1)}})}
-function all(){map();det();cpc();render();hot();src();cpsrc();alr()}
+function applyFb(){S.forEach(function(s){if(s.at||s.pH!=null||s.DO!=null||s.BOD!=null)return;
+ var a=CP.filter(function(x){return x.station_id==s.id});if(!a.length)return;var yr=Math.max.apply(0,a.map(function(x){return x.year}));a=a.filter(function(x){return x.year==yr});
+ var g=function(k,f){var v=a.map(function(x){return x[k]}).filter(function(x){return x!=null});return v.length?f.apply(0,v):null};
+ var dm=g("do_min",Math.min),bx=g("bod_max",Math.max),pl=g("ph_min",Math.min),ph=g("ph_max",Math.max);
+ if(dm==null&&bx==null&&pl==null&&ph==null)return;
+ s.DO=dm;s.BOD=bx;s.pH=pl==null&&ph==null?null:(pl!=null&&pl<6.5?pl:(ph!=null&&ph>8.5?ph:Math.round(((pl==null?ph:pl)+(ph==null?pl:ph))/2*100)/100));s.ann=yr})}
+function kpi(){var c={good:0,moderate:0,poor:0,nodata:0};S.forEach(function(s){c[stat(s)]++});
+ $("kp").innerHTML=[["Stations",S.length,"var(--navy)"],["Within limits",c.good,"var(--good)"],["Watch",c.moderate,"var(--mod)"],["Critical",c.poor,"var(--poor)"]].map(function(k){return'<div class="kp"><b style="color:'+k[2]+'">'+k[1]+'</b><span>'+k[0]+'</span></div>'}).join("")}
+function all(){applyFb();kpi();map();det();cpc();render();hot();src();cpsrc();alr()}
 // ----- start + realtime -----
 function status(t){$("mode").textContent=t}
 async function refreshReadings(){try{await loadCore();await loadSeries();all()}catch(e){status("Could not refresh readings: "+(e.message||e))}}
 var live=false;
 function refreshAll(){refreshReadings();refreshCommunity();refreshCpcb()}
-async function refreshCpcb(){try{await loadCpcb();cpc();cpsrc()}catch(e){}}
+async function refreshCpcb(){try{await loadCpcb();all()}catch(e){}}
 async function loadAlerts(){var r=await sb.from("alert_status").select("alert_id,status");if(r.error)throw r.error;var o={};r.data.forEach(function(x){o[x.alert_id]=x.status});ST=o}
 async function refreshAlerts(){try{await loadAlerts();alr()}catch(e){}}
 async function refreshCommunity(){try{await loadCommunity();render();det()}catch(e){status("Could not refresh reports: "+(e.message||e))}}
@@ -260,7 +294,7 @@ function draw(){var l=$("lb");if(!l)return;var wasG=document.body.classList.cont
     h='<div class="card"><div class="r"><h2>'+esc(m.name)+': '+m.pts+' points</h2><button class="del" onclick="X.out()">Log out</button></div><div class="chips">'+["citizen","volunteer"].map(function(r){return'<button class="chip'+(m.role==r?" on":"")+'" onclick="X.role(\''+r+'\')">'+r+'</button>'}).join("")+'</div>'+(nx?'<div class="bar"><div style="width:'+Math.min(100,m.pts/nx[0]*100)+'%;background:var(--teal)"></div></div><p class="note">'+(nx[0]-m.pts)+' more points for "'+nx[1]+'"</p>':'<p>All badges earned!</p>')+'<p>'+(got.length?got.map(function(b){return'<span class="pill good">🏅 '+b[1]+'</span> '}).join(""):'<span class="note">No badges yet.</span>')+'</p><p class="note">Report +10 · Accept a cleanup +5 · Finish a cleanup with an after photo +30. Volunteers accept tasks in the Cleanup Board tab.</p></div>'}
   }
   l.innerHTML=h;var pe=$("ax-p");if(pe)pe.onkeydown=function(e){if(e.key==="Enter")X.sub()}}
- var nb=document.querySelector('nav button[data-t="lb"]');if(nb)nb.textContent=m?"👤 "+String(m.name).split(" ")[0]:"Login"}
+ var nb=document.querySelector('nav button[data-t="lb"]');if(nb){var q=nb.querySelector(".lb");if(q)q.textContent=m?String(m.name).split(" ")[0]:"Login"}}
 async function sub(){var e=$("ax-e").value.trim(),p=$("ax-p").value;try{
  if(mode=="login"){var r=await sb.auth.signInWithPassword({email:e,password:p});if(r.error)throw r.error;tab("d")}
  else{var n=$("ax-n").value.trim();if(!n){toast("Enter your name");return}var r2=await sb.auth.signUp({email:e,password:p,options:{data:{name:n,role:$("ax-r").value}}});if(r2.error)throw r2.error;if(r2.data.session)tab("d");toast(r2.data.session?"Welcome, "+n+"!":"Account created. Confirm the email we sent, then log in.")}
