@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GangaDrishti – Live Ganga Water Quality & Citizen Reports</title>
+<style>
+:root{--bg:#f3f7fa;--card:#fff;--ink:#1f2d3a;--mut:#64768a;--line:#d5dee5;--navy:#0b3c5d;--teal:#1d8a99;--good:#2e9e5b;--mod:#d99a00;--poor:#d64545;--water:#9ccbe8;--map:#e8f1f6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1a24;--card:#16252f;--ink:#e6eef4;--mut:#93a6b6;--line:#2a3c4a;--navy:#082a40;--map:#12303f;--water:#2b6f93}}
+:root[data-theme="dark"]{--bg:#0e1a24;--card:#16252f;--ink:#e6eef4;--mut:#93a6b6;--line:#2a3c4a;--navy:#082a40;--map:#12303f;--water:#2b6f93}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{background:var(--navy);color:#fff;padding:16px 16px 12px}
+h1{margin:0;font:700 22px Georgia,serif}.tag{margin:2px 0 0;color:#bfd8e6;font-size:13px}
+.demo{background:#fff3cd;color:#664d03;font-size:12px;padding:6px 16px;text-align:center}
+nav{display:flex;overflow-x:auto;position:sticky;top:env(safe-area-inset-top,0px);background:var(--card);border-bottom:1px solid var(--line);z-index:5}
+nav button{flex:1 0 auto;white-space:nowrap;padding:12px 10px;border:0;background:none;color:var(--mut);font:600 14px inherit;border-bottom:3px solid transparent;cursor:pointer}
+nav button.on{color:var(--teal);border-color:var(--teal)}
+main{max-width:760px;margin:0 auto;padding:14px}.sec{display:none}.sec.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px}
+.card h2{margin:0 0 8px;font-size:15px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{padding:5px 12px;border-radius:99px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:13px;cursor:pointer}
+.chip.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+svg{display:block;width:100%;height:auto}.st{cursor:pointer}
+.pill{display:inline-block;padding:2px 10px;border-radius:99px;color:#fff;font:700 11px inherit;text-transform:uppercase}
+.good{background:var(--good)}.moderate{background:var(--mod)}.poor{background:var(--poor)}.rep{background:var(--mut)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.p{border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.p small{color:var(--mut);display:block;font-size:12px}.p b{font-size:22px}.p.bad b{color:var(--poor)}.p.ok b{color:var(--good)}
+.al{font-size:13px;padding:6px 8px;border-radius:8px;background:var(--bg);margin-top:6px;border-left:4px solid var(--poor)}
+label{display:block;font:600 13px inherit;margin:10px 0 4px}
+select,textarea,input{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:inherit}
+.btn{border:0;border-radius:10px;padding:12px;background:var(--good);color:#fff;font:700 15px inherit;width:100%;margin-top:14px;cursor:pointer}
+.btn.s{background:var(--bg);color:var(--teal);border:1px solid var(--line);margin-top:6px;padding:8px;font-size:13px}
+.note{font-size:12px;color:var(--mut);margin-top:8px}.r{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.leg{font-size:12px;color:var(--mut)}.tb{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}.tb td{padding:5px 2px;border-top:1px solid var(--line)}.tb tr:first-child td{color:var(--mut);border-top:0}.bar{height:8px;border-radius:6px;background:var(--bg);margin-top:4px}.bar div{height:8px;border-radius:6px}input[type=range]{padding:0}.ph{max-width:100%;border-radius:10px;margin-top:8px}.cm{font-size:13px;background:var(--bg);border-radius:8px;padding:6px 8px;margin-top:6px}.cmf{display:flex;gap:6px;margin-top:8px}.cmf input{flex:1}.cmf .chip{background:var(--teal);color:#fff;border-color:var(--teal)}.del{background:none;border:0;color:var(--poor);font-size:12px;font-weight:600;cursor:pointer;padding:2px 6px;border-radius:6px}.del:hover{background:var(--bg)}.cm{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}.mine{font-size:11px;color:var(--teal);font-weight:700;margin-left:6px}
+#toast{display:none;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));max-width:560px;margin:0 auto;background:var(--navy);color:#fff;padding:10px 14px;border-radius:10px;font-size:13px;z-index:20}</style></head><body>
+<header><h1>GangaDrishti</h1><p class="tag">See the pollution. Trace the source. Drive action.</p></header>
+<div class="demo" id="demo" style="display:none">Demo data: station readings are illustrative, not real CPCB values.</div>
+<nav><button class="on" data-t="d">Dashboard</button><button data-t="o">Source</button><button data-t="a">Alerts <span id="acnt"></span></button><button data-t="f">Report</button><button data-t="l">Reports <span id="cnt"></span></button><button data-t="i">About</button></nav>
+<main>
+<section id="d" class="sec on">
+ <div class="card"><h2>Monitoring stations</h2><svg id="map" viewBox="0 0 360 200" role="img" aria-label="Schematic map of Ganga stations"></svg>
+ <p class="leg">Tap a station. Green = within limits, yellow = 1 limit crossed, red = 2 or more. Schematic map, not to scale.</p></div>
+ <div class="card" id="det"></div>
+ <div class="card" id="cp"></div>
+ <div class="card" id="hot"></div>
+</section>
+<section id="f" class="sec"><div class="card"><h2>Report a pollution source</h2>
+ <label>Nearest station</label><select id="rs"></select>
+ <label>What are you seeing?</label><div class="chips" id="rc"></div>
+ <label>Details</label><textarea id="rd" rows="3" placeholder="Where exactly, what it looks like, since when…"></textarea>
+ <label>Location (optional)</label><input id="rl" placeholder="Ghat or landmark name">
+ <p class="note">Photo upload is coming soon (it will use Supabase Storage).</p>
+ <button class="btn s" id="gps" type="button">Use my GPS location</button>
+ <button class="btn" id="sub" type="button">Submit report</button><p class="note" id="msg"></p></div></section>
+<section id="l" class="sec"><div id="list"></div><p class="note" id="mode"></p></section>
+<section id="o" class="sec"><div class="card"><h2>Source investigation</h2><p class="leg">Compares readings upstream and downstream of each drain or factory outlet. A big drop flags the outlet for inspection.</p><label>Flag when BOD rises by at least <b id="tv">2</b> mg/L</label><input type="range" id="tr" min="1" max="6" step="0.5" value="2"></div><div id="so"></div><div id="cps"></div></section>
+<section id="a" class="sec"><div id="al"></div></section>
+<section id="i" class="sec">
+<div class="card"><h2>IoT-Based Ganga Pollution Detection, Source Identification and Alert System</h2><p class="leg">Detect pollution, map affected areas, find possible sources and alert the authorities.</p></div>
+<div class="card"><h2>How it works</h2><ol style="margin:0;padding-left:20px"><li>Water sensors measure pH, turbidity, temperature, conductivity and dissolved oxygen.</li><li>An ESP32 or Arduino checks the readings and sends them online.</li><li>The database stores readings, locations and alerts.</li><li>The dashboard compares upstream and downstream points and ranks hotspots.</li><li>Alerts go to the monitoring team, who inspect, sample and record action.</li></ol></div>
+<div class="card"><h2>Project status</h2><p style="margin:0">Design phase. First prototype: two monitoring points, one before and one after a suspected outlet, with an alert when the difference crosses a threshold. This website uses demo data until sensors or a real data source are connected.</p></div>
+<div class="card"><h2>Limitations</h2><ul style="margin:0;padding-left:20px"><li>Sensors need cleaning and calibration.</li><li>Basic sensors cannot detect every chemical.</li><li>Readings alone cannot prove which factory is responsible.</li><li>Poor network, floods and weather can affect data.</li><li>False alerts are possible, so lab verification is needed.</li></ul></div></section>
+
+</main>
+<div id="toast" role="status"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+// ===== Supabase config (publishable key is safe in the browser; never put a secret/service key here) =====
+var SB_URL="https://jhzkbrznuvvswkmujphw.supabase.co",SB_KEY="sb_publishable_8ha6OAKuMX8ThYkL5xM9MQ_QG6i2-y5";
+var sb=null;
+var CATS=["Drain / sewage","Industrial discharge","Waste dumping","Dead animals","Other"];
+var $=function(i){return document.getElementById(i)},NS="http://www.w3.org/2000/svg";
+var S=[],OUT=[],R=[],V=[],C=[],RT=[],SER=[],CP=[],sel=0,selId="patna",cat=0,thr=2,cid="",ST={};
+var FL=["New","Inspecting","Verified","Action taken"];
+try{ST=JSON.parse(localStorage.getItem("gda")||"{}")}catch(e){}
+try{cid=localStorage.getItem("gdc");if(!cid){cid="u"+Math.random().toString(36).slice(2,9);localStorage.setItem("gdc",cid)}}catch(e){cid="u"+Math.random().toString(36).slice(2,9)}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function num(v){return v==null?null:Number(v)}
+function show(v){return v==null?"–":v}
+function toast(m){var t=$("toast");t.textContent=m;t.style.display="block";clearTimeout(toast.h);toast.h=setTimeout(function(){t.style.display="none"},3500)}
+function cur(){return S[sel]}
+// ----- limits & status -----
+function viol(s){var a=[];if(s.DO!=null&&s.DO<5)a.push("DO below 5 mg/L");if(s.BOD!=null&&s.BOD>3)a.push("BOD above 3 mg/L");if(s.pH!=null&&(s.pH<6.5||s.pH>8.5))a.push("pH outside 6.5–8.5");return a}
+function stat(s){if(s.pH==null&&s.DO==null&&s.BOD==null)return"nodata";var v=viol(s).length;return v==0?"good":v==1?"moderate":"poor"}
+var COL={good:"#2e9e5b",moderate:"#d99a00",poor:"#d64545",nodata:"#64768a"};
+function el(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
+// ----- load data from Supabase -----
+function place(){ // real lat/lng -> schematic map position
+ var la=S.map(function(s){return s.lat}),lo=S.map(function(s){return s.lng}),a=Math.min.apply(0,la),b=Math.max.apply(0,la),c=Math.min.apply(0,lo),d=Math.max.apply(0,lo);
+ S.forEach(function(s){s.x=40+(s.lng-c)/((d-c)||1)*285;s.y=40+(b-s.lat)/((b-a)||1)*135})}
+async function loadCore(){
+ var q=await Promise.all([sb.from("stations").select("*").order("sort_order"),sb.from("station_latest").select("*"),sb.from("outlets").select("*"),sb.from("outlet_readings").select("*").order("recorded_at",{ascending:false}).limit(200)]);
+ q.forEach(function(r){if(r.error)throw r.error});
+ var L={};q[1].data.forEach(function(r){L[r.station_id]=r});
+ S=q[0].data.map(function(s){var r=L[s.id]||{};return{id:s.id,n:s.name,state:s.state,lat:s.lat,lng:s.lng,demo:s.is_demo&&(r.is_demo!==false),pH:num(r.ph),DO:num(r.do_mgl),BOD:num(r.bod_mgl),T:num(r.turbidity_ntu),at:r.recorded_at}});
+ place();
+ var seen={};OUT=[];q[3].data.forEach(function(r){if(seen[r.outlet_id])return;seen[r.outlet_id]=1;var o=q[2].data.filter(function(x){return x.id==r.outlet_id})[0];if(!o)return;
+  OUT.push({id:o.id,n:o.name,t:o.outlet_type,demo:o.is_demo,up:{pH:num(r.up_ph),DO:num(r.up_do),BOD:num(r.up_bod),T:num(r.up_turb)},dn:{pH:num(r.dn_ph),DO:num(r.dn_do),BOD:num(r.dn_bod),T:num(r.dn_turb)}})});
+ var k=S.findIndex(function(s){return s.id==selId});sel=k<0?0:k;selId=S[sel]?S[sel].id:selId}
+async function loadSeries(){if(!S.length)return;var r=await sb.from("readings").select("do_mgl,recorded_at").eq("station_id",selId).order("recorded_at",{ascending:false}).limit(24);if(r.error)throw r.error;SER=r.data.reverse().map(function(x){return num(x.do_mgl)}).filter(function(v){return v!=null})}
+async function loadCommunity(){
+ var q=await Promise.all([sb.from("reports").select("*").order("created_at",{ascending:false}).limit(200),sb.from("report_votes").select("report_id,client_id"),sb.from("report_comments").select("id,report_id,body,created_at,client_id").order("created_at"),sb.from("station_ratings").select("station_id,rating,client_id")]);
+ q.forEach(function(r){if(r.error)throw r.error});R=q[0].data;V=q[1].data;C=q[2].data;RT=q[3].data}
+function sname(id){var s=S.filter(function(x){return x.id==id})[0];return s?s.n:"Unknown"}
+// ----- map + station details -----
+function map(){var m=$("map");m.innerHTML="";if(!S.length)return;var d="M-10 "+(S[0].y-10)+" L"+S[0].x+" "+S[0].y;
+ for(var i=0;i<S.length-1;i++){var a=S[i],b=S[i+1];d+=" Q"+a.x+" "+a.y+" "+(a.x+b.x)/2+" "+(a.y+b.y)/2}
+ d+=" L"+S[S.length-1].x+" "+S[S.length-1].y+" L370 "+(S[S.length-1].y+8);
+ el("path",{d:d,fill:"none",stroke:"var(--water)","stroke-width":10,"stroke-linecap":"round","stroke-linejoin":"round"},m);
+ S.forEach(function(s,i){var g=el("g",{"class":"st",tabindex:0},m);
+  el("circle",{cx:s.x,cy:s.y,r:i==sel?13:9,fill:"#fff",stroke:i==sel?"#0b3c5d":"none","stroke-width":2},g);
+  el("circle",{cx:s.x,cy:s.y,r:7,fill:COL[stat(s)]},g);
+  var t=el("text",{x:s.x,y:s.y+22,"text-anchor":"middle","font-size":10,"font-weight":700,fill:"var(--ink)"},g);t.textContent=s.n;
+  g.onclick=async function(){sel=i;selId=s.id;map();det();cpc();try{await loadSeries();det()}catch(e){}}})}
+function avg(id){var a=RT.filter(function(x){return x.station_id==id});return a.length?{m:a.reduce(function(p,x){return p+x.rating},0)/a.length,n:a.length}:null}
+function det(){var s=cur();if(!s){$("det").innerHTML="No stations found.";return}
+ var v=viol(s),st=stat(s),h='<div class="r"><h2>'+esc(s.n)+' station</h2><span class="pill '+(st=="nodata"?"rep":st)+'">'+(st=="nodata"?"no data":st)+'</span></div><div class="grid">';
+ [["pH",s.pH,"",s.pH!=null&&(s.pH<6.5||s.pH>8.5)],["Dissolved oxygen",s.DO,"mg/L",s.DO!=null&&s.DO<5],["BOD",s.BOD,"mg/L",s.BOD!=null&&s.BOD>3],["Turbidity",s.T,"NTU",false]].forEach(function(p){
+  h+='<div class="p '+(p[3]?"bad":"ok")+'"><small>'+p[0]+'</small><b>'+show(p[1])+'</b> <small style="display:inline">'+p[2]+'</small></div>'});
+ h+='</div>'+(s.at?'<p class="note">Last reading: '+esc(new Date(s.at).toLocaleString())+'</p>':'')+'<h2 style="margin-top:12px">Dissolved oxygen, last 24 readings</h2><svg id="ch" viewBox="0 0 320 110"></svg>';
+ h+=(v.length?v.map(function(x){return'<div class="al">'+esc(x)+'</div>'}).join(""):(st=="nodata"?'<div class="al" style="border-color:var(--mut)">No readings yet</div>':'<div class="al" style="border-color:var(--good)">All parameters within limits</div>'));
+ var my=RT.filter(function(x){return x.station_id==s.id&&x.client_id==cid})[0],av=avg(s.id);
+ h+='<h2 style="margin-top:12px">How does the ghat look today?</h2><div class="chips" id="rt">'+[1,2,3,4,5].map(function(i){return'<button type="button" class="chip'+(my&&my.rating==i?" on":"")+'" data-s="'+i+'">'+i+" ★</button>"}).join("")+'</div><p class="note">'+(av?"Citizen rating: "+av.m.toFixed(1)+" / 5 from "+av.n+(av.n==1?" person":" people"):"No citizen ratings yet. Be the first.")+(my?" You rated "+my.rating+" (one rating per person per station).":"")+"</p>"+(my?'<button type="button" class="del" id="rmr" style="padding-left:0">Remove my rating</button>':"");
+ h+='<button class="btn s" id="go">Report pollution near '+esc(s.n)+'</button>';$("det").innerHTML=h;
+ document.querySelectorAll("#rt [data-s]").forEach(function(b){b.onclick=function(){rate(s.id,+b.dataset.s)}});
+ if($("rmr"))$("rmr").onclick=function(){delRating(s.id)};
+ var c=$("ch"),a=SER,y=function(v){v=Math.max(3,Math.min(9,v));return 100-(v-3)*(90/6)};
+ el("line",{x1:8,x2:312,y1:y(5),y2:y(5),stroke:"#d64545","stroke-dasharray":"4 3"},c);
+ var t=el("text",{x:312,y:y(5)-4,"text-anchor":"end","font-size":9,fill:"#d64545"},c);t.textContent="Safe minimum 5 mg/L";
+ if(a.length>1){var p=a.map(function(v,i){return(8+i*(304/(a.length-1))).toFixed(1)+","+y(v).toFixed(1)}).join(" ");el("polyline",{points:p,fill:"none",stroke:"#1d8a99","stroke-width":2.5,"stroke-linejoin":"round"},c)}
+ else{var n=el("text",{x:160,y:60,"text-anchor":"middle","font-size":11,fill:"var(--mut)"},c);n.textContent="Not enough readings yet"}
+ $("go").onclick=function(){$("rs").value=s.id;tab("f")}}
+function tab(t){document.querySelectorAll(".sec").forEach(function(e){e.classList.toggle("on",e.id==t)});document.querySelectorAll("nav button").forEach(function(b){b.classList.toggle("on",b.dataset.t==t)});window.scrollTo(0,0)}
+document.querySelectorAll("nav button").forEach(function(b){b.onclick=function(){tab(b.dataset.t)}});
+function chips(){$("rc").innerHTML="";CATS.forEach(function(c,i){var b=document.createElement("button");b.type="button";b.className="chip"+(i==cat?" on":"");b.textContent=c;b.onclick=function(){cat=i;chips()};$("rc").appendChild(b)})}chips();
+$("gps").onclick=function(){if(!navigator.geolocation){$("msg").textContent="GPS is not available here. Please type the location.";return}
+ navigator.geolocation.getCurrentPosition(function(p){$("rl").value=p.coords.latitude.toFixed(4)+", "+p.coords.longitude.toFixed(4)},function(){$("msg").textContent="Could not get GPS. Please type the location."})};
+// ----- writes (anon users can only INSERT; database rules enforce the limits) -----
+async function ins(table,row){var r=await sb.from(table).insert(row);if(r.error&&r.error.code!="23505"){toast("Could not save: "+r.error.message);return false}
+ if(r.error){toast("You have already done this.");return false}return true}
+async function rpc(fn,args,okMsg){var r=await sb.rpc(fn,args);if(r.error){toast("Could not delete: "+r.error.message);return false}if(okMsg)toast(okMsg);return true}
+async function vote(rid){if(V.some(function(x){return x.report_id==rid&&x.client_id==cid})){if(await rpc("remove_my_vote",{p_report_id:String(rid),p_client_id:cid})){await loadCommunity();render()}return}if(await ins("report_votes",{report_id:rid,client_id:cid})){await loadCommunity();render()}}
+async function delReport(rid){if(!confirm("Delete this report? Its comments and votes will be removed too."))return;if(await rpc("delete_my_report",{p_id:String(rid),p_client_id:cid},"Report deleted.")){await loadCommunity();render()}}
+async function delCmt(id){if(!confirm("Delete this comment?"))return;if(await rpc("delete_my_comment",{p_id:String(id),p_client_id:cid},"Comment deleted.")){await loadCommunity();render()}}
+async function delRating(sid){if(await rpc("remove_my_rating",{p_station_id:String(sid),p_client_id:cid},"Rating removed.")){await loadCommunity();det()}}
+async function cmt(rid,text){text=(text||"").trim().slice(0,200);if(!text)return;if(await ins("report_comments",{report_id:rid,body:text,client_id:cid})){await loadCommunity();render()}}
+async function rate(id,v){if(await ins("station_ratings",{station_id:id,rating:v,client_id:cid})){await loadCommunity();det()}}
+$("sub").onclick=async function(){var b=this;b.disabled=true;
+ var row={category:CATS[cat],station_id:$("rs").value,description:$("rd").value.trim().slice(0,500),location_text:$("rl").value.trim().slice(0,100),client_id:cid};
+ if(await ins("reports",row)){$("rd").value="";$("rl").value="";$("msg").textContent="Report submitted. Thank you!";await loadCommunity();render();tab("l")}
+ b.disabled=false};
+function render(){$("cnt").textContent=R.length?"("+R.length+")":"";
+ var ae=document.activeElement;if(ae&&ae.tagName=="INPUT"&&$("list").contains(ae))return;
+ $("list").innerHTML=R.length?R.map(function(r){var n=V.filter(function(a){return a.report_id==r.id}).length,me=V.some(function(a){return a.report_id==r.id&&a.client_id==cid}),cs=C.filter(function(a){return a.report_id==r.id});
+  return'<div class="card"><div class="r"><b>'+esc(r.category)+(r.client_id==cid?'<span class="mine">YOURS</span>':'')+'</b><span style="display:flex;align-items:center;gap:6px">'+(r.client_id==cid?'<button type="button" class="del" data-dr="'+esc(r.id)+'">Delete</button>':'')+'<span class="pill rep">'+esc(r.status||"reported")+'</span></span></div><div class="note" style="margin:2px 0 6px">Near '+esc(sname(r.station_id))+(r.location_text?" · "+esc(r.location_text):"")+" · "+esc(new Date(r.created_at).toLocaleDateString())+"</div>"+(r.description?"<div>"+esc(r.description)+"</div>":"")+'<button class="btn s" data-r="'+esc(r.id)+'">'+(me?"✓ ":"")+"I see this too ("+n+")</button>"+cs.map(function(c){return'<div class="cm"><span>'+esc(c.body)+(c.client_id==cid?'<span class="mine">YOU</span>':'')+'</span>'+(c.client_id==cid?'<button type="button" class="del" data-dc="'+esc(c.id)+'">Delete</button>':'')+'</div>'}).join("")+'<div class="cmf"><input maxlength="200" placeholder="Add a comment" data-i="'+esc(r.id)+'"><button type="button" class="chip" data-c="'+esc(r.id)+'">Post</button></div></div>'}).join(""):'<div class="card">No reports yet. Be the first to report.</div>';
+ document.querySelectorAll("#list [data-r]").forEach(function(b){b.onclick=function(){vote(b.dataset.r)}});
+ document.querySelectorAll("#list [data-dr]").forEach(function(b){b.onclick=function(){delReport(b.dataset.dr)}});
+ document.querySelectorAll("#list [data-dc]").forEach(function(b){b.onclick=function(){delCmt(b.dataset.dc)}});
+ document.querySelectorAll("#list [data-c]").forEach(function(b){b.onclick=function(){var i=$("list").querySelector('input[data-i="'+b.dataset.c+'"]');cmt(b.dataset.c,i.value)}});
+ document.querySelectorAll("#list input[data-i]").forEach(function(inp){inp.onkeydown=function(e){if(e.key==="Enter"&&!e.isComposing){e.preventDefault();cmt(inp.dataset.i,inp.value)}}})}
+// ----- real CPCB annual data (not live) -----
+async function loadCpcb(){try{var r=await sb.from("cpcb_annual").select("*").order("year",{ascending:false}).order("site_name");if(r.error)throw r.error;
+ CP=r.data.map(function(x){var o={};for(var k in x)o[k]=/_(min|max)$/.test(k)?num(x[k]):x[k];return o})}catch(e){CP=[]}}
+function fmt(v){return v==null?"–":v.toLocaleString("en-IN")}
+var CPP=[["Dissolved oxygen (mg/L)","do","above 5",function(r){return r.do_min!=null&&r.do_min<5}],["BOD (mg/L)","bod","below 3",function(r){return r.bod_max!=null&&r.bod_max>3}],["pH","ph","6.5–8.5",function(r){return(r.ph_min!=null&&r.ph_min<6.5)||(r.ph_max!=null&&r.ph_max>8.5)}],["Fecal coliform (MPN/100 mL)","fecal_coliform","below 2500",function(r){return r.fecal_coliform_max!=null&&r.fecal_coliform_max>2500}],["Temperature (°C)","temp","",function(){return false}]];
+function cpc(){var s=cur(),box=$("cp");if(!s){box.innerHTML="";return}
+ var a=CP.filter(function(x){return x.station_id==s.id});
+ if(!a.length){box.innerHTML='<h2>CPCB annual data (real, not live)</h2><p class="note">No CPCB data loaded for '+esc(s.n)+' yet.</p>';return}
+ var yr=Math.max.apply(0,a.map(function(x){return x.year}));a=a.filter(function(x){return x.year==yr});
+ box.innerHTML='<h2>CPCB '+yr+' annual data (real, not live)</h2><p class="note" style="margin:0 0 4px">Real values from the CPCB report. The cards above still use demo readings.</p>'+a.map(function(r){
+  var rows=CPP.map(function(p){var bad=p[3](r);return'<tr><td>'+p[0]+'</td><td'+(bad?' style="color:var(--poor);font-weight:700"':'')+'>'+fmt(r[p[1]+"_min"])+' – '+fmt(r[p[1]+"_max"])+'</td><td>'+p[2]+'</td></tr>'}).join("");
+  return'<div style="margin-top:10px"><div class="r"><b>'+esc(r.site_name)+'</b><span class="pill rep">'+esc(r.side)+'</span></div><table class="tb"><tr><td>Parameter</td><td>Lowest – highest in year</td><td>CPCB limit</td></tr>'+rows+'</table></div>'}).join("")+
+  '<p class="note">Source: <a href="'+esc(a[0].source_url||"#")+'" target="_blank" rel="noopener">'+esc(a[0].source)+'</a>. Red = a limit was crossed at some time in the year. Blank = below detection limit or not reported.</p>'}
+function cpsrc(){var by={};CP.forEach(function(r){(by[r.station_id]=by[r.station_id]||[]).push(r)});var h="",yr="";
+ S.forEach(function(s){var a=by[s.id]||[],u=a.filter(function(x){return x.side=="u/s"})[0],d=a.filter(function(x){return x.side=="d/s"})[0];if(!u||!d||u.year!=d.year)return;yr=u.year;
+  var rows=[["BOD highest (mg/L)","bod_max"],["Dissolved oxygen lowest (mg/L)","do_min"],["Fecal coliform highest (MPN/100 mL)","fecal_coliform_max"]].map(function(r){var a1=u[r[1]],b=d[r[1]],c=(a1==null||b==null)?null:b-a1;return"<tr><td>"+r[0]+"</td><td>"+fmt(a1)+"</td><td>"+fmt(b)+"</td><td><b>"+(c==null?"–":(c>0?"+":"")+fmt(Math.round(c*100)/100))+"</b></td></tr>"}).join("");
+  h+='<div class="card"><b>'+esc(s.n)+' ('+u.year+')</b><div class="note" style="margin:2px 0 0">'+esc(u.site_name)+' → '+esc(d.site_name)+'</div><table class="tb"><tr><td></td><td>Upstream</td><td>Downstream</td><td>Change</td></tr>'+rows+'</table></div>'});
+ $("cps").innerHTML=h?'<div class="card"><h2>Real CPCB data: upstream vs downstream ('+yr+')</h2><p class="leg">Yearly values from CPCB monitoring sites, not live readings. Different sites are sampled at different times, so a difference here suggests where to look. It does not prove who is responsible.</p></div>'+h:""}
+// ----- hotspots, source investigation, alerts -----
+function sc(s){return Math.max(0,(s.BOD||0)-3)+Math.max(0,s.DO==null?0:5-s.DO)*1.5+(s.T>50?1:0)}
+function flag(o){return o.dn.BOD!=null&&o.up.BOD!=null&&(o.dn.BOD-o.up.BOD>=thr||(o.up.DO!=null&&o.dn.DO!=null&&o.up.DO-o.dn.DO>=1.5))}
+function hot(){var a=S.slice().sort(function(x,y){return sc(y)-sc(x)});
+ $("hot").innerHTML="<h2>Pollution hotspots (ranked)</h2>"+a.map(function(s,i){var w=Math.min(100,sc(s)*14+4),st=stat(s);return'<div style="margin-top:8px"><div class="r"><span>'+(i+1)+". "+esc(s.n)+'</span><span class="pill '+(st=="nodata"?"rep":st)+'">'+(st=="nodata"?"no data":st)+'</span></div><div class="bar"><div style="width:'+w+"%;background:"+COL[st]+'"></div></div></div>'}).join("")}
+function src(){var a=OUT.slice().sort(function(x,y){return((y.dn.BOD||0)-(y.up.BOD||0))-((x.dn.BOD||0)-(x.up.BOD||0))});
+ $("so").innerHTML=a.map(function(o){var f=flag(o),rows=[["BOD (mg/L)","BOD"],["Dissolved oxygen (mg/L)","DO"],["pH","pH"],["Turbidity (NTU)","T"]].map(function(r){var u=o.up[r[1]],d=o.dn[r[1]],c=(u==null||d==null)?null:d-u;return"<tr><td>"+r[0]+"</td><td>"+show(u)+"</td><td>"+show(d)+"</td><td><b>"+(c==null?"–":(c>0?"+":"")+c.toFixed(1))+"</b></td></tr>"}).join("");
+  return'<div class="card"><div class="r"><div><b>'+esc(o.n)+'</b><div class="note" style="margin:0">'+esc(o.t)+'</div></div><span class="pill '+(f?"poor":"good")+'">'+(f?"Inspect":"Normal")+'</span></div><table class="tb"><tr><td></td><td>Upstream</td><td>Downstream</td><td>Change</td></tr>'+rows+"</table>"+(f?'<div class="al">Water quality drops sharply after this outlet. Possible source: send for inspection and sampling.</div>':"")+"</div>"}).join("")+'<p class="note">A change between two points suggests a possible source. It does not prove who is responsible. Other drains, river flow and weather also matter, so samples and inspection are needed.</p>'}
+function alerts(){var L=[];S.forEach(function(s){viol(s).forEach(function(v){L.push({id:"s-"+s.id+"-"+v.slice(0,3),sev:stat(s)=="poor"?"high":"medium",msg:s.n+" station: "+v})})});
+ OUT.forEach(function(o){if(flag(o))L.push({id:"o-"+o.id,sev:"high",msg:o.n+": water quality drops sharply downstream. Possible source, inspect."})});return L}
+function alr(){var L=alerts().sort(function(a,b){return(a.sev=="high"?0:1)-(b.sev=="high"?0:1)});$("acnt").textContent="("+L.length+")";
+ $("al").innerHTML=L.map(function(a){var s=ST[a.id]||0;return'<div class="card" style="border-left:4px solid '+(a.sev=="high"?"var(--poor)":"var(--mod)")+'"><div class="r"><b>'+(a.sev=="high"?"High":"Medium")+' priority</b><span class="pill '+(s==3?"good":s?"moderate":"rep")+'">'+FL[s]+'</span></div><div style="margin:4px 0">'+esc(a.msg)+"</div>"+(s<3?'<button class="btn s" data-id="'+esc(a.id)+'">Mark as: '+FL[s+1]+"</button>":"")+"</div>"}).join("")+'<p class="note">Alerts are calculated live from the latest readings. SMS and email sending is simulated. Status changes are saved on this device only until admin login is added.</p>';
+ document.querySelectorAll("#al [data-id]").forEach(function(b){b.onclick=function(){var id=b.dataset.id;ST[id]=(ST[id]||0)+1;try{localStorage.setItem("gda",JSON.stringify(ST))}catch(e){}alr()}})}
+$("tr").oninput=function(){thr=+this.value;$("tv").textContent=thr;src();alr()};
+function all(){map();det();cpc();render();hot();src();cpsrc();alr();
+ var d=S.some(function(s){return s.demo})||OUT.some(function(o){return o.demo});$("demo").style.display=d?"block":"none"}
+// ----- start + realtime -----
+function status(t){$("mode").textContent=t}
+async function refreshReadings(){try{await loadCore();await loadSeries();all()}catch(e){status("Could not refresh readings: "+(e.message||e))}}
+var live=false;
+function refreshAll(){refreshReadings();refreshCommunity();refreshCpcb()}
+async function refreshCpcb(){try{await loadCpcb();cpc();cpsrc()}catch(e){}}
+async function refreshCommunity(){try{await loadCommunity();render();det()}catch(e){status("Could not refresh reports: "+(e.message||e))}}
+function later(fn){clearTimeout(later[fn.name]);later[fn.name]=setTimeout(fn,400)}
+async function start(){
+ if(!window.supabase){status("Could not load the Supabase library. Check your internet.");$("det").textContent="Could not connect to the database.";return}
+ sb=window.supabase.createClient(SB_URL,SB_KEY,{global:{fetch:function(u,o){o=o||{};if(typeof Headers!="undefined"&&o.headers instanceof Headers){var h={};o.headers.forEach(function(v,k){h[k]=v});o.headers=h}return fetch(u,o)}}});
+ try{await loadCore();await loadSeries();await loadCommunity();await loadCpcb()}catch(e){$("det").textContent="Could not load data from the database: "+(e.message||e);status("Database error. Please refresh.");return}
+ $("rs").innerHTML=S.map(function(s){return'<option value="'+esc(s.id)+'">'+esc(s.n)+'</option>'}).join("");$("rs").value=selId;all();
+ status("Connected to the database.");
+ var ch=sb.channel("gd-live");
+ ["readings","outlet_readings"].forEach(function(t){ch.on("postgres_changes",{event:"*",schema:"public",table:t},function(){later(refreshReadings)})});
+ ch.on("postgres_changes",{event:"*",schema:"public",table:"cpcb_annual"},function(){later(refreshCpcb)});
+ ["reports","report_votes","report_comments","station_ratings"].forEach(function(t){ch.on("postgres_changes",{event:"*",schema:"public",table:t},function(){later(refreshCommunity)})});
+ ch.subscribe(function(s){live=(s=="SUBSCRIBED");if(live)status("Live: new readings, reports, votes and comments appear automatically.");else if(s=="CHANNEL_ERROR"||s=="TIMED_OUT"||s=="CLOSED")status("Live connection lost. Checking for new data every 15 seconds.")});
+ setInterval(function(){if(!live&&!document.hidden)refreshAll()},15000);
+ document.addEventListener("visibilitychange",function(){if(!document.hidden)refreshAll()});
+ window.addEventListener("online",refreshAll)}
+start();
+</script></body></html>
