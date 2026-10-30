@@ -33,13 +33,13 @@ select,textarea,input{width:100%;padding:10px;border:1px solid var(--line);borde
 .btn.s{background:var(--bg);color:var(--teal);border:1px solid var(--line);margin-top:6px;padding:8px;font-size:13px}
 .note{font-size:12px;color:var(--mut);margin-top:8px}.r{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
 .leg{font-size:12px;color:var(--mut)}.tb{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}.tb td{padding:5px 2px;border-top:1px solid var(--line)}.tb tr:first-child td{color:var(--mut);border-top:0}.bar{height:8px;border-radius:6px;background:var(--bg);margin-top:4px}.bar div{height:8px;border-radius:6px}input[type=range]{padding:0}.ph{max-width:100%;border-radius:10px;margin-top:8px}.cm{font-size:13px;background:var(--bg);border-radius:8px;padding:6px 8px;margin-top:6px}.cmf{display:flex;gap:6px;margin-top:8px}.cmf input{flex:1}.cmf .chip{background:var(--teal);color:#fff;border-color:var(--teal)}.del{background:none;border:0;color:var(--poor);font-size:12px;font-weight:600;cursor:pointer;padding:2px 6px;border-radius:6px}.del:hover{background:var(--bg)}.cm{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}.mine{font-size:11px;color:var(--teal);font-weight:700;margin-left:6px}
-#toast{display:none;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));max-width:560px;margin:0 auto;background:var(--navy);color:#fff;padding:10px 14px;border-radius:10px;font-size:13px;z-index:20}body.gate nav,body.gate .sec,body.gate .demo{display:none!important}body.gate #lb{display:block!important}#map{position:relative;z-index:0}.leaflet-tooltip{font:700 11px system-ui,sans-serif}</style></head><body class="gate">
+#toast{display:none;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));max-width:560px;margin:0 auto;background:var(--navy);color:#fff;padding:10px 14px;border-radius:10px;font-size:13px;z-index:20}body.gate nav,body.gate .sec,body.gate .demo{display:none!important}body.gate #lb{display:block!important}#map{position:relative;z-index:0;height:100%}#mw{position:relative;z-index:0;height:300px;border-radius:10px;overflow:hidden}#mw.full{position:fixed;inset:0;height:auto;z-index:1000;border-radius:0}#mx,#mc{position:absolute;z-index:1001;border:0;border-radius:99px;padding:8px 14px;background:var(--navy);color:#fff;font:700 13px inherit;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.3)}#mx{right:8px;bottom:8px}#mc{display:none;right:10px;top:calc(10px + env(safe-area-inset-top,0px))}#mw.full #mx{display:none}#mw.full #mc{display:block}#mi{display:none;position:absolute;z-index:1001;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));max-width:420px;margin:0 auto;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:10px 12px;box-shadow:0 2px 10px rgba(0,0,0,.3)}#mw.full #mi.on{display:block}#mw:not(.full) #map{cursor:pointer}.leaflet-tooltip{font:700 11px system-ui,sans-serif}</style></head><body class="gate">
 <header><h1>GangaDrishti</h1><p class="tag">See the pollution. Trace the source. Drive action.</p></header>
 <nav><button class="on" data-t="d">Dashboard</button><button data-t="f">Report</button><button data-t="l">Cleanup Board <span id="cnt"></span></button><button data-t="lb">Login</button><button data-t="adm" style="display:none">Admin</button></nav>
 <main>
 <section id="d" class="sec on">
- <div class="card"><h2>Monitoring stations</h2><div id="map" style="height:300px;border-radius:10px;overflow:hidden" role="region" aria-label="Map of Ganga monitoring stations"></div>
- <p class="leg">Tap a pin. Green = within limits, yellow = 1 limit crossed, red = 2 or more, grey = no readings yet. Pins update live.</p></div>
+ <div class="card"><h2>Monitoring stations</h2><div id="mw"><div id="map" role="region" aria-label="Map of Ganga monitoring stations"></div><button type="button" id="mx" aria-label="Open full screen map">⤢ Open full map</button><button type="button" id="mc" aria-label="Close map">✕ Close</button><div id="mi"></div></div>
+ <p class="leg">Tap the map to open it full screen, then drag, pinch or scroll to move and zoom. Tap a pin for details. Green = within limits, yellow = 1 limit crossed, red = 2 or more, grey = no readings yet. Pins update live.</p></div>
  <div class="card" id="det">Loading station data…</div>
  <div class="card" id="cp"></div>
  <div class="card" id="hot"></div>
@@ -102,13 +102,22 @@ function sname(id){var s=S.filter(function(x){return x.id==id})[0];return s?s.n:
 // ----- map + station details -----
 var LM=null,LL=null;
 function fitMap(){if(!LM||!S.length)return;LM.invalidateSize();var b=S.map(function(s){return[s.lat,s.lng]});if(b.length==1)LM.setView(b[0],12);else LM.fitBounds(b,{padding:[35,35],maxZoom:12})}
+var FULL=false;
+function setFull(on){FULL=on;var w=$("mw");w.classList.toggle("full",on);document.body.style.overflow=on?"hidden":"";
+ if(LM){["dragging","touchZoom","doubleClickZoom","boxZoom","keyboard","scrollWheelZoom"].forEach(function(h){if(LM[h])LM[h][on?"enable":"disable"]()})}
+ info();setTimeout(function(){if(!LM)return;LM.invalidateSize();if(!on)fitMap()},60)}
+function info(){var b=$("mi"),s=cur();if(!b)return;if(!FULL||!s){b.className="";return}var st=stat(s);
+ b.className="on";b.innerHTML='<div class="r"><b>'+esc(s.n)+'</b><span class="pill '+(st=="nodata"?"rep":st)+'">'+(st=="nodata"?"no data":st)+'</span></div><button type="button" class="btn s" id="mv">View station details</button>';
+ $("mv").onclick=function(){setFull(false);setTimeout(function(){var d=$("det");if(d)d.scrollIntoView({behavior:"smooth"})},100)}}
+$("mx").onclick=function(){setFull(true)};$("mc").onclick=function(){setFull(false)};
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&FULL)setFull(false)});
 function map(){var m=$("map");if(!S.length)return;
  if(!window.L){m.innerHTML='<p class="note" style="padding:12px">Map could not load. Check your internet.</p>';return}
- if(!LM){m.innerHTML="";LM=L.map(m,{scrollWheelZoom:false,preferCanvas:true});L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:"&copy; OpenStreetMap contributors"}).addTo(LM);LL=L.layerGroup().addTo(LM);LM.setView([S[0].lat,S[0].lng],10);setTimeout(fitMap,60)}
+ if(!LM){m.innerHTML="";LM=L.map(m,{scrollWheelZoom:false,preferCanvas:true,dragging:false,touchZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,tap:false});L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:"&copy; OpenStreetMap contributors"}).addTo(LM);LL=L.layerGroup().addTo(LM);LM.on("click",function(){if(!FULL)setFull(true)});LM.setView([S[0].lat,S[0].lng],10);setTimeout(fitMap,60)}
  LL.clearLayers();
- S.forEach(function(s,i){var k=L.circleMarker([s.lat,s.lng],{radius:i==sel?13:9,color:i==sel?"#0b3c5d":"#fff",weight:i==sel?3:2,fillColor:COL[stat(s)],fillOpacity:1}).addTo(LL);
+ S.forEach(function(s,i){var k=L.circleMarker([s.lat,s.lng],{radius:i==sel?13:9,color:i==sel?"#0b3c5d":"#fff",weight:i==sel?3:2,fillColor:COL[stat(s)],fillOpacity:1,bubblingMouseEvents:false}).addTo(LL);
   k.bindTooltip(s.n,{permanent:true,direction:"top",offset:[0,-8]});
-  k.on("click",async function(){sel=i;selId=s.id;map();det();cpc();try{await loadSeries();det()}catch(e){}})})}
+  k.on("click",async function(){sel=i;selId=s.id;map();det();cpc();info();try{await loadSeries();det()}catch(e){}})})}
 function avg(id){var a=RT.filter(function(x){return x.station_id==id});return a.length?{m:a.reduce(function(p,x){return p+x.rating},0)/a.length,n:a.length}:null}
 function det(){var s=cur();if(!s){$("det").innerHTML="No stations found.";return}
  var v=viol(s),st=stat(s),h='<div class="r"><h2>'+esc(s.n)+' station</h2><span class="pill '+(st=="nodata"?"rep":st)+'">'+(st=="nodata"?"no data":st)+'</span></div><div class="grid">';
