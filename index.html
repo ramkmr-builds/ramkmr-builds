@@ -34,7 +34,7 @@ select,textarea,input{width:100%;padding:10px;border:1px solid var(--line);borde
 #toast{display:none;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));max-width:560px;margin:0 auto;background:var(--navy);color:#fff;padding:10px 14px;border-radius:10px;font-size:13px;z-index:20}</style></head><body>
 <header><h1>GangaDrishti</h1><p class="tag">See the pollution. Trace the source. Drive action.</p></header>
 <div class="demo" id="demo" style="display:none">Demo data: station readings are illustrative, not real CPCB values.</div>
-<nav><button class="on" data-t="d">Dashboard</button><button data-t="o">Source</button><button data-t="a">Alerts <span id="acnt"></span></button><button data-t="f">Report</button><button data-t="l">Reports <span id="cnt"></span></button><button data-t="i">About</button></nav>
+<nav><button class="on" data-t="d">Dashboard</button><button data-t="o">Source</button><button data-t="a">Alerts <span id="acnt"></span></button><button data-t="f">Report</button><button data-t="l">Reports <span id="cnt"></span></button><button data-t="lb">Leaders</button><button data-t="cmty">Community</button><button data-t="adm" style="display:none">Admin</button><button data-t="i">About</button></nav>
 <main>
 <section id="d" class="sec on">
  <div class="card"><h2>Monitoring stations</h2><svg id="map" viewBox="0 0 360 200" role="img" aria-label="Schematic map of Ganga stations"></svg>
@@ -48,12 +48,15 @@ select,textarea,input{width:100%;padding:10px;border:1px solid var(--line);borde
  <label>What are you seeing?</label><div class="chips" id="rc"></div>
  <label>Details</label><textarea id="rd" rows="3" placeholder="Where exactly, what it looks like, since when…"></textarea>
  <label>Location (optional)</label><input id="rl" placeholder="Ghat or landmark name">
- <p class="note">Photo upload is coming soon (it will use Supabase Storage).</p>
+ <label>Photo of the waste (optional)</label><input id="rp" type="file" accept="image/*">
  <button class="btn s" id="gps" type="button">Use my GPS location</button>
  <button class="btn" id="sub" type="button">Submit report</button><p class="note" id="msg"></p></div></section>
 <section id="l" class="sec"><div id="list"></div><p class="note" id="mode"></p></section>
 <section id="o" class="sec"><div class="card"><h2>Source investigation</h2><p class="leg">Compares readings upstream and downstream of each drain or factory outlet. A big drop flags the outlet for inspection.</p><label>Flag when BOD rises by at least <b id="tv">2</b> mg/L</label><input type="range" id="tr" min="1" max="6" step="0.5" value="2"></div><div id="so"></div><div id="cps"></div></section>
 <section id="a" class="sec"><div id="al"></div></section>
+<section id="lb" class="sec"></section>
+<section id="cmty" class="sec"></section>
+<section id="adm" class="sec"></section>
 <section id="i" class="sec">
 <div class="card"><h2>IoT-Based Ganga Pollution Detection, Source Identification and Alert System</h2><p class="leg">Detect pollution, map affected areas, find possible sources and alert the authorities.</p></div>
 <div class="card"><h2>How it works</h2><ol style="margin:0;padding-left:20px"><li>Water sensors measure pH, turbidity, temperature, conductivity and dissolved oxygen.</li><li>An ESP32 or Arduino checks the readings and sends them online.</li><li>The database stores readings, locations and alerts.</li><li>The dashboard compares upstream and downstream points and ranks hotspots.</li><li>Alerts go to the monitoring team, who inspect, sample and record action.</li></ol></div>
@@ -71,7 +74,7 @@ var CATS=["Drain / sewage","Industrial discharge","Waste dumping","Dead animals"
 var $=function(i){return document.getElementById(i)},NS="http://www.w3.org/2000/svg";
 var S=[],OUT=[],R=[],V=[],C=[],RT=[],SER=[],CP=[],sel=0,selId="patna",cat=0,thr=2,cid="",ST={};
 var FL=["New","Inspecting","Verified","Action taken"];
-try{ST=JSON.parse(localStorage.getItem("gda")||"{}")}catch(e){}
+
 try{cid=localStorage.getItem("gdc");if(!cid){cid="u"+Math.random().toString(36).slice(2,9);localStorage.setItem("gdc",cid)}}catch(e){cid="u"+Math.random().toString(36).slice(2,9)}
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 function num(v){return v==null?null:Number(v)}
@@ -146,12 +149,13 @@ async function cmt(rid,text){text=(text||"").trim().slice(0,200);if(!text)return
 async function rate(id,v){if(await ins("station_ratings",{station_id:id,rating:v,client_id:cid})){await loadCommunity();det()}}
 $("sub").onclick=async function(){var b=this;b.disabled=true;
  var row={category:CATS[cat],station_id:$("rs").value,description:$("rd").value.trim().slice(0,500),location_text:$("rl").value.trim().slice(0,100),client_id:cid};
- if(await ins("reports",row)){$("rd").value="";$("rl").value="";$("msg").textContent="Report submitted. Thank you!";await loadCommunity();render();tab("l")}
+ try{var pf=$("rp").files[0];if(pf)row.photo_url=await X.up(pf)}catch(e){toast("Photo upload failed: "+(e.message||e));b.disabled=false;return}
+ if(await ins("reports",row)){$("rp").value="";$("rd").value="";$("rl").value="";$("msg").textContent="Report submitted. Thank you!";await loadCommunity();render();tab("l")}
  b.disabled=false};
-function render(){$("cnt").textContent=R.length?"("+R.length+")":"";
+function render(){var RL=R.filter(function(r){return r.status!="rejected"||r.client_id==cid||X.adm()});$("cnt").textContent=RL.length?"("+RL.length+")":"";
  var ae=document.activeElement;if(ae&&ae.tagName=="INPUT"&&$("list").contains(ae))return;
- $("list").innerHTML=R.length?R.map(function(r){var n=V.filter(function(a){return a.report_id==r.id}).length,me=V.some(function(a){return a.report_id==r.id&&a.client_id==cid}),cs=C.filter(function(a){return a.report_id==r.id});
-  return'<div class="card"><div class="r"><b>'+esc(r.category)+(r.client_id==cid?'<span class="mine">YOURS</span>':'')+'</b><span style="display:flex;align-items:center;gap:6px">'+(r.client_id==cid?'<button type="button" class="del" data-dr="'+esc(r.id)+'">Delete</button>':'')+'<span class="pill rep">'+esc(r.status||"reported")+'</span></span></div><div class="note" style="margin:2px 0 6px">Near '+esc(sname(r.station_id))+(r.location_text?" · "+esc(r.location_text):"")+" · "+esc(new Date(r.created_at).toLocaleDateString())+"</div>"+(r.description?"<div>"+esc(r.description)+"</div>":"")+'<button class="btn s" data-r="'+esc(r.id)+'">'+(me?"✓ ":"")+"I see this too ("+n+")</button>"+cs.map(function(c){return'<div class="cm"><span>'+esc(c.body)+(c.client_id==cid?'<span class="mine">YOU</span>':'')+'</span>'+(c.client_id==cid?'<button type="button" class="del" data-dc="'+esc(c.id)+'">Delete</button>':'')+'</div>'}).join("")+'<div class="cmf"><input maxlength="200" placeholder="Add a comment" data-i="'+esc(r.id)+'"><button type="button" class="chip" data-c="'+esc(r.id)+'">Post</button></div></div>'}).join(""):'<div class="card">No reports yet. Be the first to report.</div>';
+ $("list").innerHTML=RL.length?RL.map(function(r){var n=V.filter(function(a){return a.report_id==r.id}).length,me=V.some(function(a){return a.report_id==r.id&&a.client_id==cid}),cs=C.filter(function(a){return a.report_id==r.id});
+  return'<div class="card"><div class="r"><b>'+esc(r.category)+(r.client_id==cid?'<span class="mine">YOURS</span>':'')+'</b><span style="display:flex;align-items:center;gap:6px">'+(r.client_id==cid&&(r.status||"reported")=="reported"?'<button type="button" class="del" data-dr="'+esc(r.id)+'">Delete</button>':'')+X.pill(r)+'</span></div><div class="note" style="margin:2px 0 6px">Near '+esc(sname(r.station_id))+(r.location_text?" · "+esc(r.location_text):"")+" · "+esc(new Date(r.created_at).toLocaleDateString())+"</div>"+(r.description?"<div>"+esc(r.description)+"</div>":"")+X.media(r)+'<button class="btn s" data-r="'+esc(r.id)+'">'+(me?"✓ ":"")+"I see this too ("+n+")</button>"+cs.map(function(c){return'<div class="cm"><span>'+esc(c.body)+(c.client_id==cid?'<span class="mine">YOU</span>':'')+'</span>'+(c.client_id==cid?'<button type="button" class="del" data-dc="'+esc(c.id)+'">Delete</button>':'')+'</div>'}).join("")+'<div class="cmf"><input maxlength="200" placeholder="Add a comment" data-i="'+esc(r.id)+'"><button type="button" class="chip" data-c="'+esc(r.id)+'">Post</button></div></div>'}).join(""):'<div class="card">No reports yet. Be the first to report.</div>';
  document.querySelectorAll("#list [data-r]").forEach(function(b){b.onclick=function(){vote(b.dataset.r)}});
  document.querySelectorAll("#list [data-dr]").forEach(function(b){b.onclick=function(){delReport(b.dataset.dr)}});
  document.querySelectorAll("#list [data-dc]").forEach(function(b){b.onclick=function(){delCmt(b.dataset.dc)}});
@@ -186,8 +190,8 @@ function src(){var a=OUT.slice().sort(function(x,y){return((y.dn.BOD||0)-(y.up.B
 function alerts(){var L=[];S.forEach(function(s){viol(s).forEach(function(v){L.push({id:"s-"+s.id+"-"+v.slice(0,3),sev:stat(s)=="poor"?"high":"medium",msg:s.n+" station: "+v})})});
  OUT.forEach(function(o){if(flag(o))L.push({id:"o-"+o.id,sev:"high",msg:o.n+": water quality drops sharply downstream. Possible source, inspect."})});return L}
 function alr(){var L=alerts().sort(function(a,b){return(a.sev=="high"?0:1)-(b.sev=="high"?0:1)});$("acnt").textContent="("+L.length+")";
- $("al").innerHTML=L.map(function(a){var s=ST[a.id]||0;return'<div class="card" style="border-left:4px solid '+(a.sev=="high"?"var(--poor)":"var(--mod)")+'"><div class="r"><b>'+(a.sev=="high"?"High":"Medium")+' priority</b><span class="pill '+(s==3?"good":s?"moderate":"rep")+'">'+FL[s]+'</span></div><div style="margin:4px 0">'+esc(a.msg)+"</div>"+(s<3?'<button class="btn s" data-id="'+esc(a.id)+'">Mark as: '+FL[s+1]+"</button>":"")+"</div>"}).join("")+'<p class="note">Alerts are calculated live from the latest readings. SMS and email sending is simulated. Status changes are saved on this device only until admin login is added.</p>';
- document.querySelectorAll("#al [data-id]").forEach(function(b){b.onclick=function(){var id=b.dataset.id;ST[id]=(ST[id]||0)+1;try{localStorage.setItem("gda",JSON.stringify(ST))}catch(e){}alr()}})}
+ $("al").innerHTML=L.map(function(a){var s=ST[a.id]||0;return'<div class="card" style="border-left:4px solid '+(a.sev=="high"?"var(--poor)":"var(--mod)")+'"><div class="r"><b>'+(a.sev=="high"?"High":"Medium")+' priority</b><span class="pill '+(s==3?"good":s?"moderate":"rep")+'">'+FL[s]+'</span></div><div style="margin:4px 0">'+esc(a.msg)+"</div>"+(s<3&&X.adm()?'<button class="btn s" data-id="'+esc(a.id)+'">Mark as: '+FL[s+1]+"</button>":"")+"</div>"}).join("")+'<p class="note">Alerts are calculated live from the latest readings. SMS and email sending is simulated. Only admins can change the status, and everyone sees the same status.</p>';
+ document.querySelectorAll("#al [data-id]").forEach(function(b){b.onclick=function(){var id=b.dataset.id;X.setAlert(id,(ST[id]||0)+1)}})}
 $("tr").oninput=function(){thr=+this.value;$("tv").textContent=thr;src();alr()};
 function all(){map();det();cpc();render();hot();src();cpsrc();alr();
  var d=S.some(function(s){return s.demo})||OUT.some(function(o){return o.demo});$("demo").style.display=d?"block":"none"}
@@ -195,23 +199,104 @@ function all(){map();det();cpc();render();hot();src();cpsrc();alr();
 function status(t){$("mode").textContent=t}
 async function refreshReadings(){try{await loadCore();await loadSeries();all()}catch(e){status("Could not refresh readings: "+(e.message||e))}}
 var live=false;
-function refreshAll(){refreshReadings();refreshCommunity();refreshCpcb()}
+function refreshAll(){refreshReadings();refreshCommunity();refreshCpcb();refreshAlerts()}
 async function refreshCpcb(){try{await loadCpcb();cpc();cpsrc()}catch(e){}}
+async function loadAlerts(){var r=await sb.from("alert_status").select("alert_id,status");if(r.error)throw r.error;var o={};r.data.forEach(function(x){o[x.alert_id]=x.status});ST=o}
+async function refreshAlerts(){try{await loadAlerts();alr()}catch(e){}}
 async function refreshCommunity(){try{await loadCommunity();render();det()}catch(e){status("Could not refresh reports: "+(e.message||e))}}
 function later(fn){clearTimeout(later[fn.name]);later[fn.name]=setTimeout(fn,400)}
 async function start(){
  if(!window.supabase){status("Could not load the Supabase library. Check your internet.");$("det").textContent="Could not connect to the database.";return}
  sb=window.supabase.createClient(SB_URL,SB_KEY,{global:{fetch:function(u,o){o=o||{};if(typeof Headers!="undefined"&&o.headers instanceof Headers){var h={};o.headers.forEach(function(v,k){h[k]=v});o.headers=h}return fetch(u,o)}}});
  try{await loadCore();await loadSeries();await loadCommunity();await loadCpcb()}catch(e){$("det").textContent="Could not load data from the database: "+(e.message||e);status("Database error. Please refresh.");return}
+ try{await loadAlerts()}catch(e){}
  $("rs").innerHTML=S.map(function(s){return'<option value="'+esc(s.id)+'">'+esc(s.n)+'</option>'}).join("");$("rs").value=selId;all();
- status("Connected to the database.");
+ status("Connected to the database.");X.init();
  var ch=sb.channel("gd-live");
  ["readings","outlet_readings"].forEach(function(t){ch.on("postgres_changes",{event:"*",schema:"public",table:t},function(){later(refreshReadings)})});
  ch.on("postgres_changes",{event:"*",schema:"public",table:"cpcb_annual"},function(){later(refreshCpcb)});
+ ch.on("postgres_changes",{event:"*",schema:"public",table:"alert_status"},function(){later(refreshAlerts)});
  ["reports","report_votes","report_comments","station_ratings"].forEach(function(t){ch.on("postgres_changes",{event:"*",schema:"public",table:t},function(){later(refreshCommunity)})});
  ch.subscribe(function(s){live=(s=="SUBSCRIBED");if(live)status("Live: new readings, reports, votes and comments appear automatically.");else if(s=="CHANNEL_ERROR"||s=="TIMED_OUT"||s=="CLOSED")status("Live connection lost. Checking for new data every 15 seconds.")});
  setInterval(function(){if(!live&&!document.hidden)refreshAll()},15000);
  document.addEventListener("visibilitychange",function(){if(!document.hidden)refreshAll()});
  window.addEventListener("online",refreshAll)}
+// ===== SwachhSetu merged in: accounts, cleanup tasks, points, leaderboard, community =====
+var X=(function(){
+var uid=null,P=[],A=[],adm=false,L=[],admf="open",mode="login",bad=0,tm,
+BG=[[10,"First Step"],[50,"Ghat Friend"],[120,"Ganga Guardian"],[250,"Namami Hero"]],
+QU=["Small steps at the ghat today become a cleaner Ganga tomorrow.","One bag of waste picked up is one less bag in the river.","Be the reason a ghat looks better than you found it.","Every report is a promise that someone will care."],
+PC={reported:"rep",assigned:"moderate",cleaned:"good",rejected:"poor"},
+me=function(){return P.find(function(p){return p.id==uid})},
+nm=function(id){var p=P.find(function(x){return x.id==id});return p?p.name:"a volunteer"},
+ago=function(s){var m=Math.floor((Date.now()-new Date(s))/6e4);return m<1?"just now":m<60?m+" min ago":m<1440?Math.floor(m/60)+" h ago":Math.floor(m/1440)+" d ago"};
+function shrink(f){return new Promise(function(ok,no){var r=new FileReader();r.onerror=no;r.onload=function(){var im=new Image();im.onerror=function(){no(new Error("Unsupported photo. Use JPG or PNG."))};im.onload=function(){var k=Math.min(1,720/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext("2d").drawImage(im,0,0,c.width,c.height);c.toBlob(function(b){b?ok(b):no(new Error("Bad image"))},"image/jpeg",.7)};im.src=r.result};r.readAsDataURL(f)})}
+async function up(f){var b=await shrink(f),p=(uid||cid)+"/"+Date.now()+".jpg",r=await sb.storage.from("report-photos").upload(p,b,{contentType:"image/jpeg"});if(r.error)throw r.error;return sb.storage.from("report-photos").getPublicUrl(p).data.publicUrl}
+async function pull(){try{var q=await Promise.all([sb.from("profiles").select("id,name,role,pts").order("pts",{ascending:false}).limit(100),sb.from("activity").select("*").order("created_at",{ascending:false}).limit(30)]);q.forEach(function(r){if(r.error)throw r.error});P=q[0].data;A=q[1].data;bad=0;if(adm){var lg2=await sb.from("points_ledger").select("user_id,delta,reason,created_at").order("created_at",{ascending:false}).limit(30);L=lg2.error?[]:lg2.data}else L=[]}catch(e){bad=1}draw();render()}
+function lat(){clearTimeout(tm);tm=setTimeout(pull,400)}
+function init(){sb.auth.onAuthStateChange(function(e,s){uid=s&&s.user?s.user.id:null;setTimeout(chk,0)});pull();
+ sb.channel("ss-live").on("postgres_changes",{event:"*",schema:"public",table:"profiles"},lat).on("postgres_changes",{event:"INSERT",schema:"public",table:"activity"},function(p){if(uid&&p.new.actor!==uid)toast("🔔 "+p.new.text);lat()}).subscribe()}
+function draw(){var l=$("lb"),m=me(),ae=document.activeElement,h="";
+ if(!(ae&&/INPUT|SELECT/.test(ae.tagName)&&l.contains(ae))){
+  if(bad)h='<div class="card"><h2>Accounts and points</h2><p class="note">Run the one-time database setup (swachhsetu_migration.sql) to turn on accounts, cleanup tasks and the leaderboard.</p></div>';
+  else{var lg=mode=="login";
+   if(!uid)h='<div class="card"><h2>'+(lg?"Log in":"Create account")+'</h2>'+(lg?"":'<label>Full name</label><input id="ax-n" maxlength="30">')+'<label>Email</label><input id="ax-e" type="email"><label>Password (min 6 characters)</label><input id="ax-p" type="password">'+(lg?"":'<label>Join as</label><select id="ax-r"><option value="citizen">Citizen (report waste)</option><option value="volunteer">Volunteer (clean waste)</option></select>')+'<button class="btn" onclick="X.sub()">'+(lg?"Log in":"Register")+'</button><button class="btn s" onclick="X.mode()">'+(lg?"Create a new account":"I already have an account")+'</button><p class="note">Accounts are optional. Log in to earn points for reports and cleanups.</p></div>';
+   else if(m){var nx=BG.find(function(b){return m.pts<b[0]}),got=BG.filter(function(b){return m.pts>=b[0]});
+    h='<div class="card"><div class="r"><h2>'+esc(m.name)+': '+m.pts+' points</h2><button class="del" onclick="X.out()">Log out</button></div><div class="chips">'+["citizen","volunteer"].map(function(r){return'<button class="chip'+(m.role==r?" on":"")+'" onclick="X.role(\''+r+'\')">'+r+'</button>'}).join("")+'</div>'+(nx?'<div class="bar"><div style="width:'+Math.min(100,m.pts/nx[0]*100)+'%;background:var(--teal)"></div></div><p class="note">'+(nx[0]-m.pts)+' more points for "'+nx[1]+'"</p>':'<p>All badges earned!</p>')+'<p>'+(got.length?got.map(function(b){return'<span class="pill good">🏅 '+b[1]+'</span> '}).join(""):'<span class="note">No badges yet.</span>')+'</p><p class="note">Report +10 · Accept a cleanup +5 · Finish a cleanup with an after photo +30. Volunteers accept tasks in the Reports tab.</p></div>'}
+   h+='<div class="card"><h2>Leaderboard</h2>'+(P.length?P.map(function(p,i){return'<div class="r" style="padding:6px 0;border-top:1px solid var(--line)"><span>'+(i+1)+". "+esc(p.name)+(p.id==uid?'<span class="mine">YOU</span>':"")+(p.role=="volunteer"?' <span class="note">volunteer</span>':"")+'</span><b>'+p.pts+'</b></div>'}).join(""):'<p class="note">No members yet.</p>')+'</div>'}
+  l.innerHTML=h}
+ var cl=R.filter(function(r){return r.status=="cleaned"}).length,q=QU[Math.floor(Date.now()/864e5)%QU.length],pl=0;try{pl=localStorage.getItem("ss_pledge")}catch(e){}
+ $("cmty").innerHTML='<div class="card" style="background:var(--navy);color:#fff"><div class="note" style="color:#bfd8e6;margin:0">Today\'s motivation</div><p style="font-size:18px;font-weight:600;margin:6px 0 0">“'+q+'”</p></div><div class="card"><h2>Our impact</h2><div class="grid"><div class="p ok"><small>Cleanups done</small><b>'+cl+'</b></div><div class="p"><small>Open reports</small><b>'+R.filter(function(r){return r.status=="reported"||r.status=="assigned"}).length+'</b></div><div class="p"><small>Volunteers</small><b>'+P.filter(function(p){return p.role=="volunteer"}).length+'</b></div><div class="p"><small>Members</small><b>'+P.length+'</b></div></div></div><div class="card"><h2>Clean Ganga pledge</h2>'+(pl?'<p style="margin:0">You took the pledge. Thank you!</p>':'<p class="note" style="margin-top:0">I will not throw waste in the Ganga, and I will report waste when I see it.</p><button class="btn" onclick="X.pledge()">I take the pledge</button>')+'</div><div class="card"><h2>Invite others</h2><button class="btn s" onclick="X.share()">Share GangaDrishti</button></div><div class="card"><h2>Live activity</h2>'+(A.length?A.map(function(a){return'<div style="padding:6px 0;border-top:1px solid var(--line)">'+esc(a.text)+'<div class="note" style="margin:0">'+ago(a.created_at)+'</div></div>'}).join(""):'<p class="note">No activity yet.</p>')+'</div>'}
+async function sub(){var e=$("ax-e").value.trim(),p=$("ax-p").value;try{
+ if(mode=="login"){var r=await sb.auth.signInWithPassword({email:e,password:p});if(r.error)throw r.error}
+ else{var n=$("ax-n").value.trim();if(!n){toast("Enter your name");return}var r2=await sb.auth.signUp({email:e,password:p,options:{data:{name:n,role:$("ax-r").value}}});if(r2.error)throw r2.error;toast(r2.data.session?"Welcome, "+n+"!":"Account created. Confirm the email we sent, then log in.")}
+}catch(x){toast(x.message||String(x))}}
+async function role(r){var x=await sb.rpc("set_my_role",{p_role:r});if(x.error)toast(x.error.message);else pull()}
+function pill(r){var s=r.status||"reported";return'<span class="pill '+(PC[s]||"rep")+'">'+esc(s)+'</span>'}
+function media(r){var s=r.status||"reported",ix=["reported","assigned","cleaned"].indexOf(s),m=me(),vol=m&&m.role=="volunteer",h="";
+ if(r.photo_url||r.after_url)h+='<div class="grid">'+[[r.photo_url,"Before"],[r.after_url,"After"]].map(function(x){return'<div class="note" style="margin:6px 0 0">'+(x[0]?'<img class="ph" style="margin:0 0 2px;width:100%;height:120px;object-fit:cover" loading="lazy" alt="'+x[1]+'" src="'+esc(x[0])+'">':"")+x[1]+'</div>'}).join("")+'</div>';
+ h+='<div style="display:flex;margin-top:8px">'+["reported","assigned","cleaned"].map(function(x,k){return'<span style="flex:1;text-align:center;border-top:4px solid '+(k<=ix?"var(--good)":"var(--line)")+';font-size:12px;color:var(--mut);padding-top:2px">'+x+'</span>'}).join("")+'</div>';
+ if(r.assigned_to)h+='<div class="note" style="margin:4px 0 0">Cleaner: '+esc(nm(r.cleaned_by||r.assigned_to))+'</div>';
+ if(s=="rejected")h+='<div class="note" style="margin:6px 0 0">Rejected by admin'+(r.admin_note?': '+esc(r.admin_note):'')+'</div>';
+ if(s!="cleaned"&&s!="rejected")h+='<div style="margin-top:6px"><a class="chip" href="https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(r.location_text||sname(r.station_id)+" Ganga ghat")+'" target="_blank" rel="noopener">🧭 Navigate</a>'+(vol&&s=="reported"?' <button type="button" class="chip on" data-acc="'+esc(r.id)+'">Accept cleanup</button>':"")+'</div>';
+ if(vol&&s=="assigned"&&r.assigned_to==uid)h+='<label>Upload the after photo to finish this cleanup</label><input type="file" accept="image/*" data-aft="'+esc(r.id)+'">';
+ return h}
+function bind(){
+ document.querySelectorAll("#list [data-acc]").forEach(function(b){b.onclick=async function(){var x=await sb.rpc("accept_task",{p_id:String(b.dataset.acc)});toast(x.error?x.error.message:"Task accepted. +5 points");refreshCommunity()}});
+ document.querySelectorAll("#list [data-aft]").forEach(function(i){i.onchange=async function(){var f=i.files[0];if(!f)return;toast("Uploading photo...");try{var u=await up(f),x=await sb.rpc("complete_task",{p_id:String(i.dataset.aft),p_after:u});if(x.error)throw x.error;toast("Cleanup recorded. +30 points")}catch(e){toast(e.message||String(e))}i.blur();refreshCommunity()}})}
+// ----- admin: is_admin() decides; every action is re-checked on the server -----
+async function chk(){adm=false;if(uid){try{var x=await sb.rpc("is_admin");adm=!x.error&&x.data===true}catch(e){}}navAdm();lat()}
+function navAdm(){var b=document.querySelector('nav button[data-t="adm"]');if(b)b.style.display=adm?"":"none";if(!adm&&$("adm").classList.contains("on"))tab("d");alr()}
+function who(id,fb){var p=P.find(function(x){return x.id==id});return p?p.name:fb}
+async function aRpc(fn,args,ok){var x=await sb.rpc(fn,args);if(x.error){toast(x.error.message);return false}toast(ok);await refreshCommunity();await pull();return true}
+async function setAlert(id,v){var x=await sb.rpc("admin_set_alert_status",{p_alert:id,p_status:v});if(x.error)toast(x.error.message);else refreshAlerts()}
+function admDraw(force){var box=$("adm");if(!box)return;if(!adm){box.innerHTML="";return}
+ var ae=document.activeElement;if(!force&&ae&&/INPUT|SELECT|TEXTAREA/.test(ae.tagName)&&box.contains(ae))return;
+ var keep={};["ad-u","ad-d","ad-r"].forEach(function(i){var e=$(i);if(e)keep[i]=e.value});
+ var vols=P.filter(function(p){return p.role=="volunteer"}),F=[["open","Open"],["rejected","Rejected"],["cleaned","Cleaned"],["all","All"]];
+ var list=R.filter(function(r){var s=r.status||"reported";return admf=="all"||(admf=="open"?(s=="reported"||s=="assigned"):s==admf)});
+ var h='<div class="card"><h2>Admin: manage reports</h2><div class="chips">'+F.map(function(f){return'<button type="button" class="chip'+(admf==f[0]?" on":"")+'" data-af="'+f[0]+'">'+f[1]+'</button>'}).join("")+'</div></div>';
+ h+=list.length?list.map(function(r){var s=r.status||"reported",open=s=="reported"||s=="assigned";
+  return'<div class="card"><div class="r"><b>'+esc(r.category)+'</b>'+pill(r)+'</div><div class="note" style="margin:2px 0 6px">Near '+esc(sname(r.station_id))+(r.location_text?" · "+esc(r.location_text):"")+" · "+esc(new Date(r.created_at).toLocaleDateString())+'<br>Reporter: '+esc(r.reporter?who(r.reporter,"a member"):"anonymous")+(r.assigned_to?" · Volunteer: "+esc(who(r.assigned_to,"a volunteer")):"")+'</div>'
+   +(r.description?"<div>"+esc(r.description)+"</div>":"")+(r.admin_note?'<div class="note">Note: '+esc(r.admin_note)+'</div>':"")
+   +'<div class="chips" style="margin-top:8px">'+(open?'<button type="button" class="chip" data-arj="'+esc(r.id)+'">Reject</button>':"")+(s=="rejected"?'<button type="button" class="chip" data-ars="'+esc(r.id)+'">Restore</button>':"")+'<button type="button" class="chip" style="color:var(--poor)" data-adl="'+esc(r.id)+'">Delete</button></div>'
+   +(open?'<div class="cmf"><select style="flex:1" data-sel="'+esc(r.id)+'"><option value="">Release to open list</option>'+vols.map(function(v){return'<option value="'+esc(v.id)+'"'+(r.assigned_to==v.id?" selected":"")+'>'+esc(v.name)+'</option>'}).join("")+'</select><button type="button" class="chip" data-asg="'+esc(r.id)+'">Set volunteer</button></div>':"")+'</div>'}).join(""):'<div class="card"><p class="note" style="margin:0">No reports here.</p></div>';
+ h+='<div class="card"><h2>Adjust points</h2><label>Member</label><select id="ad-u">'+P.slice().sort(function(a,b){return a.name.localeCompare(b.name)}).map(function(p){return'<option value="'+esc(p.id)+'">'+esc(p.name)+' ('+p.pts+')</option>'}).join("")+'</select><label>Points (+ or -, max 500)</label><input id="ad-d" type="number" step="1" placeholder="e.g. 25 or -10"><label>Reason</label><input id="ad-r" maxlength="60" placeholder="e.g. weekly challenge bonus"><button class="btn" id="ad-go" type="button">Apply</button><p class="note">Every change is saved in the points history below.</p></div>';
+ h+='<div class="card"><h2>Recent points activity</h2>'+(L.length?L.map(function(l){return'<div class="r" style="padding:6px 0;border-top:1px solid var(--line)"><span>'+esc(who(l.user_id,"member"))+' <span class="note">'+esc(l.reason)+' · '+ago(l.created_at)+'</span></span><b style="color:'+(l.delta<0?"var(--poor)":"var(--good)")+'">'+(l.delta>0?"+":"")+l.delta+'</b></div>'}).join(""):'<p class="note">Nothing yet.</p>')+'</div>';
+ box.innerHTML=h;
+ for(var k in keep){var e=$(k);if(e&&keep[k]!=="")e.value=keep[k]}
+ box.querySelectorAll("[data-af]").forEach(function(b){b.onclick=function(){admf=b.dataset.af;admDraw(true)}});
+ box.querySelectorAll("[data-arj]").forEach(function(b){b.onclick=function(){var n=prompt("Reason for rejecting (shown on the report):","Spam / not relevant");if(n===null)return;aRpc("admin_reject_report",{p_id:b.dataset.arj,p_note:n},"Report rejected.")}});
+ box.querySelectorAll("[data-ars]").forEach(function(b){b.onclick=function(){aRpc("admin_restore_report",{p_id:b.dataset.ars},"Report restored.")}});
+ box.querySelectorAll("[data-adl]").forEach(function(b){b.onclick=function(){if(!confirm("Delete this report permanently? Points given for it will be taken back."))return;aRpc("admin_delete_report",{p_id:b.dataset.adl},"Report deleted.")}});
+ box.querySelectorAll("[data-asg]").forEach(function(b){b.onclick=function(){var s=box.querySelector('select[data-sel="'+b.dataset.asg+'"]');aRpc("admin_reassign_report",{p_id:b.dataset.asg,p_user:s.value||null},s.value?"Volunteer assigned.":"Report released.")}});
+ var go=$("ad-go");if(go)go.onclick=function(){var u=$("ad-u").value,d=parseInt($("ad-d").value,10),r=$("ad-r").value.trim();if(!u||!d){toast("Pick a member and enter the points");return}
+  aRpc("admin_adjust_points",{p_user:u,p_delta:d,p_reason:r},"Points updated.").then(function(ok){if(ok){$("ad-d").value="";$("ad-r").value=""}})}}
+var _r=window.render;window.render=function(){_r();bind();admDraw()};
+return{init:init,sub:sub,role:role,pill:pill,media:media,up:up,adm:function(){return adm},setAlert:setAlert,
+ mode:function(){mode=mode=="login"?"register":"login";draw()},
+ out:function(){sb.auth.signOut()},
+ pledge:function(){try{localStorage.setItem("ss_pledge","1")}catch(e){}draw();toast("Thank you for the pledge!")},
+ share:async function(){var d={title:"GangaDrishti",text:"Report pollution, volunteer to clean and earn points for the Ganga ghats.",url:location.href};try{if(navigator.share){await navigator.share(d);return}}catch(e){if(e.name=="AbortError")return}window.open("https://wa.me/?text="+encodeURIComponent(d.text+" "+d.url),"_blank","noopener")}}})();
 start();
 </script></body></html>
