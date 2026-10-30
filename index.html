@@ -139,7 +139,7 @@ async function vote(rid){if(V.some(function(x){return x.report_id==rid&&x.client
 async function delReport(rid){if(!confirm("Delete this report? Its comments and votes will be removed too."))return;if(await rpc("delete_my_report",{p_id:String(rid),p_client_id:cid},"Report deleted.")){await loadCommunity();render()}}
 async function delCmt(id){if(!confirm("Delete this comment?"))return;if(await rpc("delete_my_comment",{p_id:String(id),p_client_id:cid},"Comment deleted.")){await loadCommunity();render()}}
 async function delRating(sid){if(await rpc("remove_my_rating",{p_station_id:String(sid),p_client_id:cid},"Rating removed.")){await loadCommunity();det()}}
-async function cmt(rid,text){text=(text||"").trim().slice(0,200);if(!text)return;if(await ins("report_comments",{report_id:rid,body:text,client_id:cid})){await loadCommunity();render()}}
+async function cmt(rid,text){text=(text||"").trim().slice(0,200);if(!text)return;if(await ins("report_comments",{report_id:rid,body:text,client_id:cid})){var bx=document.querySelector('#list input[data-i="'+rid+'"]');if(bx){bx.value="";bx.blur()}await loadCommunity();render()}}
 async function rate(id,v){if(await ins("station_ratings",{station_id:id,rating:v,client_id:cid})){await loadCommunity();det()}}
 $("sub").onclick=async function(){var b=this;b.disabled=true;
  var row={category:CATS[cat],station_id:$("rs").value,description:$("rd").value.trim().slice(0,500),location_text:$("rl").value.trim().slice(0,100),client_id:cid};
