@@ -155,7 +155,8 @@ function render(){$("cnt").textContent=R.length?"("+R.length+")":"";
  document.querySelectorAll("#list [data-r]").forEach(function(b){b.onclick=function(){vote(b.dataset.r)}});
  document.querySelectorAll("#list [data-dr]").forEach(function(b){b.onclick=function(){delReport(b.dataset.dr)}});
  document.querySelectorAll("#list [data-dc]").forEach(function(b){b.onclick=function(){delCmt(b.dataset.dc)}});
- document.querySelectorAll("#list [data-c]").forEach(function(b){b.onclick=function(){var i=$("list").querySelector('input[data-i="'+b.dataset.c+'"]');cmt(b.dataset.c,i.value)}})}
+ document.querySelectorAll("#list [data-c]").forEach(function(b){b.onclick=function(){var i=$("list").querySelector('input[data-i="'+b.dataset.c+'"]');cmt(b.dataset.c,i.value)}});
+ document.querySelectorAll("#list input[data-i]").forEach(function(inp){inp.onkeydown=function(e){if(e.key==="Enter"&&!e.isComposing){e.preventDefault();cmt(inp.dataset.i,inp.value)}}})}
 // ----- real CPCB annual data (not live) -----
 async function loadCpcb(){try{var r=await sb.from("cpcb_annual").select("*").order("year",{ascending:false}).order("site_name");if(r.error)throw r.error;
  CP=r.data.map(function(x){var o={};for(var k in x)o[k]=/_(min|max)$/.test(k)?num(x[k]):x[k];return o})}catch(e){CP=[]}}
