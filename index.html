@@ -118,6 +118,12 @@ nav{gap:2px}nav button{min-width:50px;padding:2px 3px}
 .opt{display:flex;align-items:center;gap:6px}
 .opt i{display:block;width:12px;height:12px;border-radius:50%;border:1px solid rgba(0,0,0,.25);flex:none}
 .chip:focus-visible,nav button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+/* flicker fix: keep the animated sky and header on their own layers, drop heavy blur on cards */
+#bg{transform:translateZ(0);backface-visibility:hidden}
+.wv,.cl,#orb{will-change:transform}
+header{isolation:isolate;transform:translateZ(0);backface-visibility:hidden}
+.card,.kp{backdrop-filter:none;-webkit-backdrop-filter:none}
 </style></head><body class="gate"><div id="bg" aria-hidden="true"><div id="st"></div><div id="orb"></div><i class="cl c1"></i><i class="cl c2"></i><i class="cl c3"></i>
 <svg class="gh" viewBox="0 0 520 200" aria-hidden="true"><path d="M0 60V200H520V180H480V160H440V140H400V120H360V100H320V80H0z"/><path d="M40 62V-20Q40 -50 70 -80Q100 -50 100 -20V62z" transform="translate(0 70)"/><path d="M120 132V100Q120 78 150 78Q180 78 180 100V132z"/><path d="M215 132V80Q215 50 245 28Q275 50 275 80V132z"/></svg>
 <svg class="wv w1" viewBox="0 0 2880 200" preserveAspectRatio="none"><path d="M0 100Q180 40 360 100T720 100T1080 100T1440 100T1800 100T2160 100T2520 100T2880 100V200H0z"/></svg>
@@ -345,6 +351,12 @@ function celebrate(msg){var o=document.createElement("div"),C=["#4facfe","#ff5fa
  o.className="cel";o.innerHTML=h;document.body.appendChild(o);setTimeout(function(){o.remove()},2700)}
 // ===== SwachhSetu merged in: accounts, cleanup tasks, points, leaderboard, community =====
 var X=(function(){
+var rstDel=false;
+function RST(){return'<div class="card" style="border:2px solid var(--poor)"><h2>Reset website</h2>'
++'<p class="note" style="margin:0 0 6px">Deletes all reports, votes, comments, ratings, alert progress and activity, and sets every non-admin member to 0 points. Admin accounts, their points and the station and CPCB data are not touched. This cannot be undone.</p>'
++'<label style="display:flex;align-items:center;gap:8px;font-weight:400"><input id="rs-d" type="checkbox" style="width:auto;margin:0"'+(rstDel?" checked":"")+'> Also delete all non-admin accounts</label>'
++'<label>Type RESET to confirm</label><input id="rs-t" autocomplete="off" placeholder="RESET">'
++'<button class="btn" id="rs-go" type="button" style="background:var(--poor)">Reset website</button></div>'}
 var uid=null,P=[],A=[],adm=false,L=[],admf="open",mode="login",bad=0,tm,ready=false,
 BG=[[10,"First Step"],[50,"Ghat Friend"],[120,"Ganga Guardian"],[250,"Namami Hero"]],
 QU=["Small steps at the ghat today become a cleaner Ganga tomorrow.","One bag of waste picked up is one less bag in the river.","Be the reason a ghat looks better than you found it.","Every report is a promise that someone will care."],
@@ -393,10 +405,10 @@ async function aRpc(fn,args,ok){var x=await sb.rpc(fn,args);if(x.error){toast(x.
 async function setAlert(id,v){var x=await sb.rpc("admin_set_alert_status",{p_alert:id,p_status:v});if(x.error)toast(x.error.message);else refreshAlerts()}
 function admDraw(force){var box=$("adm");if(!box)return;if(!adm){box.innerHTML="";return}
  var ae=document.activeElement;if(!force&&ae&&/INPUT|SELECT|TEXTAREA/.test(ae.tagName)&&box.contains(ae))return;
- var keep={};["ad-u","ad-d","ad-r"].forEach(function(i){var e=$(i);if(e)keep[i]=e.value});
+ var keep={};["ad-u","ad-d","ad-r","rs-t"].forEach(function(i){var e=$(i);if(e)keep[i]=e.value});
  var vols=P.filter(function(p){return p.role=="volunteer"}),F=[["open","Open"],["rejected","Rejected"],["cleaned","Cleaned"],["all","All"]];
  var list=R.filter(function(r){var s=r.status||"reported";return admf=="all"||(admf=="open"?(s=="reported"||s=="assigned"):s==admf)});
- var h='<div class="card"><h2>Admin: manage reports</h2><div class="chips">'+F.map(function(f){return'<button type="button" class="chip'+(admf==f[0]?" on":"")+'" data-af="'+f[0]+'">'+f[1]+'</button>'}).join("")+'</div></div>';
+ var h=RST()+'<div class="card"><h2>Admin: manage reports</h2><div class="chips">'+F.map(function(f){return'<button type="button" class="chip'+(admf==f[0]?" on":"")+'" data-af="'+f[0]+'">'+f[1]+'</button>'}).join("")+'</div></div>';
  h+=list.length?list.map(function(r){var s=r.status||"reported",open=s=="reported"||s=="assigned";
   return'<div class="card"><div class="r"><b>'+esc(r.category)+'</b>'+pill(r)+'</div><div class="note" style="margin:2px 0 6px">Near '+esc(sname(r.station_id))+(r.location_text?" · "+esc(r.location_text):"")+" · "+esc(new Date(r.created_at).toLocaleDateString())+'<br>Reporter: '+esc(r.reporter?who(r.reporter,"a member"):"anonymous")+(r.assigned_to?" · Volunteer: "+esc(who(r.assigned_to,"a volunteer")):"")+'</div>'
    +(r.description?"<div>"+esc(r.description)+"</div>":"")+(r.admin_note?'<div class="note">Note: '+esc(r.admin_note)+'</div>':"")
@@ -405,6 +417,12 @@ function admDraw(force){var box=$("adm");if(!box)return;if(!adm){box.innerHTML="
  h+='<div class="card"><h2>Adjust points</h2><label>Member</label><select id="ad-u">'+P.slice().sort(function(a,b){return a.name.localeCompare(b.name)}).map(function(p){return'<option value="'+esc(p.id)+'">'+esc(p.name)+' ('+p.pts+')</option>'}).join("")+'</select><label>Points (+ or -, max 500)</label><input id="ad-d" type="number" step="1" placeholder="e.g. 25 or -10"><label>Reason</label><input id="ad-r" maxlength="60" placeholder="e.g. weekly challenge bonus"><button class="btn" id="ad-go" type="button">Apply</button><p class="note">Every change is saved in the points history below.</p></div>';
  h+='<div class="card"><h2>Recent points activity</h2>'+(L.length?L.map(function(l){return'<div class="r" style="padding:6px 0;border-top:1px solid var(--line)"><span>'+esc(who(l.user_id,"member"))+' <span class="note">'+esc(l.reason)+' · '+ago(l.created_at)+'</span></span><b style="color:'+(l.delta<0?"var(--poor)":"var(--good)")+'">'+(l.delta>0?"+":"")+l.delta+'</b></div>'}).join(""):'<p class="note">Nothing yet.</p>')+'</div>';
  box.innerHTML=h;
+ var ck=$("rs-d");if(ck)ck.onchange=function(){rstDel=ck.checked};
+ var rb=$("rs-go");if(rb)rb.onclick=async function(){var t=$("rs-t").value.trim();if(t!=="RESET"){toast("Type RESET to confirm");return}
+  if(!confirm("This permanently deletes ALL reports, votes, comments, ratings and activity"+(rstDel?" and ALL non-admin accounts":"")+". Admin accounts are kept. This cannot be undone. Continue?"))return;
+  rb.disabled=true;var x=await sb.rpc("admin_reset_site",{p_confirm:t,p_delete_accounts:rstDel});rb.disabled=false;
+  if(x.error){toast(x.error.message);return}
+  rstDel=false;$("rs-t").value="";toast("Website reset done.");await refreshCommunity();await refreshAlerts();await pull();admDraw(true)};
  for(var k in keep){var e=$(k);if(e&&keep[k]!=="")e.value=keep[k]}
  box.querySelectorAll("[data-af]").forEach(function(b){b.onclick=function(){admf=b.dataset.af;admDraw(true)}});
  box.querySelectorAll("[data-arj]").forEach(function(b){b.onclick=function(){var n=prompt("Reason for rejecting (shown on the report):","Spam / not relevant");if(n===null)return;aRpc("admin_reject_report",{p_id:b.dataset.arj,p_note:n},"Report rejected.")}});
