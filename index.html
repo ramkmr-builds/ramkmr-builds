@@ -396,6 +396,43 @@ body.gate .gx-wrap>.gx-sec,body.gate main>.gx-hero,body.gate main>.gx-wrap{margi
 
 /* the 3 info cards belong to the login page only (.gx-wrap{display:flex} was overriding .gdeco{display:none}) */
 body:not(.gate) .gx-wrap,body:not(.gate) .gdeco{display:none!important}
+
+/* ===== desktop mode (Settings > Layout > Desktop): sidebar app layout + split login ===== */
+html[data-vw=desktop] body{padding:0 0 28px 252px}
+html[data-vw=desktop] body.gate{padding-left:0}
+html[data-vw=desktop] nav{position:fixed;top:16px;bottom:16px;left:16px;right:auto;width:220px;max-width:none;margin:0;flex-direction:column;justify-content:flex-start;align-items:stretch;gap:4px;padding:14px 10px;border-radius:26px;overflow:hidden auto}
+html[data-vw=desktop] nav::before{content:"Menu";padding:4px 12px 10px;font-weight:700;font-size:12px;color:var(--mut)}
+html[data-vw=desktop] body.gate nav{display:none}
+html[data-vw=desktop] body.nh nav{transform:none;opacity:1;pointer-events:auto}
+html[data-vw=desktop] nav button{flex:none;flex-direction:row;justify-content:flex-start;gap:12px;width:100%;min-width:0;padding:8px 10px;border-radius:14px;font-family:inherit;font-weight:600;font-size:14px;color:var(--ink);transition:background .2s}
+html[data-vw=desktop] nav button .app{width:34px;height:34px;border-radius:10px;margin:0}
+html[data-vw=desktop] nav button .app .ic{width:19px;height:19px}
+html[data-vw=desktop] nav button:hover{background:rgba(29,138,153,.1)}
+html[data-vw=desktop] nav button:hover .app,html[data-vw=desktop] nav button.on .app{transform:none}
+html[data-vw=desktop] nav button.on{background:rgba(29,138,153,.18);transform:none}
+html[data-vw=desktop] nav button.on::after{display:none}
+html[data-vw=desktop] header{margin:16px 16px 0 0;padding:26px 32px;border-radius:26px}
+html[data-vw=desktop] body.gate header{margin:0;border-radius:0 0 28px 28px}
+html[data-vw=desktop] header .hw{max-width:1280px;padding-right:110px}
+html[data-vw=desktop] main{max-width:1280px;padding:20px 16px 0}
+html[data-vw=desktop] #d.on{grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:16px}
+html[data-vw=desktop] #d>.kpis{gap:14px}
+html[data-vw=desktop] .kp{padding:18px 8px}
+html[data-vw=desktop] .kp b{font-size:32px}
+html[data-vw=desktop] #d>.card:nth-child(2){grid-column:1;grid-row:2}
+html[data-vw=desktop] #det{grid-column:2;grid-row:2/4}
+html[data-vw=desktop] #cp{grid-column:1;grid-row:3}
+html[data-vw=desktop] #hot{grid-column:1/-1;grid-row:4}
+html[data-vw=desktop] #mw:not(.full){height:440px}
+html[data-vw=desktop] #list{grid-template-columns:repeat(3,minmax(0,1fr))}
+html[data-vw=desktop] #toast{left:268px;bottom:20px}
+html[data-vw=desktop] body.nh #toast{bottom:20px}
+html[data-vw=desktop] #tq,html[data-vw=desktop] #ap,html[data-vw=desktop] #nt{right:24px}
+/* login on desktop: welcome on the left, info widgets on the right */
+html[data-vw=desktop] body.gate main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);align-items:start;gap:24px!important;max-width:1080px;padding:32px 20px 40px}
+html[data-vw=desktop] body.gate .hw{max-width:1080px}
+html[data-vw=desktop] body.gate .gx-hero{position:sticky;top:24px;padding:52px 32px 32px}
+html[data-vw=desktop] body.gate .gx-hi b{font-size:34px}
 </style></head><body class="gate"><div id="bg" aria-hidden="true"><div id="st"></div><div id="orb"></div><i class="cl c1"></i><i class="cl c2"></i><i class="cl c3"></i>
 <svg class="gh" viewBox="0 0 520 200" aria-hidden="true"><path d="M0 60V200H520V180H480V160H440V140H400V120H360V100H320V80H0z"/><path d="M40 62V-20Q40 -50 70 -80Q100 -50 100 -20V62z" transform="translate(0 70)"/><path d="M120 132V100Q120 78 150 78Q180 78 180 100V132z"/><path d="M215 132V80Q215 50 245 28Q275 50 275 80V132z"/></svg>
 <svg class="wv w1" viewBox="0 0 2880 200" preserveAspectRatio="none"><path d="M0 100Q180 40 360 100T720 100T1080 100T1440 100T1800 100T2160 100T2520 100T2880 100V200H0z"/></svg>
@@ -885,7 +922,7 @@ function setView(v){$("set").dataset.v=v||"";if(v=="ax"&&window.AXD)AXD();window
 try{ax=Object.assign(ax,JSON.parse(localStorage.getItem(KEY))||{})}catch(e){}
 try{mq=matchMedia("(prefers-color-scheme:dark)")}catch(e){}
 function dark(){return ax.th=="dark"||(ax.th=="auto"&&!!mq&&mq.matches)}
-function apply(){var d=H.dataset;if(ax.th=="auto")H.removeAttribute("data-theme");else H.setAttribute("data-theme",ax.th);H.style.setProperty("--tz",[1,1.15,1.3][ax.ts]||1);d.fx=ax.fx;d.ah=ax.ah?"on":"off";if(ax.vw=="auto")delete d.vw;else d.vw=ax.vw;var mt=document.querySelector("meta[name=viewport]"),W={tablet:820,desktop:1180}[ax.vw],sw=screen.width;if(mt)mt.content=W&&sw<W?"width="+W+",initial-scale="+(sw/W).toFixed(3)+",viewport-fit=cover":"width=device-width, initial-scale=1, viewport-fit=cover";["rm","hc","rf"].forEach(function(k){if(ax[k])d[k]="1";else delete d[k]});$("tq-t").textContent=dark()?"\u2600\uFE0F":"\u{1F319}"}
+function apply(){var d=H.dataset;if(ax.th=="auto")H.removeAttribute("data-theme");else H.setAttribute("data-theme",ax.th);H.style.setProperty("--tz",[1,1.15,1.3][ax.ts]||1);d.fx=ax.fx;d.ah=ax.ah?"on":"off";var wd=null;try{wd=matchMedia("(min-width:1024px)")}catch(e){}if(ax.vw=="auto"){if(wd&&wd.matches)d.vw="desktop";else delete d.vw}else d.vw=ax.vw;var mt=document.querySelector("meta[name=viewport]"),W={tablet:820,desktop:1180}[ax.vw],sw=screen.width;if(mt)mt.content=W&&sw<W?"width="+W+",initial-scale="+(sw/W).toFixed(3)+",viewport-fit=cover":"width=device-width, initial-scale=1, viewport-fit=cover";["rm","hc","rf"].forEach(function(k){if(ax[k])d[k]="1";else delete d[k]});$("tq-t").textContent=dark()?"\u2600\uFE0F":"\u{1F319}"}
 function put(k,v){ax[k]=v;try{localStorage.setItem(KEY,JSON.stringify(ax))}catch(e){toast("Could not save settings on this device.")}apply();draw();if(k=="vw")setTimeout(function(){fitMap()},200)}
 function grp(t,k,o){return'<div class="ax-g"><b>'+t+'</b><div class="chips">'+o.map(function(x){return'<button type="button" class="chip'+(String(ax[k])===String(x[0])?" on":"")+'" data-k="'+k+'" data-v="'+x[0]+'">'+x[1]+'</button>'}).join("")+'</div></div>'}
 function sw(t,sub,k){return'<div class="ax-r"><span>'+t+'<small>'+sub+'</small></span><button type="button" class="sw" role="switch" aria-label="'+t+'" aria-checked="'+(ax[k]?"true":"false")+'" data-k="'+k+'" data-t="1"></button></div>'}
@@ -909,7 +946,7 @@ function clk(e){var t=e.target.closest("[data-k],[data-reset],[data-x]");if(!t)r
 ap.onclick=clk;$("sv-ax").onclick=clk;window.AXD=draw;
 document.addEventListener("click",function(e){if(ap.classList.contains("on")&&!ap.contains(e.target)&&!$("tq").contains(e.target))open(false)});
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&ap.classList.contains("on")){open(false);$("tq-a").focus()}});
-if(mq&&mq.addEventListener)mq.addEventListener("change",apply);apply()})();
+if(mq&&mq.addEventListener)mq.addEventListener("change",apply);try{var wm=matchMedia("(min-width:1024px)");if(wm.addEventListener)wm.addEventListener("change",function(){apply();setTimeout(function(){try{fitMap()}catch(e){}},200)})}catch(e){}apply()})();
 start();
 </script><script>
 (function(){
