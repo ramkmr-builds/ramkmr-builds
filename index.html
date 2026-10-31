@@ -413,7 +413,9 @@ html[data-vw=desktop] body.gate{padding-left:0}
 html[data-vw=desktop] nav{position:fixed;top:16px;bottom:16px;left:16px;right:auto;width:220px;max-width:none;margin:0;flex-direction:column;justify-content:flex-start;align-items:stretch;gap:4px;padding:14px 10px;border-radius:26px;overflow:hidden auto}
 html[data-vw=desktop] nav::before{content:"Menu";padding:4px 12px 10px;font-weight:700;font-size:12px;color:var(--mut)}
 html[data-vw=desktop] body.gate nav{display:none}
-html[data-vw=desktop] body.nh nav{transform:none;opacity:1;pointer-events:auto}
+html[data-vw=desktop] nav{transition:transform .3s ease,opacity .25s ease}
+html[data-vw=desktop] body.nh nav{transform:translateX(calc(-100% - 32px));opacity:0;pointer-events:none}
+html[data-vw=desktop][data-ah=off] body.nh nav{transform:none;opacity:1;pointer-events:auto}
 html[data-vw=desktop] nav button{flex:none;flex-direction:row;justify-content:flex-start;gap:12px;width:100%;min-width:0;padding:8px 10px;border-radius:14px;font-family:inherit;font-weight:600;font-size:14px;color:var(--ink);transition:background .2s}
 html[data-vw=desktop] nav button .app{width:34px;height:34px;border-radius:10px;margin:0}
 html[data-vw=desktop] nav button .app .ic{width:19px;height:19px}
@@ -435,7 +437,9 @@ html[data-vw=desktop] #cp{grid-column:1;grid-row:4}
 html[data-vw=desktop] #mw:not(.full){height:440px}
 html[data-vw=desktop] #list{grid-template-columns:repeat(3,minmax(0,1fr))}
 html[data-vw=desktop] #toast{left:268px;bottom:20px}
-html[data-vw=desktop] body.nh #toast{bottom:20px}
+html[data-vw=desktop] #toast{transition:bottom .3s ease,left .3s ease}
+html[data-vw=desktop] body.nh #toast{bottom:20px;left:16px}
+html[data-vw=desktop][data-ah=off] body.nh #toast{left:268px}
 html[data-vw=desktop] #tq,html[data-vw=desktop] #ap,html[data-vw=desktop] #nt{right:24px}
 /* login on desktop: welcome on the left, info widgets on the right */
 html[data-vw=desktop] body.gate main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);align-items:start;gap:24px!important;max-width:1080px;padding:32px 20px 40px}
@@ -1234,7 +1238,7 @@ function body(){return ''
 +grp("Tab switch effect","fx",[["slide","Slide"],["fade","Fade"],["zoom","Zoom"],["none","None"]])
 +sw("Live notifications","Pop-ups for new reports, members and readings","ln")
 +sw("Helpful tips","Occasional hints while you use the site","tp")
-+sw("Auto-hide bottom tabs","Hides the tab bar while scrolling down","ah")
++sw("Auto-hide tabs","Hides the tab bar while scrolling down","ah")
 +sw("Reduce motion","Stops animations and the moving sky","rm")
 +sw("High contrast","Stronger text and borders","hc")
 +sw("Readable font","Wider spacing, easier to read","rf")
