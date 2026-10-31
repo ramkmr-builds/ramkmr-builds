@@ -1114,7 +1114,7 @@ function bgDraw(){var box=$("sv-bg");if(!box)return;var x=bgx(),ph=bgPh(),H=docu
   try{var d=await bgShrink(f);localStorage.setItem(BGP_K,d);bgPut({m:"photo",cl:0,st:0,wv:0,gh:0,ob:0});toast("Photo set as background.")}catch(x){toast(x&&x.name=="QuotaExceededError"?"Not enough space on this device for this photo.":(x&&x.message)||"Could not use this photo.")}});
 })();
 var BGM="gd_bgmode",BGSN="gd_bgsnap",BGI="gd_bgint",BGIV=[15,20,30,45,60],AU={i:0,t:Date.now(),h:0};
-function bgInt(){var v=30;try{v=+localStorage.getItem(BGI)||30}catch(e){}return BGIV.indexOf(v)>-1?v:30}
+function bgInt(){var v=15;try{v=+localStorage.getItem(BGI)||15}catch(e){}return BGIV.indexOf(v)>-1?v:15}
 function autoLoop(){clearTimeout(AU.h);AU.h=setTimeout(function(){autoTick();autoLoop()},bgInt()*1000)}
 function bgIntSet(v){try{localStorage.setItem(BGI,v)}catch(e){}AU.t=Date.now();autoLoop();bgDraw();toast("Background will change every "+(v==60?"1 minute":v+" seconds")+".")}
 function bgFlash(){var s=$("bgsw"),o=$("orb"),b=$("bg");if(s){s.classList.remove("go");void s.offsetWidth;s.classList.add("go")}if(o){o.classList.remove("pulse");void o.offsetWidth;o.classList.add("pulse")}if(b){b.classList.remove("bgbl");void b.offsetWidth;b.classList.add("bgbl")}}
