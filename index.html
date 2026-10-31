@@ -376,6 +376,15 @@ body.gate #lb .note{margin-top:16px;padding-top:14px;border-top:1px solid var(--
 .gx-step b{margin-top:8px}
 .gx-step p{flex:1;margin:0;overflow-wrap:anywhere}
 .gx-step em{align-self:center;max-width:100%;white-space:normal;text-align:center;font-size:10.5px;line-height:1.25;padding:3px 8px;margin-top:8px}
+
+/* fix: icon never shrinks or overlaps the title */
+.gx-step .gx-ic{flex:none;width:48px;height:48px;min-width:48px;min-height:48px;margin:0 auto;transform:none}
+.gx-step b{position:relative;z-index:1;margin-top:10px}
+@media (hover:hover){.gx-step:hover .gx-ic{transform:translateY(-3px) scale(1.08)}}
+
+/* root cause: icon classes c1/c2/c3 collide with the cloud classes (top offset + scale), so reset them */
+.gx-ic.c1,.gx-ic.c2,.gx-ic.c3{top:0;left:auto;translate:none;animation:none;animation-delay:0s}
+.gx-step .gx-ic{top:0}
 </style></head><body class="gate"><div id="bg" aria-hidden="true"><div id="st"></div><div id="orb"></div><i class="cl c1"></i><i class="cl c2"></i><i class="cl c3"></i>
 <svg class="gh" viewBox="0 0 520 200" aria-hidden="true"><path d="M0 60V200H520V180H480V160H440V140H400V120H360V100H320V80H0z"/><path d="M40 62V-20Q40 -50 70 -80Q100 -50 100 -20V62z" transform="translate(0 70)"/><path d="M120 132V100Q120 78 150 78Q180 78 180 100V132z"/><path d="M215 132V80Q215 50 245 28Q275 50 275 80V132z"/></svg>
 <svg class="wv w1" viewBox="0 0 2880 200" preserveAspectRatio="none"><path d="M0 100Q180 40 360 100T720 100T1080 100T1440 100T1800 100T2160 100T2520 100T2880 100V200H0z"/></svg>
