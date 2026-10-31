@@ -555,6 +555,11 @@ html[data-vw=desktop] .hs-g{display:grid;grid-template-columns:repeat(2,minmax(0
 .hs-ck.on{border-color:var(--good)}.hs-ck.on .bx{background:var(--good);border-color:var(--good)}
 .hs-ck.on .t{color:var(--mut);text-decoration:line-through}
 #hs-cu .ax-r:first-of-type{border-top:0}
+
+/* ===== My account ===== */
+#set[data-v=ac] #sv-ac,#set[data-v=ac] #sv-back{display:block}#set[data-v=ac] #sv-menu{display:none}
+.ac-hero{display:flex;align-items:center;gap:14px}.ac-av{width:56px;height:56px;font-size:24px}
+#acm .pw{max-height:92dvh;overflow:auto}
 </style></head><body class="gate"><noscript><p style="padding:24px;font:16px system-ui,sans-serif;text-align:center">GangaDrishti needs JavaScript to show live water quality data. Please turn it on and reload.</p></noscript><div id="bg" aria-hidden="true"><div id="st"></div><div id="orb"></div><i class="cl c1"></i><i class="cl c2"></i><i class="cl c3"></i>
 <svg class="gh" viewBox="0 0 520 200" aria-hidden="true"><path d="M0 60V200H520V180H480V160H440V140H400V120H360V100H320V80H0z"/><path d="M40 62V-20Q40 -50 70 -80Q100 -50 100 -20V62z" transform="translate(0 70)"/><path d="M120 132V100Q120 78 150 78Q180 78 180 100V132z"/><path d="M215 132V80Q215 50 245 28Q275 50 275 80V132z"/></svg>
 <svg class="wv w1" viewBox="0 0 2880 200" preserveAspectRatio="none"><path d="M0 100Q180 40 360 100T720 100T1080 100T1440 100T1800 100T2160 100T2520 100T2880 100V200H0z"/></svg>
@@ -1072,7 +1077,7 @@ function admDraw(force){var box=$("adm");if(!box)return;if(!adm){box.innerHTML="
  var go=$("ad-go");if(go)go.onclick=function(){var u=$("ad-u").value,d=parseInt($("ad-d").value,10),r=$("ad-r").value.trim();if(!u||!d){toast("Pick a member and enter the points");return}
   aRpc("admin_adjust_points",{p_user:u,p_delta:d,p_reason:r},"Points updated.").then(function(ok){if(ok){$("ad-d").value="";$("ad-r").value=""}})}}
 var _r=window.render;window.render=function(){_r();bind();admDraw()};
-return{prof:function(id){return P.find(function(x){return x.id==id})},role:function(){var m=me();return m?m.role:null},admHome:function(){admv=null;admDraw(true)},gm:function(v){gm=v;draw()},gsub:function(){GM.login(($("ax-n")||{}).value||"",atab)},init:init,sub:sub,uid:function(){return uid},apply:apply,atab:atabSet,delme:delme,dz:function(o){dzo=o},pill:pill,media:media,up:up,adm:function(){return adm},own:function(){var m=P.find(function(x){return x.id==uid});return!!(m&&m.is_owner)},setAlert:setAlert,
+return{pull:pull,prof:function(id){return P.find(function(x){return x.id==id})},role:function(){var m=me();return m?m.role:null},admHome:function(){admv=null;admDraw(true)},gm:function(v){gm=v;draw()},gsub:function(){GM.login(($("ax-n")||{}).value||"",atab)},init:init,sub:sub,uid:function(){return uid},apply:apply,atab:atabSet,delme:delme,dz:function(o){dzo=o},pill:pill,media:media,up:up,adm:function(){return adm},own:function(){var m=P.find(function(x){return x.id==uid});return!!(m&&m.is_owner)},setAlert:setAlert,
  mode:function(){mode=mode=="login"?"register":"login";amsg=null;draw()},
  out:async function(){try{await sb.auth.signOut({scope:"local"})}catch(e){}try{Object.keys(localStorage).forEach(function(k){if(/^sb-.*-auth-token/.test(k))localStorage.removeItem(k)})}catch(e){}location.reload()},
  pledge:function(){try{localStorage.setItem("ss_pledge","1")}catch(e){}draw();toast("Thank you for the pledge!")},
@@ -1572,6 +1577,88 @@ window.HS={draw:draw};
 var _r=window.render;window.render=function(){_r.apply(this,arguments);try{draw()}catch(e){}};
 var tries=0,iv=setInterval(function(){tries++;if(S.length&&(CP.length||tries>=8)){clearInterval(iv);capture();draw()}else if(tries>=15)clearInterval(iv)},2000);
 document.addEventListener("visibilitychange",function(){if(!document.hidden&&$("hs")&&$("hs").classList.contains("on"))draw()});
+})();
+</script>
+<script>
+/* ===== Settings > My account: display name, phone, email, password (current password required) ===== */
+(function(){
+var $=function(i){return document.getElementById(i)},T=function(m,o){try{toast(m,o)}catch(e){}};
+var U=null,PH="",ok=true,loaded=false,busy=false,fails=0,lock=0,pending=null;
+$("sv-menu").firstElementChild.insertAdjacentHTML("afterend",'<button type="button" class="card mi" onclick="setView(\'ac\')"><span class="mic">👤</span><span class="mt"><b>My account</b><small>Display name, phone, email and password</small></span><span class="mch">›</span></button>');
+$("sv-ax").insertAdjacentHTML("afterend",'<div class="sv" id="sv-ac"></div>');
+var M=document.createElement("div");M.id="acm";M.className="pm";M.innerHTML='<div class="pw" id="acw" role="dialog" aria-modal="true" aria-label="Confirm with your password"></div>';document.body.appendChild(M);
+function isOwner(){var p=X.prof(X.uid())||{};return !!p.is_owner}
+function role(){var p=X.prof(X.uid())||{};return p.is_owner?"Owner":p.is_admin?"Admin":p.role=="volunteer"?"Volunteer":"Citizen"}
+function curName(){var p=U&&X.prof(U.id);return(p&&p.name)||(U&&U.user_metadata&&U.user_metadata.name)||""}
+function nice(m){m=String(m||"");
+ if(/same password|different from the old/i.test(m))return"The new password must be different from your current one.";
+ if(/already (been )?registered|already exists|already in use/i.test(m))return"That email is already used by another account.";
+ if(/rate limit|too many/i.test(m))return"Too many requests. Please wait a little and try again.";
+ if(/PGRST202|PGRST205|schema cache|does not exist|could not find the function/i.test(m))return"Database setup is missing. Run account_migration.sql in Supabase once, then try again.";
+ return m}
+async function load(){var r=await sb.auth.getUser();U=r.data&&r.data.user||null;if(!U)throw new Error("Not logged in");
+ var pr=await sb.from("profile_private").select("phone").eq("id",U.id).maybeSingle();ok=!pr.error;
+ PH=ok?((pr.data&&pr.data.phone)||""):((U.user_metadata&&U.user_metadata.phone)||"");loaded=true}
+function msg(id,t,m){var b=$(id);if(!b)return;if(!m){b.innerHTML="";return}b.innerHTML='<div class="ax-m '+t+'" role="alert">'+esc(m)+'</div>'}
+function view(){var b=$("sv-ac");if(!b)return;
+ if(GM.on()){b.innerHTML='<div class="card"><h2>My account</h2><p class="note" style="margin:0">Guest mode is a private sandbox on this device, so it has no real account, email or password to manage. Log in with a real account to use this.</p></div>';return}
+ if(!X.uid()){b.innerHTML='<div class="card"><h2>My account</h2><p class="note">Log in first to manage your account.</p><button type="button" class="btn" onclick="tab(\'lb\')">Log in</button></div>';return}
+ if(!loaded){b.innerHTML='<div class="card">Loading…</div>';return}
+ var nm=curName(),em=U.email||"",ow=isOwner(),ro=ok?"":" readonly";
+ b.innerHTML='<div class="card ac-hero"><span class="av ac-av">'+esc((nm||"?").charAt(0).toUpperCase())+'</span><div style="min-width:0"><b>'+esc(nm)+'</b><div class="note" style="margin:0;overflow-wrap:anywhere">'+esc(em)+'</div><span class="pill rep">'+role()+'</span></div></div>'
+ +(ok?'':'<div class="al" style="border-color:var(--mod)">⚙️ One-time database setup is missing, so name and phone cannot be saved yet. Run <b>account_migration.sql</b> in Supabase. Email and password still work.</div>')
+ +'<div class="card"><h2>Profile</h2><label for="ac-n">Display name</label><input id="ac-n" maxlength="30" autocomplete="name" value="'+esc(nm)+'"'+ro+'><label for="ac-ph">Phone number <span class="note" style="display:inline;margin:0">optional</span></label><input id="ac-ph" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="+91 98765 43210" value="'+esc(PH)+'"'+ro+'><p class="note">Your phone number is private. Only you can see it, not other members or admins.</p></div>'
+ +'<div class="card"><h2>Email</h2><label for="ac-e">Email address</label><input id="ac-e" type="email" autocomplete="email" value="'+esc(em)+'"'+(ow?" readonly":"")+'>'
+ +(ow?'<p class="note">The owner email is fixed. It is what makes this the permanent admin account, so it can only be changed from the Supabase Authentication tab.</p>':'<p class="note">After you save, we email a confirmation link. The email changes only after you open it.</p>')
+ +(U.new_email?'<div class="al" style="border-color:var(--mod)">Waiting for confirmation: <b>'+esc(U.new_email)+'</b>. Open the link we emailed (check the old address too).</div>':'')+'</div>'
+ +'<div class="card"><h2>Password</h2><details class="wqd" id="ac-pd"><summary>Change password</summary><label for="ac-p1">New password (min 6 characters)</label><input id="ac-p1" type="password" autocomplete="new-password"><label for="ac-p2">Confirm new password</label><input id="ac-p2" type="password" autocomplete="new-password"><button type="button" class="chip" id="ac-sh" style="margin-top:8px">👁 Show</button></details></div>'
+ +'<div id="ac-m"></div><button type="button" class="btn" id="ac-save">Save changes</button><p class="note">For your safety we ask for your current password before anything is saved.</p>'}
+function diff(){var d={},err=null,n=$("ac-n").value.replace(/\s+/g," ").trim(),ph=$("ac-ph").value.replace(/[\s\-()]/g,""),e=$("ac-e").value.trim(),p1=$("ac-p1").value,p2=$("ac-p2").value;
+ if(ok&&n!==curName()){if(n.length<2||n.length>30)err="Display name must be 2 to 30 characters.";else d.name=n}
+ if(ok&&ph!==PH){if(ph&&!/^\+?[0-9]{7,15}$/.test(ph))err=err||"Enter a valid phone number: 7 to 15 digits, with an optional + at the start.";else d.phone=ph}
+ if(!isOwner()&&e.toLowerCase()!==(U.email||"").toLowerCase()){if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e))err=err||"Enter a valid email address.";else d.email=e}
+ if(p1||p2){if(p1.length<6)err=err||"The new password must be at least 6 characters.";else if(p1!==p2)err=err||"The two new passwords do not match.";else d.password=p1}
+ return{d:d,err:err}}
+function openM(d){pending=d;var L=[];
+ if(d.name!=null)L.push("Display name: "+curName()+" → "+d.name);
+ if(d.phone!=null)L.push("Phone: "+(PH||"none")+" → "+(d.phone||"removed"));
+ if(d.email)L.push("Email: "+(U.email||"")+" → "+d.email+" (needs confirmation by email)");
+ if(d.password)L.push("Password will be changed");
+ $("acw").innerHTML='<div class="pt"><b>Confirm it’s you</b><button type="button" class="del" id="acx">Cancel</button></div><p class="note" style="margin:6px 0 0">You are about to change:</p><ul class="hs-why">'+L.map(function(x){return'<li>'+esc(x)+'</li>'}).join("")+'</ul><label for="ac-cp">Current password</label><input id="ac-cp" type="password" autocomplete="current-password"><div id="ac-cm"></div><button type="button" class="btn" id="ac-go">Confirm and save</button>';
+ M.classList.add("on");document.body.style.overflow="hidden";setTimeout(function(){var i=$("ac-cp");if(i)i.focus()},80)}
+function closeM(){M.classList.remove("on");document.body.style.overflow="";$("acw").innerHTML="";pending=null}
+async function go(){if(busy||!pending)return;var pw=$("ac-cp").value,b=$("ac-go");
+ if(!pw){msg("ac-cm","err","Enter your current password.");return}
+ if(Date.now()<lock){msg("ac-cm","err","Too many wrong attempts. Try again in "+Math.ceil((lock-Date.now())/1000)+" seconds.");return}
+ busy=true;b.disabled=true;b.textContent="Checking…";msg("ac-cm");
+ try{
+  var v=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}}),
+  r=await v.auth.signInWithPassword({email:U.email,password:pw});
+  if(r.error){fails++;if(fails>=5){lock=Date.now()+6e4;fails=0}msg("ac-cm","err",/rate|too many/i.test(r.error.message)?"Too many attempts. Please wait a minute and try again.":"That password is not correct.");return}
+  if(!r.data||!r.data.user||r.data.user.id!==U.id){msg("ac-cm","err","This password belongs to a different account. Please log in again.");return}
+  fails=0;try{await v.auth.signOut({scope:"local"})}catch(e){}
+  b.textContent="Saving…";await apply(pending)
+ }catch(e){msg("ac-cm","err",nice(e.message||e))}
+ finally{busy=false;var g=$("ac-go");if(g){g.disabled=false;g.textContent="Confirm and save"}}}
+async function apply(d){var done=[],A={};if(d.email)A.email=d.email;if(d.password)A.password=d.password;
+ if(Object.keys(A).length){var r=await sb.auth.updateUser(A);if(r.error){msg("ac-cm","err",nice(r.error.message));return}
+  if(d.password){done.push("password");try{await sb.auth.signOut({scope:"others"})}catch(e){}}if(d.email)done.push("email")}
+ if(d.name!=null||d.phone!=null){var nn=d.name!=null?d.name:curName(),pp=d.phone!=null?d.phone:PH,q=await sb.rpc("update_my_profile",{p_name:nn,p_phone:pp||null});
+  if(q.error){msg("ac-cm","err",(done.length?"Your "+done.join(" and ")+" was saved, but your profile could not be saved: ":"Could not save your profile: ")+nice(q.error.message));return}
+  done.push("profile");try{await sb.auth.updateUser({data:{name:nn,phone:pp}})}catch(e){}}
+ closeM();var em=d.email?" We sent a confirmation link to "+d.email+". Your email changes after you open it.":"";
+ try{await load()}catch(e){}view();try{X.pull()}catch(e){}
+ T("Account updated."+em);try{celebrate("Account updated")}catch(e){}}
+document.addEventListener("click",function(e){var t=e.target.closest&&e.target.closest("button");if(!t||!t.id)return;
+ if(t.id=="ac-save"){var r=diff();if(r.err){msg("ac-m","err",r.err);return}if(!Object.keys(r.d).length){msg("ac-m","ok","Nothing to change yet. Edit a field first.");return}msg("ac-m");openM(r.d)}
+ else if(t.id=="ac-sh"){var s=$("ac-p1").type=="password";["ac-p1","ac-p2"].forEach(function(i){$(i).type=s?"text":"password"});t.textContent=s?"🙈 Hide":"👁 Show"}
+ else if(t.id=="acx")closeM();
+ else if(t.id=="ac-go")go();
+ else if(t.id=="ac-rt")open()});
+M.addEventListener("click",function(e){if(e.target==M&&!busy)closeM()});
+document.addEventListener("keydown",function(e){if(!M.classList.contains("on"))return;if(e.key==="Enter"&&e.target.id=="ac-cp"){e.preventDefault();go()}else if(e.key==="Escape"&&!busy)closeM()});
+function open(){if(GM.on()||!X.uid()){view();return}loaded=false;view();load().then(view).catch(function(){$("sv-ac").innerHTML='<div class="card"><h2>My account</h2><p class="note">Could not load your account. Check your internet.</p><button type="button" class="btn" id="ac-rt">Try again</button></div>'})}
+var _sv=window.setView;window.setView=function(v){_sv(v);if(v=="ac")open()};
 })();
 </script>
 </body></html>
