@@ -393,6 +393,9 @@ body.gate .gx-wrap>.gx-sec,body.gate main>.gx-hero,body.gate main>.gx-wrap{margi
 
 /* lighter glass so the animated sky behind does not repaint a heavy blur every frame */
 .gx-sec{-webkit-backdrop-filter:blur(14px) saturate(160%);backdrop-filter:blur(14px) saturate(160%)}
+
+/* the 3 info cards belong to the login page only (.gx-wrap{display:flex} was overriding .gdeco{display:none}) */
+body:not(.gate) .gx-wrap,body:not(.gate) .gdeco{display:none!important}
 </style></head><body class="gate"><div id="bg" aria-hidden="true"><div id="st"></div><div id="orb"></div><i class="cl c1"></i><i class="cl c2"></i><i class="cl c3"></i>
 <svg class="gh" viewBox="0 0 520 200" aria-hidden="true"><path d="M0 60V200H520V180H480V160H440V140H400V120H360V100H320V80H0z"/><path d="M40 62V-20Q40 -50 70 -80Q100 -50 100 -20V62z" transform="translate(0 70)"/><path d="M120 132V100Q120 78 150 78Q180 78 180 100V132z"/><path d="M215 132V80Q215 50 245 28Q275 50 275 80V132z"/></svg>
 <svg class="wv w1" viewBox="0 0 2880 200" preserveAspectRatio="none"><path d="M0 100Q180 40 360 100T720 100T1080 100T1440 100T1800 100T2160 100T2520 100T2880 100V200H0z"/></svg>
