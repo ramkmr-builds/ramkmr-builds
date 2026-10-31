@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#0b3c5d">
 <link rel="preconnect" href="https://jhzkbrznuvvswkmujphw.supabase.co" crossorigin><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
 <title>GangaDrishti – Live Ganga Water Quality & Citizen Reports</title>
@@ -171,6 +171,211 @@ html[data-vw=desktop] #f,html[data-vw=desktop] #lb,html[data-vw=desktop] #set,ht
 .gbtn:active .gav{transform:scale(.95)}
 .gbtn:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
 @media (prefers-reduced-motion:reduce){.gav{transition:none}.gbtn:hover .gav{transform:none}}
+
+/* ===== macOS-style polish layer ===== */
+:root{--spr:cubic-bezier(.34,1.56,.64,1);--eas:cubic-bezier(.22,1,.36,1)}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Inter","Segoe UI",Roboto,sans-serif;letter-spacing:-.003em;line-height:1.5;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;animation:pgin .6s var(--eas) both}
+@keyframes pgin{from{opacity:0}to{opacity:1}}
+*{scrollbar-width:thin;scrollbar-color:rgba(11,60,93,.28) transparent}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:rgba(11,60,93,.25);border-radius:99px}
+::selection{background:rgba(29,138,153,.25)}
+button,.btn,.chip,summary,select{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button,summary{-webkit-user-select:none;user-select:none}
+.btn,.chip{position:relative;overflow:hidden;transition:transform .28s var(--spr),box-shadow .25s var(--eas),filter .2s,background .2s,color .2s,border-color .2s}
+.btn:active,.chip:active{transform:scale(.96);transition-duration:.08s}
+.chip.on{box-shadow:0 4px 14px rgba(29,138,153,.35)}
+@media (hover:hover){.btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(29,138,153,.4);filter:saturate(1.1)}.chip:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(11,60,93,.16)}.card:hover{box-shadow:0 14px 38px rgba(11,60,93,.15)}}
+.rip{position:absolute;border-radius:50%;pointer-events:none;background:rgba(255,255,255,.45);transform:scale(0);animation:rip .65s var(--eas) forwards}
+.chip:not(.on) .rip{background:rgba(29,138,153,.2)}
+@keyframes rip{to{transform:scale(1);opacity:0}}
+.card{border-radius:18px;border:1px solid rgba(255,255,255,.65);box-shadow:0 10px 30px rgba(11,60,93,.10),0 1px 0 rgba(255,255,255,.8) inset;transition:box-shadow .3s var(--eas)}
+input,select,textarea{font-family:inherit;border-radius:12px;transition:box-shadow .25s var(--eas),border-color .2s,background .2s}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--teal)!important;box-shadow:0 0 0 4px rgba(29,138,153,.2)}
+:focus-visible{outline:3px solid rgba(29,138,153,.55);outline-offset:2px}
+input:focus-visible,select:focus-visible,textarea:focus-visible{outline:0}
+nav{-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px)}
+nav button{transition:background .25s var(--eas),color .2s,transform .28s var(--spr)}
+nav button:active{transform:scale(.88)}
+nav button.on{transform:translateY(-1px)}
+#toast{border-radius:16px;box-shadow:0 14px 34px rgba(0,0,0,.28);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.gav{background:linear-gradient(135deg,#ff6a95 0,#a66bff 48%,#35b4ff 100%);background-size:170% 170%;animation:gshift 6s ease-in-out infinite;box-shadow:0 0 0 3px rgba(255,255,255,.9),0 10px 26px rgba(150,100,255,.5),inset 0 1px 0 rgba(255,255,255,.7)}
+.gbtn:hover .gav{box-shadow:0 0 0 3px #fff,0 16px 34px rgba(150,100,255,.62),inset 0 1px 0 rgba(255,255,255,.7)}
+@keyframes gshift{0%,100%{background-position:0 0}50%{background-position:100% 100%}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}body,.gav{animation:none}.rip{display:none}}
+
+/* ===== login page decoration ===== */
+.gdeco{display:none}body.gate .gdeco{display:block}
+.gx-hero{position:relative;overflow:hidden;margin:0 0 12px;padding:16px;border-radius:20px;color:#fff;background:linear-gradient(135deg,rgba(8,42,64,.94),rgba(29,138,153,.92) 55%,rgba(122,96,255,.88));box-shadow:0 14px 34px rgba(11,60,93,.28)}
+.gx-hero::after{content:"";position:absolute;right:-30px;top:-30px;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.35),transparent 70%)}
+.gx-hi{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}.gx-hi b{font-size:20px}.gx-hi span{font-size:12px;opacity:.85}
+.gx-hero p{margin:6px 0 10px;font-size:13px;opacity:.92}
+.gx-pill{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.18);margin:0 6px 4px 0}
+@keyframes gxo{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.gx-t{width:100%;border-collapse:collapse;font-size:12px;margin:6px 0}.gx-t th,.gx-t td{padding:6px 4px;border-bottom:1px solid var(--line);text-align:left}.gx-t th{color:var(--ink)}
+
+.gx-go{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:10px;padding:12px 16px;border:0;border-radius:14px;font-family:inherit;font-weight:700;font-size:15px;cursor:pointer;color:#0b3c5d;background:linear-gradient(135deg,#fff,#d9f1ff);box-shadow:0 8px 20px rgba(0,0,0,.22);transition:transform .28s var(--spr),box-shadow .25s var(--eas)}
+.gx-go::before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.85) 50%,transparent 70%);transform:translateX(-120%);animation:gxs 3.4s ease-in-out infinite}
+.gx-go span,.gx-go svg{position:relative}
+.gx-go svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;animation:gxb 1.4s ease-in-out infinite}
+.gx-go:active{transform:scale(.97)}
+@media (hover:hover){.gx-go:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(0,0,0,.28)}}
+@keyframes gxs{0%,55%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+@keyframes gxb{0%,100%{transform:translateX(-2px)}50%{transform:translateX(4px)}}
+#lb{border-radius:20px;scroll-margin-top:12px}
+#lb.gx-flash{animation:gxf 1.5s var(--eas)}
+@keyframes gxf{0%{box-shadow:0 0 0 0 rgba(79,172,254,.75)}60%{box-shadow:0 0 0 16px rgba(79,172,254,0)}100%{box-shadow:0 0 0 0 rgba(79,172,254,0)}}
+.gx-up{position:fixed;right:14px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:15;padding:10px 16px;border:0;border-radius:99px;font-family:inherit;font-weight:700;font-size:14px;color:#fff;cursor:pointer;background:linear-gradient(135deg,#1d8a99,#4facfe);box-shadow:0 10px 24px rgba(29,138,153,.45);opacity:0;transform:translateY(16px) scale(.9);pointer-events:none;transition:opacity .3s var(--eas),transform .35s var(--spr)}
+.gx-up.on{opacity:1;transform:none;pointer-events:auto}
+.gx-up:active{transform:scale(.94)}
+@media (prefers-reduced-motion:reduce){.gx-go::before,.gx-go svg,#lb.gx-flash{animation:none}}
+
+/* ===== login page spacing ===== */
+body.gate main{display:flex;flex-direction:column;gap:14px;padding:18px 14px 96px}
+body.gate main>*{margin:0}
+body.gate #lb{display:flex!important;flex-direction:column;gap:14px}
+body.gate #lb>*{margin:0}
+body.gate #lb .gwrap{padding:6px 0 2px}
+body.gate .gdeco .card,body.gate .gx-tiles{margin:0}
+body.gate .gx-hero{margin:0}
+
+/* ===== separate login window ===== */
+.gx-gs{display:block;margin:8px auto 0;padding:6px 10px;border:0;background:none;color:rgba(255,255,255,.92);font-family:inherit;font-size:13px;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.gx-x{display:none!important}
+.gx-bd{display:none;position:fixed;inset:0;z-index:999;background:rgba(8,28,44,.55);-webkit-backdrop-filter:blur(12px) saturate(140%);backdrop-filter:blur(12px) saturate(140%)}
+body.gate.gx-login .gx-bd{display:block;animation:gxfi .35s var(--eas) both}
+body.gate.gx-login.gx-closing .gx-bd{animation:gxfo .19s ease forwards}
+body.gate:not(.gx-login) #lb{display:none!important}
+body.gate.gx-login{overflow:hidden}
+body.gate.gx-login #lb{display:block!important;position:fixed;inset:0;margin:auto;z-index:1000;width:min(92vw,372px);height:fit-content;max-height:calc(100dvh - 32px);overflow-y:auto;padding:46px 18px 18px;border-radius:22px;background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);box-shadow:0 30px 80px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.55) inset;animation:gxwin .5s var(--spr) both,gxglow 4s ease-in-out 1s infinite}
+body.gate.gx-login.gx-closing #lb{animation:gxout .19s ease forwards}
+body.gate.gx-login #lb::before{content:"";position:absolute;top:17px;left:18px;width:12px;height:12px;border-radius:50%;background:#ff5f57;box-shadow:20px 0 0 #febc2e,40px 0 0 #28c840}
+body.gate.gx-login #lb::after{content:"GangaDrishti";position:absolute;top:14px;left:0;right:0;text-align:center;font-size:12.5px;font-weight:600;color:var(--mut);pointer-events:none}
+body.gate.gx-login #lb>*{width:100%;max-width:none;margin:0}
+body.gate.gx-login #lb>.card,body.gate.gx-login #lb>.card:hover{background:transparent;border:0;box-shadow:none;padding:0}
+body.gate.gx-login #lb .gwrap{display:none}
+body.gate.gx-login #lb .note{font-size:12px}
+@keyframes gxwin{from{opacity:0;transform:scale(.86) translateY(26px)}to{opacity:1;transform:none}}
+@keyframes gxout{to{opacity:0;transform:scale(.94) translateY(10px)}}
+@keyframes gxfi{from{opacity:0}to{opacity:1}}
+@keyframes gxfo{to{opacity:0}}
+@keyframes gxglow{0%,100%{box-shadow:0 30px 80px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.55) inset}50%{box-shadow:0 30px 90px rgba(29,138,153,.55),0 0 0 1px rgba(255,255,255,.75) inset}}
+@media (prefers-reduced-motion:reduce){body.gate.gx-login #lb,body.gate.gx-login .gx-bd{animation:none}}
+
+/* ===== landing layout ===== */
+.gx-wrap{display:flex;flex-direction:column;gap:20px}
+.gx-sec{display:flex;flex-direction:column;gap:8px}
+.gx-h{margin:0 6px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff;text-shadow:0 1px 6px rgba(8,42,64,.55)}
+.gx-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.gx-step{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:12px;border-radius:18px;background:var(--card);border:1px solid var(--line);box-shadow:0 6px 18px rgba(11,60,93,.1);transition:transform .3s var(--spr),box-shadow .3s var(--eas)}
+.gx-step b{font-size:14px;margin-top:6px}.gx-step p{margin:0;font-size:12px;line-height:1.35;color:var(--mut);flex:1}
+.gx-step em{font-style:normal;font-size:11px;font-weight:700;color:var(--teal);background:rgba(29,138,153,.1);padding:2px 8px;border-radius:99px;margin-top:6px}
+@media (hover:hover){.gx-step:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(11,60,93,.16)}}
+.gx-ic{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:12px;font-size:19px;line-height:1;box-shadow:0 4px 10px rgba(0,0,0,.15)}
+.gx-ic.c1{background:linear-gradient(135deg,#ff7a9c,#ff9d6c)}.gx-ic.c2{background:linear-gradient(135deg,#34c38f,#1d8a99)}.gx-ic.c3{background:linear-gradient(135deg,#a66bff,#4facfe)}.gx-ic.c4{background:linear-gradient(135deg,#4facfe,#2b6ef5)}.gx-ic.c5{background:linear-gradient(135deg,#5be584,#16a34a)}.gx-ic.c6{background:linear-gradient(135deg,#a66bff,#7a60ff)}.gx-ic.c7{background:linear-gradient(135deg,#ffb347,#ff7a45)}.gx-ic.c8{background:linear-gradient(135deg,#4facfe,#1d8a99)}.gx-ic.c9{background:linear-gradient(135deg,#ff8a7a,#e11d48)}
+.gx-list{display:flex;flex-direction:column;overflow:hidden;border-radius:18px;background:var(--card);border:1px solid var(--line);box-shadow:0 6px 18px rgba(11,60,93,.1)}
+.gx-list>*+*{border-top:1px solid var(--line)}
+.gx-d summary,.gx-row{display:flex;align-items:center;gap:12px;width:100%;box-sizing:border-box;padding:12px 14px;border:0;background:none;list-style:none;cursor:pointer;font-family:inherit;font-size:inherit;color:var(--ink);text-align:left;text-decoration:none;transition:background .2s}
+.gx-d summary::-webkit-details-marker{display:none}
+.gx-tx{display:flex;flex-direction:column;flex:1;min-width:0}.gx-tx b{font-size:14px;font-weight:600}.gx-tx small{font-size:12px;color:var(--mut)}
+.gx-d summary::after,.gx-row::after{content:"\203A";color:#b3bfca;font-size:22px;line-height:1;transition:transform .25s var(--eas)}
+.gx-d[open] summary::after{transform:rotate(90deg)}
+.gx-d[open] summary{background:rgba(29,138,153,.05)}
+@media (hover:hover){.gx-d summary:hover,.gx-row:hover{background:rgba(29,138,153,.06)}}
+.gx-d summary:active,.gx-row:active{background:rgba(29,138,153,.12)}
+.gx-d>div{padding:2px 16px 14px;font-size:13px;color:var(--mut);animation:gxo .3s var(--eas)}
+.gx-d ol{margin:4px 0 0;padding-left:18px}.gx-d li{margin:3px 0}
+.gx-sos .gx-tx b{color:var(--poor)}
+
+/* ===== login page: clean layout v2 (solid surfaces, no halo text, one column) ===== */
+body.gate main{max-width:520px;gap:16px;padding:18px 14px 40px}
+body.gate .hw{max-width:520px}
+body.gate .note,body.gate .leg{text-shadow:none}
+.gx-hero{padding:22px 20px 20px;border-radius:22px;background:linear-gradient(145deg,#0b3c5d 0%,#12607a 55%,#1d8a99 100%);box-shadow:0 14px 34px rgba(8,42,64,.3)}
+.gx-hero::after{display:none}
+.gx-hi b{font-size:22px}
+.gx-hero p{margin:8px 0 14px;font-size:14px;line-height:1.5;opacity:.95}
+.gx-pill{background:rgba(255,255,255,.16);margin:0 6px 6px 0}
+.gx-go{margin-top:10px;border-radius:14px}
+.gx-go::before{display:none}
+.gx-go svg{animation:none}
+.gx-gs{width:100%;margin:10px 0 0;padding:12px 16px;border:1px solid rgba(255,255,255,.4);border-radius:14px;background:rgba(255,255,255,.08);text-decoration:none;font-weight:600;font-size:14px;transition:background .2s}
+@media (hover:hover){.gx-gs:hover{background:rgba(255,255,255,.18)}}
+.gx-wrap{gap:22px;padding:20px 16px;border-radius:22px;background:var(--card);border:1px solid var(--line);box-shadow:0 12px 32px rgba(8,42,64,.16)}
+.gx-h{margin:0 2px;font-size:15px;font-weight:700;letter-spacing:0;text-transform:none;color:var(--ink);text-shadow:none}
+.gx-steps,.gx-list{display:flex;flex-direction:column;gap:0;background:var(--bg);border:1px solid var(--line);border-radius:16px;box-shadow:none;overflow:hidden}
+.gx-steps>*+*{border-top:1px solid var(--line)}
+.gx-step{display:grid;grid-template-columns:38px 1fr auto;column-gap:12px;row-gap:2px;align-items:center;padding:12px 14px;border:0;border-radius:0;background:none;box-shadow:none}
+.gx-step .gx-ic{grid-column:1;grid-row:1/3}
+.gx-step b{grid-column:2;grid-row:1;margin:0;font-size:14px}
+.gx-step p{grid-column:2;grid-row:2;font-size:12.5px}
+.gx-step em{grid-column:3;grid-row:1/3;margin:0;white-space:nowrap}
+@media (hover:hover){.gx-step:hover{transform:none;box-shadow:none}}
+.gx-d[open] summary{background:rgba(29,138,153,.07)}
+body.gate .ft{width:fit-content;max-width:calc(100% - 28px);margin:0 auto 24px;padding:6px 14px;border-radius:99px;background:var(--card);color:var(--mut);border:1px solid var(--line);text-shadow:none}
+/* login window */
+body.gate.gx-login #lb{background:var(--card);-webkit-backdrop-filter:none;backdrop-filter:none;padding:52px 22px 22px;box-shadow:0 24px 60px rgba(0,0,0,.4),0 0 0 1px var(--line);animation:gxwin .5s var(--spr) both}
+body.gate #lb h2{margin:4px 0 2px;font-size:20px;line-height:1.25}
+body.gate #lb h2::before{display:none}
+body.gate #lb .chips{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;margin-bottom:16px!important;background:var(--bg);border:1px solid var(--line);border-radius:14px}
+body.gate #lb .chips .chip{border:0;border-radius:10px;padding:10px 8px;background:transparent;color:var(--mut);font-weight:600;font-size:14px;text-align:center;box-shadow:none}
+body.gate #lb .chips .chip.on{background:var(--card);color:var(--teal);box-shadow:0 1px 4px rgba(11,60,93,.18)}
+body.gate #lb label{margin:14px 0 6px;color:var(--ink)}
+body.gate #lb input,body.gate #lb select{height:46px;padding:0 14px;font-size:16px;background:var(--bg)}
+body.gate #lb .btn{margin-top:18px;padding:14px;border-radius:14px}
+body.gate #lb .btn.s{margin-top:10px;padding:12px;background:transparent}
+body.gate #lb .note{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);line-height:1.55}
+
+/* ===== login page v3: macOS widget / control-center style ===== */
+:root{--gl:rgba(255,255,255,.78);--glb:rgba(255,255,255,.72);--tile:rgba(255,255,255,.64)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--gl:rgba(18,32,42,.74);--glb:rgba(255,255,255,.12);--tile:rgba(255,255,255,.07)}}
+:root[data-theme="dark"]{--gl:rgba(18,32,42,.74);--glb:rgba(255,255,255,.12);--tile:rgba(255,255,255,.07)}
+/* hero = a Finder-style window with a soft mesh */
+.gx-hero{padding:40px 20px 20px;background:radial-gradient(110% 90% at 0% 0%,rgba(79,172,254,.55),transparent 55%),radial-gradient(90% 80% at 100% 100%,rgba(166,107,255,.38),transparent 60%),linear-gradient(145deg,#0b3c5d,#12708a 60%,#1d8a99);box-shadow:0 18px 40px rgba(8,42,64,.34),inset 0 1px 0 rgba(255,255,255,.3)}
+.gx-hero::before{content:"";position:absolute;top:15px;left:18px;width:10px;height:10px;border-radius:50%;background:#ff5f57;box-shadow:16px 0 0 #febc2e,32px 0 0 #28c840}
+.gx-hi{flex-direction:column;align-items:flex-start;gap:2px}
+.gx-hi b{font-size:28px;letter-spacing:-.02em;line-height:1.15}
+.gx-hi span{font-size:13px;opacity:.8}
+/* sections = frosted widgets */
+.gx-wrap{gap:16px;padding:0;background:none;border:0;box-shadow:none}
+.gx-sec{gap:12px;padding:16px;border-radius:24px;background:var(--gl);border:1px solid var(--glb);-webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%);box-shadow:0 10px 30px rgba(8,42,64,.16),inset 0 1px 0 rgba(255,255,255,.45);transform:translateZ(0)}
+.gx-h{margin:0 2px;font-size:15px}
+.gx-steps,.gx-list{background:none;border:0;border-radius:0;overflow:visible}
+/* app-icon squircles */
+.gx-ic{position:relative;width:48px;height:48px;border-radius:14px;font-size:24px;box-shadow:0 6px 14px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 5px rgba(0,0,0,.12);transition:transform .3s var(--spr)}
+.gx-ic::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,.35),transparent 55%);pointer-events:none}
+/* how you earn: three launchpad tiles */
+.gx-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.gx-steps>*+*{border-top:0}
+.gx-step{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding:14px 6px 12px;border-radius:20px;background:var(--tile);border:1px solid var(--glb);box-shadow:0 2px 8px rgba(11,60,93,.08)}
+.gx-step b{margin:8px 0 0;font-size:14px}
+.gx-step p{font-size:11.5px;line-height:1.35}
+.gx-step em{margin:6px 0 0}
+@media (hover:hover){.gx-step:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(11,60,93,.16)}.gx-step:hover .gx-ic,.gx-row:hover .gx-ic,.gx-d summary:hover .gx-ic{transform:translateY(-4px) scale(1.12)}}
+/* learn more: control-center tiles, opened one spans the full width */
+.gx-list:has(.gx-d){display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gx-list:has(.gx-d)>*+*{border-top:0}
+.gx-d{border-radius:20px;background:var(--tile);border:1px solid var(--glb);overflow:hidden;box-shadow:0 2px 8px rgba(11,60,93,.08)}
+.gx-d[open]{grid-column:1/-1}
+.gx-d summary{position:relative;flex-direction:column;align-items:flex-start;gap:10px;padding:14px}
+.gx-d summary::after{content:"+";position:absolute;top:10px;right:14px;color:var(--mut);font-size:22px;font-weight:300;transform:none;transition:transform .25s var(--eas)}
+.gx-d[open] summary::after{transform:rotate(45deg)}
+.gx-d[open] summary{background:none}
+.gx-d>div{padding:0 14px 14px}
+/* share and help: a dock */
+.gx-list:has(.gx-row){flex-direction:row;justify-content:space-around;gap:4px}
+.gx-list:has(.gx-row)>*+*{border-top:0}
+.gx-row{flex:1;flex-direction:column;gap:6px;width:auto;padding:8px 4px;border-radius:18px;text-align:center}
+.gx-row::after{display:none}
+.gx-row .gx-tx{align-items:center}
+.gx-row .gx-tx small{display:none}
+.gx-row .gx-tx b{font-size:12.5px}
+
+/* tile fix: equal heights, badges aligned at the bottom, nothing overflows */
+.gx-step{min-width:0}
+.gx-step b{margin-top:8px}
+.gx-step p{flex:1;margin:0;overflow-wrap:anywhere}
+.gx-step em{align-self:center;max-width:100%;white-space:normal;text-align:center;font-size:10.5px;line-height:1.25;padding:3px 8px;margin-top:8px}
 </style></head><body class="gate"><div id="bg" aria-hidden="true"><div id="st"></div><div id="orb"></div><i class="cl c1"></i><i class="cl c2"></i><i class="cl c3"></i>
 <svg class="gh" viewBox="0 0 520 200" aria-hidden="true"><path d="M0 60V200H520V180H480V160H440V140H400V120H360V100H320V80H0z"/><path d="M40 62V-20Q40 -50 70 -80Q100 -50 100 -20V62z" transform="translate(0 70)"/><path d="M120 132V100Q120 78 150 78Q180 78 180 100V132z"/><path d="M215 132V80Q215 50 245 28Q275 50 275 80V132z"/></svg>
 <svg class="wv w1" viewBox="0 0 2880 200" preserveAspectRatio="none"><path d="M0 100Q180 40 360 100T720 100T1080 100T1440 100T1800 100T2160 100T2520 100T2880 100V200H0z"/></svg>
@@ -195,7 +400,29 @@ html[data-vw=desktop] #f,html[data-vw=desktop] #lb,html[data-vw=desktop] #set,ht
  <button class="btn s" id="gps" type="button">Use my GPS location</button>
  <button class="btn" id="sub" type="button">Submit report</button><p class="note" id="msg"></p></div></section>
 <section id="l" class="sec"><div id="list"></div><p class="note" id="mode"></p></section>
-<section id="lb" class="sec"><div class="card">Loading…</div></section>
+<div class="gdeco gx-hero"><div class="gx-hi"><b id="gx-g">Namaste</b><span id="gx-t"></span></div><p>Join citizens and volunteers keeping the Ganga clean. Tap below to open the login window, or explore as a guest.</p><span class="gx-pill" id="gx-on">&#9679; Online</span><span class="gx-pill" id="gx-s">&#128752; Live monitoring</span><button type="button" class="gx-go" id="gx-go"><span>Log in / Register</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button><button type="button" class="gx-gs" id="gx-gs">or continue as Guest</button></div>
+<section id="lb" class="sec"><div class="card">Loading…</div></section><div class="gdeco gx-wrap">
+<div class="gx-sec"><h3 class="gx-h">How you earn points</h3>
+<div class="gx-steps">
+<div class="gx-step"><span class="gx-ic c1">&#128205;</span><b>Report</b><p>Spot waste and add a photo</p><em>+10 pts</em></div>
+<div class="gx-step"><span class="gx-ic c2">&#129529;</span><b>Clean up</b><p>Volunteers finish tasks</p><em>+5 to +30</em></div>
+<div class="gx-step"><span class="gx-ic c3">&#127941;</span><b>Rewards</b><p>Badges and a leaderboard</p><em>Level up</em></div>
+</div></div>
+<div class="gx-sec"><h3 class="gx-h">Learn more</h3>
+<div class="gx-list">
+<details class="gx-d"><summary><span class="gx-ic c4">&#128167;</span><span class="gx-tx"><b>Water quality guide</b><small>pH, oxygen, BOD and coliform</small></span></summary><div>CPCB best-use criteria for river water:<table class="gx-t"><tr><th></th><th>Class A<br>(drinking, after disinfection)</th><th>Class B<br>(outdoor bathing)</th></tr><tr><td>pH</td><td>6.5 to 8.5</td><td>6.5 to 8.5</td></tr><tr><td>Dissolved oxygen</td><td>6 mg/L or more</td><td>5 mg/L or more</td></tr><tr><td>BOD</td><td>2 mg/L or less</td><td>3 mg/L or less</td></tr><tr><td>Total coliform</td><td>50 MPN/100 mL or less</td><td>500 MPN/100 mL or less</td></tr></table>Low oxygen and high BOD or coliform mean more sewage and organic pollution.</div></details>
+<details class="gx-d"><summary><span class="gx-ic c5">&#129517;</span><span class="gx-tx"><b>Getting started</b><small>4 quick steps</small></span></summary><div><ol><li>Register as a Citizen, or apply as a Volunteer.</li><li>Report a pollution source with a photo and location.</li><li>Volunteers accept the cleanup and add an after photo.</li><li>Everyone earns points and badges.</li></ol></div></details>
+<details class="gx-d"><summary><span class="gx-ic c6">&#128100;</span><span class="gx-tx"><b>About guest mode</b><small>Private, on your own device</small></span></summary><div>Guest mode is a private space on your device. You cannot see real members or other guests, and nothing you do changes the real website.</div></details>
+<details class="gx-d"><summary><span class="gx-ic c7">&#128587;</span><span class="gx-tx"><b>Become a volunteer</b><small>Admin approval needed</small></span></summary><div>Choose Volunteer when you register. An admin reviews every request, and until it is approved you can use the site as a citizen.</div></details>
+</div></div>
+<div class="gx-sec"><h3 class="gx-h">Share and help</h3>
+<div class="gx-list">
+<button type="button" class="gx-row" id="gx-sh"><span class="gx-ic c8">&#128279;</span><span class="gx-tx"><b>Share this site</b><small>Send the link to friends</small></span></button>
+<button type="button" class="gx-row" id="gx-cp"><span class="gx-ic c4">&#128203;</span><span class="gx-tx"><b>Copy link</b><small>Copy the website address</small></span></button>
+<a class="gx-row gx-sos" href="tel:112"><span class="gx-ic c9">&#128680;</span><span class="gx-tx"><b>Emergency</b><small>Call 112</small></span></a>
+</div></div>
+</div>
+
 <section id="set" class="sec"><div id="sv-menu"><div class="card"><h2>Settings</h2><p class="note" style="margin:0">Pick what you want to change. Your choices are saved on this device only.</p></div><button type="button" class="card mi" onclick="setView('bg')"><span class="mic">🌅</span><span class="mt"><b>Background</b><small>Morning, day, evening or night sky</small></span><span class="mch">›</span></button><button type="button" class="card mi" onclick="setView('ax')"><span class="mic">♿</span><span class="mt"><b>Accessibility &amp; display</b><small>Theme, text size, tab effects, auto-hide tabs</small></span><span class="mch">›</span></button></div><button type="button" class="btn s sv" id="sv-back" onclick="setView('')">← Back to options</button><div class="card sv" id="sv-bg"><h2>Background</h2><p class="leg" style="margin:0 0 8px">Pick the sky behind the app. Auto follows your phone clock.</p><div class="chips" id="bgc" role="group" aria-label="Background"></div><p class="note" id="bgm"></p></div><div class="card sv" id="sv-ax"><div id="axv"></div></div></section>
 <section id="adm" class="sec"></section>
 
@@ -664,4 +891,41 @@ document.addEventListener("click",function(e){if(ap.classList.contains("on")&&!a
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&ap.classList.contains("on")){open(false);$("tq-a").focus()}});
 if(mq&&mq.addEventListener)mq.addEventListener("change",apply);apply()})();
 start();
-</script></body></html>
+</script><script>
+(function(){
+var RM=matchMedia("(prefers-reduced-motion:reduce)").matches,V=navigator.vibrate?navigator.vibrate.bind(navigator):null,P={tap:8,sel:6,ok:[10,40,16],err:[28,50,28],warn:[18,40,18],big:[12,30,12,30,24]},lt=0,sw=null;
+function ios(){try{if(!sw){var l=document.createElement("label"),i=document.createElement("input");l.setAttribute("aria-hidden","true");l.style.cssText="position:fixed;left:-99px;top:-99px;opacity:0;pointer-events:none";i.type="checkbox";i.setAttribute("switch","");l.appendChild(i);document.body.appendChild(l);sw=l}sw.click()}catch(e){}}
+function hap(k){if(RM)return;var n=Date.now();if(n-lt<35)return;lt=n;try{if(V)V(P[k]||8);else ios()}catch(e){}}
+window.hap=hap;
+document.addEventListener("pointerdown",function(e){if(RM)return;var b=e.target.closest&&e.target.closest(".btn,.chip");if(!b||b.disabled)return;var r=b.getBoundingClientRect(),d=Math.max(r.width,r.height)*2,s=document.createElement("span");s.className="rip";s.style.cssText="width:"+d+"px;height:"+d+"px;left:"+(e.clientX-r.left-d/2)+"px;top:"+(e.clientY-r.top-d/2)+"px";b.appendChild(s);setTimeout(function(){s.remove()},700)},{passive:true});
+document.addEventListener("click",function(e){var t=e.target.closest&&e.target.closest("button,.btn,.chip,summary");if(t&&!t.disabled)hap(t.closest("nav")?"sel":"tap")},true);
+try{if(window.NT&&NT.add&&!NT.add.h){var a=NT.add;NT.add=function(m,o){var t=o&&o.type;hap(t=="err"?"err":t=="warn"?"warn":"ok");return a.apply(this,arguments)};NT.add.h=1}}catch(e){}
+try{if(typeof window.celebrate=="function"&&!window.celebrate.h){var c=window.celebrate;window.celebrate=function(){hap("big");return c.apply(this,arguments)};window.celebrate.h=1}}catch(e){}
+})();
+</script>
+<script>
+(function(){var g=document.getElementById("gx-g");if(!g)return;var u=location.origin+location.pathname;
+function tick(){var d=new Date(),h=d.getHours(),t=document.getElementById("gx-t"),s=document.getElementById("gx-s");g.textContent=(h<12?"Good morning":h<17?"Good afternoon":"Good evening")+" \u{1F64F}";if(t)t.textContent=d.toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"})+" \u00B7 "+d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});if(s&&window.S&&S.length)s.textContent="\u{1F6F0}\uFE0F "+S.length+" stations monitored"}
+function net(){var o=document.getElementById("gx-on");if(!o)return;o.textContent=navigator.onLine?"\u25CF Online":"\u25CF Offline";o.style.background=navigator.onLine?"rgba(109,240,143,.3)":"rgba(255,120,120,.4)"}
+function cp(){var ok=function(){if(window.toast)toast("Link copied")};if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(u).then(ok,function(){});else{var i=document.createElement("input");i.value=u;document.body.appendChild(i);i.select();try{document.execCommand("copy");ok()}catch(e){}i.remove()}}
+tick();net();var n=0,iv=setInterval(function(){tick();if((window.S&&S.length)||++n>25)clearInterval(iv)},1000);
+setInterval(function(){if(document.body.classList.contains("gate"))tick()},3e4);addEventListener("online",net);addEventListener("offline",net);
+document.getElementById("gx-sh").onclick=function(){if(navigator.share)navigator.share({title:"GangaDrishti",text:"Live Ganga water quality and citizen reports",url:u}).catch(function(){});else cp()};
+document.getElementById("gx-cp").onclick=cp})();
+</script>
+<button type="button" class="gdeco gx-up" id="gx-up">&#128273; Log in</button>
+<div class="gx-bd" id="gx-bd"></div>
+<button type="button" class="gx-x" id="gx-x" aria-label="Close login window">&#10005;</button>
+<script>
+(function(){var l=document.getElementById("lb"),b=document.getElementById("gx-go"),u=document.getElementById("gx-up"),x=document.getElementById("gx-x"),g=document.getElementById("gx-gs"),B=document.body;if(!l||!b||!u||!x||!g)return;
+var RM=matchMedia("(prefers-reduced-motion:reduce)").matches,q=0,ct=0;
+function opn(gu){clearTimeout(ct);B.classList.remove("gx-closing");try{if(window.X&&X.gm)X.gm(!!gu)}catch(e){}B.classList.add("gx-login");setTimeout(function(){var i=document.getElementById("ax-e")||document.getElementById("ax-n");if(i&&matchMedia("(pointer:fine)").matches)i.focus({preventScroll:true})},450)}
+function cls(){if(!B.classList.contains("gx-login"))return;if(RM){B.classList.remove("gx-login");return}B.classList.add("gx-closing");ct=setTimeout(function(){B.classList.remove("gx-login","gx-closing")},190)}
+b.onclick=function(){opn(0)};u.onclick=function(){opn(0)};g.onclick=function(){opn(1)};x.onclick=cls;
+var bd=document.getElementById("gx-bd");if(bd)bd.onclick=cls;l.addEventListener("click",function(e){if(e.target===l){var r=l.getBoundingClientRect();if(e.clientX-r.left<64&&e.clientY-r.top<42)cls()}});
+addEventListener("keydown",function(e){if(e.key==="Escape")cls()});
+new MutationObserver(function(){if(!B.classList.contains("gate"))B.classList.remove("gx-login","gx-closing")}).observe(B,{attributes:true,attributeFilter:["class"]});
+function sc(){if(q)return;q=1;requestAnimationFrame(function(){q=0;u.classList.toggle("on",B.classList.contains("gate")&&!B.classList.contains("gx-login")&&b.getBoundingClientRect().bottom<0)})}
+addEventListener("scroll",sc,{passive:true});addEventListener("resize",sc)})();
+</script>
+</body></html>
