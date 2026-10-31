@@ -453,13 +453,47 @@ html[data-vw=desktop] body.gate .gx-hi b{font-size:34px}
 .wqt{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}.wqt .p small.x{display:block;margin-top:3px;line-height:1.3}
 .wqd{margin-top:10px;border-top:1px solid var(--line);padding-top:10px}.wqd summary{cursor:pointer;font-weight:700;font-size:14px;color:var(--teal)}
 html[data-vw=desktop] #wqc{grid-column:1;grid-row:3}
+
+/* ===== Background utilities ===== */
+html[data-nocl] .cl{display:none}html[data-nost] #st{display:none}html[data-nowv] .wv{display:none}html[data-nogh] .gh{display:none}html[data-noob] #orb{display:none}
+#bg::after{content:"";position:absolute;inset:0;background:#000;opacity:var(--dim,0);pointer-events:none}
+.w1{animation-duration:calc(22s*var(--spd,1))}.w2{animation-duration:calc(16s*var(--spd,1))}.w3{animation-duration:calc(11s*var(--spd,1))}
+.cl.c1{animation-duration:calc(100s*var(--spd,1))}.cl.c2{animation-duration:calc(140s*var(--spd,1))}.cl.c3{animation-duration:calc(170s*var(--spd,1))}
+html[data-cg=solid] .card,html[data-cg=solid] .kp{background:var(--card)}
+html[data-cg=glass] .card,html[data-cg=glass] .kp{background:color-mix(in srgb,var(--card) 72%,transparent)}
+.bgp{position:relative;height:96px;border-radius:14px;overflow:hidden;background:var(--sky);border:1px solid var(--line);margin:6px 0}
+.bgp .bgo{position:absolute;width:26px;height:26px;border-radius:50%;left:68%;top:20%;background:radial-gradient(circle at 35% 35%,var(--orb1),var(--orb2));box-shadow:0 0 22px 8px var(--orbg)}
+.bgp i{position:absolute;left:-5%;right:-5%;border-radius:50% 50% 0 0/100% 100% 0 0}.bgp .b1{bottom:20px;height:30px;background:var(--w1);opacity:.85}.bgp .b2{bottom:0;height:34px;background:var(--w3)}
+
+/* ===== reports, cleanup, ranks ===== */
+.rq{font-size:11px;font-weight:600;color:var(--poor);margin-left:4px}
+.lm{display:grid;grid-template-columns:1fr 1fr;gap:8px}.lm .btn{margin:0}
+.lc{font-size:13px;color:var(--mut);padding:8px 10px;border:1px dashed var(--line);border-radius:12px;margin:8px 0}.lc.ok{border-style:solid;border-color:rgba(46,158,91,.5);background:rgba(46,158,91,.08);color:var(--ink)}
+.pm{display:none;position:fixed;inset:0;z-index:1000;background:rgba(8,28,44,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);align-items:flex-end;justify-content:center}.pm.on{display:flex}
+.pw{width:min(100%,560px);background:var(--card);border-radius:22px 22px 0 0;padding:12px 12px calc(12px + env(safe-area-inset-bottom,0px));animation:pup .35s var(--spr)}.pw .btn{margin-top:8px}
+.pt{display:flex;justify-content:space-between;align-items:center}#pmap{height:46vh;border-radius:14px;margin:8px 0}
+@keyframes pup{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+.fin{margin-top:8px;padding:10px;border:1px dashed var(--teal);border-radius:12px;background:rgba(29,138,153,.05)}
+.ba{position:relative;height:200px;border-radius:14px;overflow:hidden;margin-top:8px;background:#000}.ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.ba .bf{clip-path:inset(0 calc(100% - var(--p)) 0 0)}
+.ba .bh{position:absolute;top:0;bottom:0;left:var(--p);width:3px;margin-left:-1.5px;background:#fff;box-shadow:0 0 8px rgba(0,0,0,.5);pointer-events:none}.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.bl{position:absolute;top:8px;padding:2px 8px;border-radius:99px;background:rgba(0,0,0,.55);color:#fff;font-size:11px;font-weight:700}.l1{left:8px}.l2{right:8px}
+.pod{display:flex;align-items:flex-end;justify-content:center;gap:8px;margin:8px 0 4px}.pd{flex:1;max-width:120px;text-align:center}
+.pd .bk{border-radius:14px 14px 0 0;color:#fff;display:flex;flex-direction:column;align-items:center;padding-top:8px;transform-origin:bottom;animation:rise .7s var(--spr) both;box-shadow:0 8px 20px rgba(0,0,0,.18)}
+.pd .md{font-size:30px;line-height:1}.pd .pp{font-weight:800;font-size:16px}.pd .nm{font-size:12px;font-weight:700;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gold{background:linear-gradient(180deg,#ffd75e,#f59e0b)}.silver{background:linear-gradient(180deg,#eef1f4,#9aa8b6)}.bronze{background:linear-gradient(180deg,#e8aa77,#b4692f)}
+@keyframes rise{from{transform:scaleY(.15);opacity:0}to{transform:none;opacity:1}}
+.lr{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:var(--card);border:1px solid var(--line);margin-bottom:8px;animation:lrin .45s var(--eas) both}.lr.me{border-color:var(--teal);box-shadow:0 0 0 3px rgba(29,138,153,.18)}
+@keyframes lrin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.rn{width:28px;text-align:center;font-weight:800;color:var(--mut)}.av{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;background:linear-gradient(135deg,#4facfe,#a66bff)}
+.lrb{height:5px;border-radius:9px;background:var(--line);overflow:hidden;margin-top:4px}.lrb i{display:block;height:100%;background:linear-gradient(90deg,#34c38f,#1d8a99);transition:width .8s var(--eas)}
+.stk{display:flex;align-items:center;gap:12px}.stk .fl{font-size:34px}
 </style></head><body class="gate"><div id="bg" aria-hidden="true"><div id="st"></div><div id="orb"></div><i class="cl c1"></i><i class="cl c2"></i><i class="cl c3"></i>
 <svg class="gh" viewBox="0 0 520 200" aria-hidden="true"><path d="M0 60V200H520V180H480V160H440V140H400V120H360V100H320V80H0z"/><path d="M40 62V-20Q40 -50 70 -80Q100 -50 100 -20V62z" transform="translate(0 70)"/><path d="M120 132V100Q120 78 150 78Q180 78 180 100V132z"/><path d="M215 132V80Q215 50 245 28Q275 50 275 80V132z"/></svg>
 <svg class="wv w1" viewBox="0 0 2880 200" preserveAspectRatio="none"><path d="M0 100Q180 40 360 100T720 100T1080 100T1440 100T1800 100T2160 100T2520 100T2880 100V200H0z"/></svg>
 <svg class="wv w2" viewBox="0 0 2880 200" preserveAspectRatio="none"><path d="M0 100Q180 150 360 100T720 100T1080 100T1440 100T1800 100T2160 100T2520 100T2880 100V200H0z"/></svg>
 <svg class="wv w3" viewBox="0 0 2880 200" preserveAspectRatio="none"><path d="M0 100Q180 60 360 100T720 100T1080 100T1440 100T1800 100T2160 100T2520 100T2880 100V200H0z"/></svg></div>
 <header><div class="hw"><span class="logo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s6 6.2 6 10.5A6 6 0 0 1 6 13.5C6 9.2 12 3 12 3z"/><path d="M9 14.5a3 3 0 0 0 3 2.5"/></svg></span><div><h1>GangaDrishti</h1><p class="tag">See the pollution. Trace the source. Drive action.</p></div></div><svg class="wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 30C240 60 480 0 720 30s480 30 720 0V60H0z" fill="var(--bg)"/></svg></header>
-<nav><button class="on" data-t="d"><i class="app a1"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8v8H3zM13 3h8v5h-8zM13 11h8v10h-8zM3 14h8v7H3z"/></svg></i><span class="lb">Dashboard</span></button><button data-t="f"><i class="app a2"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3zM12 10v4M12 17h.01"/></svg></i><span class="lb">Report</span></button><button data-t="l"><i class="app a3"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg></i><span class="lb">Cleanup <span id="cnt"></span></span></button><button data-t="lb"><i class="app a4"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></i><span class="lb">Login</span></button><button data-t="set"><i class="app a6"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h8.5M17.5 6H20M4 12h2.5M11.5 12H20M4 18h9.5M18.5 18H20"/><circle cx="15" cy="6" r="2.5"/><circle cx="9" cy="12" r="2.5"/><circle cx="16" cy="18" r="2.5"/></svg></i><span class="lb">Settings</span></button><button data-t="adm" style="display:none"><i class="app a5"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3z"/></svg></i><span class="lb">Admin</span></button></nav>
+<nav><button class="on" data-t="d"><i class="app a1"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8v8H3zM13 3h8v5h-8zM13 11h8v10h-8zM3 14h8v7H3z"/></svg></i><span class="lb">Dashboard</span></button><button data-t="f"><i class="app a2"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3zM12 10v4M12 17h.01"/></svg></i><span class="lb">Report</span></button><button data-t="l"><i class="app a3"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg></i><span class="lb">Cleanup <span id="cnt"></span></span></button><button data-t="top"><i class="app a5"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0zM6 5H3v2a3 3 0 0 0 3 3M18 5h3v2a3 3 0 0 1-3 3M12 13v4M8 21h8M10 17h4"/></svg></i><span class="lb">Ranks</span></button><button data-t="lb"><i class="app a4"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></i><span class="lb">Login</span></button><button data-t="set"><i class="app a6"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h8.5M17.5 6H20M4 12h2.5M11.5 12H20M4 18h9.5M18.5 18H20"/><circle cx="15" cy="6" r="2.5"/><circle cx="9" cy="12" r="2.5"/><circle cx="16" cy="18" r="2.5"/></svg></i><span class="lb">Settings</span></button><button data-t="adm" style="display:none"><i class="app a5"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3z"/></svg></i><span class="lb">Admin</span></button></nav>
 <main>
 <section id="d" class="sec on"><div class="kpis" id="kp"></div>
  <div class="card"><h2>Monitoring stations</h2><div id="mw"><div id="map" role="region" aria-label="Map of Ganga monitoring stations"></div><button type="button" id="mx" aria-label="Open full screen map">⤢ Open full map</button><button type="button" id="mc" aria-label="Close map">✕ Close</button><div id="mi"></div></div>
@@ -476,10 +510,12 @@ html[data-vw=desktop] #wqc{grid-column:1;grid-row:3}
 <section id="f" class="sec"><div class="card"><h2>Report a pollution source</h2>
  <label>Nearest station</label><select id="rs"></select>
  <label>What are you seeing?</label><div class="chips" id="rc"></div>
- <label>Details</label><textarea id="rd" rows="3" placeholder="Where exactly, what it looks like, since when…"></textarea>
- <label>Location (optional)</label><input id="rl" placeholder="Ghat or landmark name">
- <label>Photo of the waste (optional)</label><input id="rp" type="file" accept="image/*">
- <button class="btn s" id="gps" type="button">Use my GPS location</button>
+ <label>Details <span class="rq">required, min 20 characters</span></label><textarea id="rd" rows="3" maxlength="500" placeholder="Where exactly, what it looks like, since when…"></textarea><div class="note" id="rdc" style="margin:2px 0 0">0 / 20 minimum</div>
+ <label>Location <span class="rq">required</span></label>
+ <div class="lm"><button class="btn s" id="gps" type="button">📍 One tap exact location</button><button class="btn s" id="gpm" type="button">🗺️ Pick nearby on map</button></div>
+ <div class="lc" id="lc">No location chosen yet</div>
+ <input id="rl" placeholder="Ghat or landmark name (optional)">
+ <label>Photo of the waste <span class="rq">required</span></label><input id="rp" type="file" accept="image/*" capture="environment"><img id="rpv" class="ph" alt="Photo preview" style="display:none;margin-top:6px;max-height:160px;object-fit:cover">
  <button class="btn" id="sub" type="button">Submit report</button><p class="note" id="msg"></p></div></section>
 <section id="l" class="sec"><div id="list"></div><p class="note" id="mode"></p></section>
 <div class="gdeco gx-hero"><div class="gx-hi"><b id="gx-g">Namaste</b><span id="gx-t"></span></div><p>Join citizens and volunteers keeping the Ganga clean. Tap below to open the login window, or explore as a guest.</p><span class="gx-pill" id="gx-on">&#9679; Online</span><span class="gx-pill" id="gx-s">&#128752; Live monitoring</span><button type="button" class="gx-go" id="gx-go"><span>Log in / Register</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button><button type="button" class="gx-gs" id="gx-gs">or continue as Guest</button></div>
@@ -505,11 +541,13 @@ html[data-vw=desktop] #wqc{grid-column:1;grid-row:3}
 </div></div>
 </div>
 
-<section id="set" class="sec"><div id="sv-menu"><div class="card"><h2>Settings</h2><p class="note" style="margin:0">Pick what you want to change. Your choices are saved on this device only.</p></div><button type="button" class="card mi" onclick="setView('bg')"><span class="mic">🌅</span><span class="mt"><b>Background</b><small>Morning, day, evening or night sky</small></span><span class="mch">›</span></button><button type="button" class="card mi" onclick="setView('ax')"><span class="mic">♿</span><span class="mt"><b>Accessibility &amp; display</b><small>Theme, text size, tab effects, auto-hide tabs</small></span><span class="mch">›</span></button></div><button type="button" class="btn s sv" id="sv-back" onclick="setView('')">← Back to options</button><div class="card sv" id="sv-bg"><h2>Background</h2><p class="leg" style="margin:0 0 8px">Pick the sky behind the app. Auto follows your phone clock.</p><div class="chips" id="bgc" role="group" aria-label="Background"></div><p class="note" id="bgm"></p></div><div class="card sv" id="sv-ax"><div id="axv"></div></div></section>
+<section id="top" class="sec"><div class="card">Loading…</div></section>
+<section id="set" class="sec"><div id="sv-menu"><div class="card"><h2>Settings</h2><p class="note" style="margin:0">Pick what you want to change. Your choices are saved on this device only.</p></div><button type="button" class="card mi" onclick="setView('bg')"><span class="mic">🌅</span><span class="mt"><b>Background</b><small>Sky, scenes, effects, your own photo and more</small></span><span class="mch">›</span></button><button type="button" class="card mi" onclick="setView('ax')"><span class="mic">♿</span><span class="mt"><b>Accessibility &amp; display</b><small>Theme, text size, tab effects, auto-hide tabs</small></span><span class="mch">›</span></button></div><button type="button" class="btn s sv" id="sv-back" onclick="setView('')">← Back to options</button><div class="card sv" id="sv-bg"></div><div class="card sv" id="sv-ax"><div id="axv"></div></div></section>
 <section id="adm" class="sec"></section>
 
 
 </main>
+<div id="pm" class="pm"><div class="pw"><div class="pt"><b>Pick the spot</b><button type="button" id="pc" class="del">Close</button></div><div id="pmap"></div><div class="note" id="pi" style="margin:0">Wait for your live position, or tap the map and drag the pin.</div><div class="lm"><button class="btn s" id="pn" type="button">📡 Follow my live position</button><a class="btn s" id="pg" target="_blank" rel="noopener" style="text-align:center;text-decoration:none" href="#">Open in Google Maps</a></div><button class="btn" id="po" type="button">Confirm this location</button></div></div>
 <footer class="ft">Water quality data: CPCB / NWMP. Citizen reports are community-submitted.</footer><div id="tq"><button id="tq-t" type="button" aria-label="Switch light or dark mode"></button><button id="tq-a" type="button" aria-label="Accessibility settings" aria-expanded="false" aria-controls="ap">♿</button></div><div id="ap" role="dialog" aria-label="Accessibility settings"></div>
 <div id="nt" aria-live="polite"></div><div id="toast" role="status"></div>
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -642,12 +680,25 @@ function det(){var s=cur();wqc();if(!s){$("det").innerHTML="No stations found.";
  if(a.length>1){var p=a.map(function(v,i){return(8+i*(304/(a.length-1))).toFixed(1)+","+y(v).toFixed(1)}).join(" ");el("polyline",{points:p,fill:"none",stroke:"#1d8a99","stroke-width":2.5,"stroke-linejoin":"round"},c)}
  else{var n=el("text",{x:160,y:60,"text-anchor":"middle","font-size":11,fill:"var(--mut)"},c);n.textContent="Not enough readings yet"}
  $("go").onclick=function(){$("rs").value=s.id;tab("f")}}
-function tab(t){var O=["d","f","l","lb","set","adm"],cu=document.querySelector(".sec.on"),ci=cu?O.indexOf(cu.id):0;document.documentElement.style.setProperty("--dir",O.indexOf(t)>=ci?1:-1);var pb=document.querySelector('nav button[data-t="'+t+'"]');if(pb){pb.classList.remove("pop");void pb.offsetWidth;pb.classList.add("pop")}document.querySelectorAll(".sec").forEach(function(e){e.classList.toggle("on",e.id==t)});document.querySelectorAll("nav button").forEach(function(b){b.classList.toggle("on",b.dataset.t==t)});try{history.replaceState(null,"","#"+t)}catch(e){}if(t=="d")setTimeout(fitMap,60);if(t=="set")setView("");if(t=="adm")try{X.admHome()}catch(e){}window.scrollTo(0,0)}
+function tab(t){var O=["d","f","l","top","lb","set","adm"],cu=document.querySelector(".sec.on"),ci=cu?O.indexOf(cu.id):0;document.documentElement.style.setProperty("--dir",O.indexOf(t)>=ci?1:-1);var pb=document.querySelector('nav button[data-t="'+t+'"]');if(pb){pb.classList.remove("pop");void pb.offsetWidth;pb.classList.add("pop")}document.querySelectorAll(".sec").forEach(function(e){e.classList.toggle("on",e.id==t)});document.querySelectorAll("nav button").forEach(function(b){b.classList.toggle("on",b.dataset.t==t)});try{history.replaceState(null,"","#"+t)}catch(e){}if(t=="d")setTimeout(fitMap,60);if(t=="set")setView("");if(t=="adm")try{X.admHome()}catch(e){}window.scrollTo(0,0)}
 document.querySelectorAll("nav button").forEach(function(b){b.onclick=function(){tab(b.dataset.t)}});
 (function(){var h=location.hash.slice(1),e=h&&document.getElementById(h);if(e&&e.classList.contains("sec"))tab(h)})();
 function chips(){$("rc").innerHTML="";CATS.forEach(function(c,i){var b=document.createElement("button");b.type="button";b.className="chip"+(i==cat?" on":"");b.textContent=c;b.onclick=function(){cat=i;chips()};$("rc").appendChild(b)})}chips();
-$("gps").onclick=function(){if(!navigator.geolocation){$("msg").textContent="GPS is not available here. Please type the location.";return}
- navigator.geolocation.getCurrentPosition(function(p){$("rl").value=p.coords.latitude.toFixed(4)+", "+p.coords.longitude.toFixed(4)},function(){$("msg").textContent="Could not get GPS. Please type the location."})};
+var LOC=null,PMAP=null,PK=null,PCI=null,PW=null,PMAN=false,PP=null,PA=null;
+function setLoc(p,src){LOC={lat:+p.lat.toFixed(6),lng:+p.lng.toFixed(6),acc:p.acc!=null?Math.round(p.acc):null,src:src};$("lc").innerHTML="✅ "+(src=="gps"?"Exact GPS":"Map pin")+": "+LOC.lat.toFixed(5)+", "+LOC.lng.toFixed(5)+(LOC.acc!=null?" · ±"+LOC.acc+" m":"")+' · <a href="https://www.google.com/maps/search/?api=1&query='+LOC.lat+","+LOC.lng+'" target="_blank" rel="noopener">view</a>';$("lc").className="lc ok"}
+$("gps").onclick=function(){var b=this,t=b.textContent;if(!navigator.geolocation){$("msg").textContent="GPS is not available here. Use Pick nearby on map.";return}b.disabled=true;b.textContent="Locating…";
+ navigator.geolocation.getCurrentPosition(function(p){b.disabled=false;b.textContent=t;setLoc({lat:p.coords.latitude,lng:p.coords.longitude,acc:p.coords.accuracy},"gps");if(p.coords.accuracy>100)toast("Accuracy is ±"+Math.round(p.coords.accuracy)+" m. Step into the open for a better fix.")},function(){b.disabled=false;b.textContent=t;$("msg").textContent="Could not get GPS. Allow location access, or use Pick nearby on map."},{enableHighAccuracy:true,timeout:12000,maximumAge:0})};
+function pset(ll,acc){PP=ll;PA=acc||null;PK.setLatLng(ll);PCI.setLatLng(ll).setRadius(acc||0);$("pg").href="https://www.google.com/maps/search/?api=1&query="+ll.lat+","+ll.lng;$("pi").textContent=ll.lat.toFixed(5)+", "+ll.lng.toFixed(5)+(acc?" · ±"+Math.round(acc)+" m (live)":" · pin placed")}
+function pstop(){if(PW!=null){navigator.geolocation.clearWatch(PW);PW=null}}
+function plive(){if(!navigator.geolocation){toast("GPS is not available here. Tap the map to place the pin.");return}PMAN=false;pstop();PW=navigator.geolocation.watchPosition(function(p){if(PMAN)return;var ll=L.latLng(p.coords.latitude,p.coords.longitude);pset(ll,p.coords.accuracy);PMAP.setView(ll,Math.max(PMAP.getZoom(),17))},function(){toast("Could not read your live position. Tap the map to place the pin.")},{enableHighAccuracy:true,maximumAge:2000,timeout:15000})}
+function pclose(){pstop();$("pm").classList.remove("on");document.body.style.overflow=""}
+$("gpm").onclick=function(){$("pm").classList.add("on");document.body.style.overflow="hidden";
+ if(!PMAP){var c=LOC?[LOC.lat,LOC.lng]:S.length?[S[0].lat,S[0].lng]:[25.6,85.1];PMAP=L.map("pmap").setView(c,LOC?17:13);L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(PMAP);PK=L.marker(c,{draggable:true}).addTo(PMAP);PCI=L.circle(c,{radius:0,color:"#1d8a99",weight:1,fillOpacity:.12}).addTo(PMAP);PK.on("dragstart",function(){PMAN=true;pstop()});PK.on("dragend",function(){pset(PK.getLatLng(),0)});PMAP.on("click",function(e){PMAN=true;pstop();pset(e.latlng,0)})}
+ setTimeout(function(){PMAP.invalidateSize();if(LOC){var ll=L.latLng(LOC.lat,LOC.lng);pset(ll,0);PMAP.setView(ll,17);PMAN=true}else plive()},80)};
+$("pn").onclick=plive;$("pc").onclick=pclose;$("pm").onclick=function(e){if(e.target==this)pclose()};
+$("po").onclick=function(){if(!PP){toast("Tap the map or wait for your live position first.");return}setLoc({lat:PP.lat,lng:PP.lng,acc:PMAN?null:PA},"map");pclose()};
+$("rd").oninput=function(){var n=this.value.replace(/\\s+/g," ").trim().length,c=$("rdc");c.textContent=n+" / 20 minimum";c.style.color=n>=20?"var(--good)":"var(--mut)"};
+$("rp").onchange=function(){var f=this.files[0],i=$("rpv");if(f){i.src=URL.createObjectURL(f);i.style.display="block"}else i.style.display="none"};
 // ----- writes (anon users can only INSERT; database rules enforce the limits) -----
 async function ins(table,row){var r=await sb.from(table).insert(row);if(r.error&&r.error.code!="23505"){toast("Could not save: "+r.error.message);return false}
  if(r.error){toast("You have already done this.");return false}return true}
@@ -666,10 +717,18 @@ async function cmt(rid,text){text=(text||"").trim().slice(0,200);if(!text)return
  if(!ok)C=C.filter(function(x){return x!==t});
  loadCommunity().then(render,render)}
 async function rate(id,v){if(await ins("station_ratings",{station_id:id,rating:v,client_id:cid})){await loadCommunity();det()}}
-$("sub").onclick=async function(){var b=this;b.disabled=true;
- var row={category:CATS[cat],station_id:$("rs").value,description:$("rd").value.trim().slice(0,500),location_text:$("rl").value.trim().slice(0,100),client_id:cid};
- try{var pf=$("rp").files[0];if(pf)row.photo_url=await X.up(pf)}catch(e){toast("Photo upload failed: "+(e.message||e));b.disabled=false;return}
- if(await ins("reports",row)){$("rp").value="";$("rd").value="";$("rl").value="";$("msg").textContent="Report submitted. Thank you!";await loadCommunity();render();tab("l")}
+$("sub").onclick=async function(){var b=this,d=$("rd").value.replace(/\s+/g," ").trim(),pf=$("rp").files[0],bad=function(t){$("msg").textContent="⚠️ "+t;toast(t);window.hap&&hap("err");b.disabled=false};
+ b.disabled=true;
+ if(d.length<20)return bad("Please describe what you see in at least 20 characters.");
+ if(/(https?:\/\/|www\.)/i.test(d))return bad("Links are not allowed in a report.");
+ if(/(.)\1{6,}/.test(d)||new Set(d.toLowerCase().replace(/\s/g,"")).size<6)return bad("Please write a real description of the problem.");
+ if(!LOC&&!$("rl").value.trim())return bad("Choose a location: One tap exact location, or Pick nearby on map.");
+ if(!pf)return bad("A photo of the waste is required.");
+ if(!/^image\//.test(pf.type))return bad("Please choose an image file.");
+ var row={category:CATS[cat],station_id:$("rs").value,description:d.slice(0,500),location_text:$("rl").value.trim().slice(0,100),client_id:cid};
+ if(LOC){row.lat=LOC.lat;row.lng=LOC.lng;row.loc_accuracy=LOC.acc;row.loc_source=LOC.src}
+ try{row.photo_url=await X.up(pf)}catch(e){return bad("Photo upload failed: "+(e.message||e))}
+ if(await ins("reports",row)){$("rp").value="";$("rd").value="";$("rl").value="";$("rpv").style.display="none";$("rdc").textContent="0 / 20 minimum";LOC=null;$("lc").className="lc";$("lc").textContent="No location chosen yet";$("msg").textContent="Report submitted. Thank you!";await loadCommunity();render();tab("l")}
  b.disabled=false};
 function mineR(r){return r.reporter?r.reporter==X.uid():r.client_id==cid}
 function render(){var RL=R.filter(function(r){return r.status!="rejected"||mineR(r)||X.adm()});$("cnt").textContent=RL.length?"("+RL.length+")":"";
@@ -869,17 +928,26 @@ async function apply(){var x=await sb.rpc("request_volunteer");if(x.error)toast(
 async function delme(){if(prompt("This permanently deletes your account, points and reports.\nType DELETE to confirm:")!=="DELETE"){toast("Cancelled. Your account was not deleted.");return}var x=await sb.rpc("delete_my_account");if(x.error){toast(x.error.message);return}toast("Your account was deleted.");setTimeout(function(){X.out()},400)}
 function atabSet(t){var k={n:($("ax-n")||{}).value,e:($("ax-e")||{}).value};atab=t;draw();if(k.e&&$("ax-e"))$("ax-e").value=k.e;if(k.n&&$("ax-n"))$("ax-n").value=k.n}
 function pill(r){var s=r.status||"reported";return'<span class="pill '+(PC[s]||"rep")+'">'+esc(s)+'</span>'}
+var AF={},LP=null,LW=null;
+function BA(r){return'<div class="ba" style="--p:50%"><img src="'+esc(r.after_url)+'" alt="After" loading="lazy"><img class="bf" src="'+esc(r.photo_url)+'" alt="Before" loading="lazy"><span class="bl l1">Before</span><span class="bl l2">After</span><i class="bh"></i><input type="range" min="0" max="100" value="50" aria-label="Before and after slider" data-ba="1"></div><div class="note" style="margin:2px 0 0;text-align:center">Drag to compare Before and After</div>'}
+function pv(id){var f=AF[id],e=document.querySelector('#list [data-pv="'+id+'"]'),b=document.querySelector('#list [data-fin="'+id+'"]');if(!e||!b)return;e.innerHTML=f?'<img class="ph" style="max-height:140px;object-fit:cover;margin-top:6px" alt="After photo preview" src="'+(f._u||(f._u=URL.createObjectURL(f)))+'">':"";b.disabled=!f;b.textContent=f?"✅ Finish cleanup (+30 points)":"📸 Add the after photo to finish"}
+function hv(a,b,c,d){var t=Math.PI/180,x=(c-a)*t/2,y=(d-b)*t/2,q=Math.sin(x)*Math.sin(x)+Math.cos(a*t)*Math.cos(c*t)*Math.sin(y)*Math.sin(y);return 12742000*Math.asin(Math.sqrt(q))}
+function lvUp(){document.querySelectorAll("#list .lv").forEach(function(e){if(!LP){e.textContent=LW==null?"":"Finding your position…";return}var d=hv(LP.latitude,LP.longitude,+e.dataset.la,+e.dataset.ln);e.textContent="📡 "+(d<1000?Math.round(d)+" m":(d/1000).toFixed(1)+" km")+" away · about "+Math.max(1,Math.round(d/1000/25*60))+" min drive (estimate)"+(d<75?" · ✅ You are at the spot":"")+(LP.accuracy?" · GPS ±"+Math.round(LP.accuracy)+" m":"")})}
+function lvTog(){if(LW!=null){navigator.geolocation.clearWatch(LW);LW=null;LP=null;lvUp();toast("Live distance off");return}if(!navigator.geolocation){toast("GPS is not available here.");return}LW=navigator.geolocation.watchPosition(function(p){LP=p.coords;lvUp()},function(){toast("Could not read your position. Allow location access.")},{enableHighAccuracy:true,maximumAge:2000,timeout:20000});lvUp()}
 function media(r){var s=r.status||"reported",ix=["reported","assigned","cleaned"].indexOf(s),m=me(),vol=m&&m.role=="volunteer",h="";
- if(r.photo_url||r.after_url)h+='<div class="grid">'+[[r.photo_url,"Before"],[r.after_url,"After"]].map(function(x){return'<div class="note" style="margin:6px 0 0">'+(x[0]?'<img class="ph" style="margin:0 0 2px;width:100%;height:120px;object-fit:cover" loading="lazy" alt="'+x[1]+'" src="'+esc(x[0])+'">':"")+x[1]+'</div>'}).join("")+'</div>';
+ if(r.photo_url&&r.after_url)h+=BA(r);else if(r.photo_url||r.after_url)h+='<div class="grid">'+[[r.photo_url,"Before"],[r.after_url,"After"]].map(function(x){return'<div class="note" style="margin:6px 0 0">'+(x[0]?'<img class="ph" style="margin:0 0 2px;width:100%;height:120px;object-fit:cover" loading="lazy" alt="'+x[1]+'" src="'+esc(x[0])+'">':"")+x[1]+'</div>'}).join("")+'</div>';
  h+='<div style="display:flex;margin-top:8px">'+["reported","assigned","cleaned"].map(function(x,k){return'<span style="flex:1;text-align:center;border-top:4px solid '+(k<=ix?"var(--good)":"var(--line)")+';font-size:12px;color:var(--mut);padding-top:2px">'+x+'</span>'}).join("")+'</div>';
  if(r.assigned_to)h+='<div class="note" style="margin:4px 0 0">Cleaner: '+esc(nm(r.cleaned_by||r.assigned_to))+'</div>';
  if(s=="rejected")h+='<div class="note" style="margin:6px 0 0">Rejected by admin'+(r.admin_note?': '+esc(r.admin_note):'')+'</div>';
- if(s!="cleaned"&&s!="rejected")h+='<div style="margin-top:6px"><a class="chip" href="https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(r.location_text||sname(r.station_id)+" Ganga ghat")+'" target="_blank" rel="noopener">🧭 Navigate</a>'+(vol&&s=="reported"?' <button type="button" class="chip on" data-acc="'+esc(r.id)+'">Accept cleanup</button>':"")+'</div>';
- if(vol&&s=="assigned"&&r.assigned_to==uid)h+='<label>Upload the after photo to finish this cleanup</label><input type="file" accept="image/*" data-aft="'+esc(r.id)+'">';
+ if(s!="cleaned"&&s!="rejected")h+='<div style="margin-top:6px"><a class="chip" href="https://www.google.com/maps/dir/?api=1&travelmode=driving&destination='+(r.lat!=null?r.lat+","+r.lng:encodeURIComponent(r.location_text||sname(r.station_id)+" Ganga ghat"))+'" target="_blank" rel="noopener">🧭 Start navigation</a>'+(r.lat!=null?' <button type="button" class="chip" data-live="1">📡 Live distance</button><div class="note lv" data-la="'+r.lat+'" data-ln="'+r.lng+'" style="margin:6px 0 0"></div>':"")+(vol&&s=="reported"?' <button type="button" class="chip on" data-acc="'+esc(r.id)+'">Accept cleanup</button>':"")+'</div>';
+ if(vol&&s=="assigned"&&r.assigned_to==uid)h+='<div class="fin"><b>Finish this cleanup</b><div class="note" style="margin:2px 0 6px">It counts as finished only with the Before photo above and a new After photo.</div><input type="file" accept="image/*" capture="environment" data-aft="'+esc(r.id)+'"><div data-pv="'+esc(r.id)+'"></div><button type="button" class="btn" data-fin="'+esc(r.id)+'" disabled>📸 Add the after photo to finish</button></div>';
  return h}
 function bind(){
  document.querySelectorAll("#list [data-acc]").forEach(function(b){b.onclick=async function(){var x=await sb.rpc("accept_task",{p_id:String(b.dataset.acc)});toast(x.error?x.error.message:"Task accepted. +5 points");refreshCommunity()}});
- document.querySelectorAll("#list [data-aft]").forEach(function(i){i.onchange=async function(){var f=i.files[0];if(!f)return;toast("Uploading photo...");try{var u=await up(f),x=await sb.rpc("complete_task",{p_id:String(i.dataset.aft),p_after:u});if(x.error)throw x.error;toast("Cleanup recorded. +30 points")}catch(e){toast(e.message||String(e))}i.blur();refreshCommunity()}})}
+ document.querySelectorAll("#list [data-aft]").forEach(function(i){i.onchange=function(){var f=i.files[0];if(f&&!/^image\//.test(f.type)){toast("Please choose an image file");return}AF[i.dataset.aft]=f||null;pv(i.dataset.aft)}});
+ document.querySelectorAll("#list [data-pv]").forEach(function(e){pv(e.dataset.pv)});
+ document.querySelectorAll("#list [data-fin]").forEach(function(b){b.onclick=async function(){var id=b.dataset.fin,f=AF[id];if(!f)return;b.disabled=true;b.textContent="Uploading…";try{var u=await up(f),x=await sb.rpc("complete_task",{p_id:String(id),p_after:u});if(x.error)throw x.error;delete AF[id];toast("Cleanup recorded. +30 points");if(window.celebrate)celebrate("Cleanup finished! +30")}catch(e){toast(e.message||String(e));b.disabled=false;pv(id)}refreshCommunity()}});
+ document.querySelectorAll("#list [data-live]").forEach(function(b){b.onclick=lvTog});lvUp()}
 // ----- admin: is_admin() decides; every action is re-checked on the server -----
 var AO=[["vol","\u{1F64B}","Volunteer requests"],["rep","\u{1F4DD}","Manage reports"],["pts","\u2B50","Adjust points"],["log","\u{1F4CB}","Live activity"],["mem","\u{1F465}","Manage members"],["adm","\u{1F6E1}\uFE0F","Admins"],["rst","\u26A0\uFE0F","Reset website"],["gst","\u{1F9EA}","Guest spaces"]],
 AS={vol:"Approve or reject volunteer requests",rep:"Reject, restore, delete or assign reports",pts:"Add or remove member points",log:"See what members do in real time",mem:"Make admin or delete members",adm:"See and manage admins",rst:"Clear all reports and activity",gst:"See, reset, block or remove guest spaces"};
@@ -940,14 +1008,81 @@ return{prof:function(id){return P.find(function(x){return x.id==id})},role:funct
  share:async function(){var d={title:"GangaDrishti",text:"Report pollution, volunteer to clean and earn points for the Ganga ghats.",url:location.href};try{if(navigator.share){await navigator.share(d);return}}catch(e){if(e.name=="AbortError")return}window.open("https://wa.me/?text="+encodeURIComponent(d.text+" "+d.url),"_blank","noopener")}}})();
 var BGK="gd_bg",BGO=[["auto","Auto","linear-gradient(135deg,#2f8cff,#ff8a4c,#13245c)"],["dawn","\u{1F305} Morning","linear-gradient(135deg,#6a5acd,#ffd7a0)"],["day","\u2600\uFE0F Day","linear-gradient(135deg,#2f8cff,#d8f2ff)"],["dusk","\u{1F307} Evening","linear-gradient(135deg,#3b2a7a,#ff8a4c)"],["night","\u{1F319} Night","linear-gradient(135deg,#050c24,#2c2f7a)"]];
 function bgGet(){var v="auto";try{v=localStorage.getItem(BGK)||"auto"}catch(e){}return BGO.some(function(o){return o[0]==v})?v:"auto"}
-function bgSet(v){try{if(v=="auto")localStorage.removeItem(BGK);else localStorage.setItem(BGK,v)}catch(e){}tod();bgChips()}
+function bgSet(v){try{if(v=="auto")localStorage.removeItem(BGK);else localStorage.setItem(BGK,v)}catch(e){}tod();bgDraw()}
 function tod(){var pf=bgGet(),d=new Date(),h=d.getHours()+d.getMinutes()/60,t=h>=5&&h<8?"dawn":h>=8&&h<17?"day":h>=17&&h<19.5?"dusk":"night",day=h>=5.5&&h<19,p=day?(h-5.5)/13.5:((h<5.5?h+24:h)-19)/10.5;
  if(pf!="auto"){t=pf;day=pf!="night";p=pf=="dawn"?.08:pf=="dusk"?.9:.5}
  p=Math.min(1,Math.max(0,p));
  document.documentElement.dataset.tod=t;var o=$("orb");if(o){o.style.left=(8+p*84)+"%";o.style.top=(60-Math.sin(Math.PI*p)*44)+"%";o.className=day?"sun":"moon"}}
+// ===== Background utilities: style presets, layers, river colour, effects, own photo, speed, dim, card look =====
+var BGX="gd_bgx",BGP_K="gd_bgp",BGD={m:"sky",cl:1,st:1,wv:1,gh:1,ob:1,wc:"auto",fx:"none",fa:"normal",sp:"normal",dm:0,cg:"soft"},
+BGP=[["scene","🌄 Ganga scene",{m:"sky",cl:1,st:1,wv:1,gh:1,ob:1}],["clear","☁️ Clear sky",{m:"sky",cl:1,st:1,wv:0,gh:0,ob:1}],["river","🌊 River",{m:"sky",cl:0,st:1,wv:1,gh:0,ob:1}],["grad","🎨 Gradient",{m:"sky",cl:0,st:0,wv:0,gh:0,ob:0}],["plain","⬜ Plain",{m:"plain",cl:0,st:0,wv:0,gh:0,ob:0}],["photo","🖼️ My photo",{m:"photo",cl:0,st:0,wv:0,gh:0,ob:0}]],
+BGW={blue:["Blue","#2aa6d6","#1b86c4","#0f6aa8"],green:["Emerald","#34d399","#10b981","#047857"],violet:["Violet","#a78bfa","#7c3aed","#4c1d95"],sunset:["Sunset","#fbbf77","#f97362","#9d174d"]},
+BGS={calm:1.8,normal:1,lively:.55},BGA={few:.5,normal:1,many:1.8},BGN={petals:26,rain:110,fire:28},
+FX={c:null,x:null,p:[],t:0,k:"none",run:0,sig:"",w:0,h:0,d:1};
+function bgx(){var o={};try{o=JSON.parse(localStorage.getItem(BGX))||{}}catch(e){}return Object.assign({},BGD,o)}
+function bgPh(){try{return localStorage.getItem(BGP_K)||""}catch(e){return""}}
+function bgSave(p){var x=Object.assign(bgx(),p);try{localStorage.setItem(BGX,JSON.stringify(x))}catch(e){toast("Could not save background settings on this device.")}}
+function bgPut(p){bgSave(p);bgApply();bgDraw()}
+function bgApply(){var H=document.documentElement,x=bgx(),b=$("bg"),ph=bgPh(),M={cl:"nocl",st:"nost",wv:"nowv",gh:"nogh",ob:"noob"},k;
+ for(k in M){if(x[k])H.removeAttribute("data-"+M[k]);else H.setAttribute("data-"+M[k],"1")}
+ b.style.background=x.m=="plain"?"var(--bg)":(x.m=="photo"&&ph)?'url("'+ph+'") center/cover no-repeat':"";
+ H.style.setProperty("--spd",BGS[x.sp]||1);b.style.setProperty("--dim",(x.dm||0)/100);
+ if(x.wc!="auto"&&BGW[x.wc]){H.style.setProperty("--w1",BGW[x.wc][1]);H.style.setProperty("--w2",BGW[x.wc][2]);H.style.setProperty("--w3",BGW[x.wc][3])}else["--w1","--w2","--w3"].forEach(function(v){H.style.removeProperty(v)});
+ H.dataset.cg=x.cg;bgFx();bgPrev()}
+function bgPrev(){var p=$("bgp");if(!p)return;var x=bgx(),ph=bgPh();p.style.background=x.m=="plain"?"var(--bg)":(x.m=="photo"&&ph)?'url("'+ph+'") center/cover no-repeat':"";
+ p.querySelector(".bgo").style.display=x.ob?"":"none";p.querySelectorAll("i").forEach(function(i){i.style.display=x.wv?"":"none"})}
+function bgShrink(f){return new Promise(function(ok,no){var r=new FileReader();r.onerror=no;r.onload=function(){var im=new Image();im.onerror=function(){no(new Error("Unsupported photo. Use JPG or PNG."))};im.onload=function(){var k=Math.min(1,1280/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext("2d").drawImage(im,0,0,c.width,c.height);ok(c.toDataURL("image/jpeg",.72))};im.src=r.result};r.readAsDataURL(f)})}
+// ambient effects (canvas): petals, rain, fireflies
+function fxSize(){if(!FX.c)return;FX.d=Math.min(2,window.devicePixelRatio||1);FX.w=innerWidth;FX.h=innerHeight;FX.c.width=Math.round(FX.w*FX.d);FX.c.height=Math.round(FX.h*FX.d)}
+function fxInit(){if(FX.c)return;var c=document.createElement("canvas");c.id="fx";c.style.cssText="position:absolute;inset:0;width:100%;height:100%;pointer-events:none";$("bg").appendChild(c);FX.c=c;FX.x=c.getContext("2d");fxSize();addEventListener("resize",fxSize)}
+function fxLoop(){if(!FX.run)return;FX.t=requestAnimationFrame(fxLoop);if(document.hidden||document.documentElement.dataset.rm)return;
+ var c=FX.x,w=FX.w,h=FX.h,k=FX.k,a=FX.p,i,p,t=performance.now();c.setTransform(FX.d,0,0,FX.d,0,0);c.clearRect(0,0,w,h);
+ for(i=0;i<a.length;i++){p=a[i];
+  if(k=="petals"){p.y+=.5+p.s*.9;p.x+=Math.sin(t*.001+p.ph)*.7;p.r+=.015*p.s;if(p.y>h+14){p.y=-14;p.x=Math.random()*w}
+   c.save();c.translate(p.x,p.y);c.rotate(p.r);c.fillStyle=["#ffb02e","#ff8a1f","#ffd166"][i%3];c.globalAlpha=.9;c.beginPath();c.ellipse(0,0,7*p.s,3.4*p.s,0,0,6.283);c.fill();c.restore()}
+  else if(k=="rain"){p.y+=10+p.s*6;p.x-=1.6;if(p.y>h){p.y=-20;p.x=Math.random()*(w+60)}c.strokeStyle="rgba(210,230,255,.5)";c.lineWidth=1;c.beginPath();c.moveTo(p.x,p.y);c.lineTo(p.x-2,p.y+12*p.s+4);c.stroke()}
+  else{p.v+=(Math.random()-.5)*.18;p.x+=Math.cos(p.v)*.45;p.y+=Math.sin(p.v)*.35;if(p.x<-10)p.x=w+10;if(p.x>w+10)p.x=-10;if(p.y<-10)p.y=h+10;if(p.y>h+10)p.y=-10;
+   var al=.3+.7*Math.abs(Math.sin(t*.0015+p.ph)),g=c.createRadialGradient(p.x,p.y,0,p.x,p.y,10*p.s+4);g.addColorStop(0,"rgba(255,245,150,"+al+")");g.addColorStop(1,"rgba(255,245,150,0)");c.fillStyle=g;c.beginPath();c.arc(p.x,p.y,10*p.s+4,0,6.283);c.fill()}}}
+function bgFx(){var x=bgx(),rm=document.documentElement.dataset.rm||matchMedia("(prefers-reduced-motion:reduce)").matches,sig=x.fx+x.fa;
+ if(x.fx=="none"||rm){cancelAnimationFrame(FX.t);FX.run=0;FX.sig="";if(FX.c)FX.x.clearRect(0,0,FX.c.width,FX.c.height);return}
+ if(sig==FX.sig&&FX.run)return;FX.sig=sig;cancelAnimationFrame(FX.t);fxInit();FX.k=x.fx;
+ var n=Math.round(BGN[x.fx]*(BGA[x.fa]||1)),a=[],i;for(i=0;i<n;i++)a.push({x:Math.random()*FX.w,y:Math.random()*FX.h,s:.6+Math.random()*.9,r:Math.random()*6.28,v:Math.random()*6.28,ph:Math.random()*6.28});
+ FX.p=a;FX.run=1;FX.t=requestAnimationFrame(fxLoop)}
+function bgRand(){var P=BGP.slice(0,4),r=function(a){return a[Math.floor(Math.random()*a.length)]},p=r(P)[2];
+ try{localStorage.setItem(BGK,r(BGO.slice(1))[0])}catch(e){}tod();bgPut(Object.assign({},p,{wc:r(["auto"].concat(Object.keys(BGW))),fx:r(["none","petals","rain","fire"])}));toast("Fresh look applied.")}
+function bgDraw(){var box=$("sv-bg");if(!box)return;var x=bgx(),ph=bgPh(),H=document.documentElement,
+ chip=function(k,v,t,on){return'<button type="button" class="chip'+(on?" on":"")+'" aria-pressed="'+(on?"true":"false")+'" data-bk="'+k+'" data-bv="'+v+'">'+t+'</button>'},
+ sw=function(k,t,s){return'<div class="ax-r"><span>'+t+'<small>'+s+'</small></span><button type="button" class="sw" role="switch" aria-label="'+t+'" aria-checked="'+(x[k]?"true":"false")+'" data-bk="'+k+'" data-sw="1"></button></div>'},
+ grp=function(t,b,n){return'<div class="ax-g"><b>'+t+'</b>'+b+(n||"")+'</div>'},
+ h='<h2>Background</h2><div class="bgp" id="bgp"><span class="bgo"></span><i class="b1"></i><i class="b2"></i></div><p class="leg" style="margin:0">Changes apply instantly. Saved on this device only.</p>';
+ if(H.dataset.rm)h+='<div class="al" style="border-color:var(--mod)">Reduce motion is on in Accessibility, so the background is hidden. Turn it off to see these settings.</div>';
+ h+=grp("Time of day",'<div class="chips" id="bgc" role="group" aria-label="Time of day"></div>','<p class="note" id="bgm"></p>');
+ h+=grp("Style",'<div class="chips">'+BGP.map(function(p){var on=Object.keys(p[2]).every(function(k){return x[k]==p[2][k]});return'<button type="button" class="chip'+(on?" on":"")+'" data-bpre="'+p[0]+'">'+p[1]+'</button>'}).join("")+'</div>',
+  '<div class="chips" style="margin-top:8px"><button type="button" class="chip" data-bph="pick">📷 '+(ph?"Change photo":"Upload a photo")+'</button>'+(ph?'<button type="button" class="chip" data-bph="del" style="color:var(--poor)">Remove photo</button>':"")+'</div><p class="note">Your photo stays on this device and is shrunk to save space.</p><input type="file" id="bg-file" accept="image/*" hidden>');
+ h+=grp("Layers",sw("ob","Sun and moon","Moves across the sky with the time")+sw("cl","Clouds","Slow drifting clouds")+sw("st","Stars","Twinkling stars at night")+sw("wv","River waves","Moving water at the bottom")+sw("gh","Ghat and temple","Silhouette on the left"));
+ h+=grp("River colour",'<div class="chips">'+chip("wc","auto","Auto",x.wc=="auto")+Object.keys(BGW).map(function(k){var w=BGW[k];return chip("wc",k,'<span class="opt"><i style="background:linear-gradient(135deg,'+w[1]+','+w[3]+')"></i>'+w[0]+'</span>',x.wc==k)}).join("")+'</div>');
+ h+=grp("Floating effect",'<div class="chips">'+chip("fx","none","None",x.fx=="none")+chip("fx","petals","🌼 Petals",x.fx=="petals")+chip("fx","rain","🌧️ Rain",x.fx=="rain")+chip("fx","fire","✨ Fireflies",x.fx=="fire")+'</div>',
+  x.fx=="none"?"":'<div class="chips" style="margin-top:8px">'+chip("fa","few","Few",x.fa=="few")+chip("fa","normal","Normal",x.fa=="normal")+chip("fa","many","Many",x.fa=="many")+'</div>');
+ h+=grp("Motion speed",'<div class="chips">'+chip("sp","calm","Calm",x.sp=="calm")+chip("sp","normal","Normal",x.sp=="normal")+chip("sp","lively","Lively",x.sp=="lively")+'</div>');
+ h+='<div class="ax-g"><b>Dim the background <span id="bg-dv" class="note" style="margin:0 0 0 6px">'+x.dm+'%</span></b><input type="range" id="bg-dim" min="0" max="60" step="5" value="'+x.dm+'" aria-label="Dim background"><p class="note">More dimming makes text easier to read on bright skies or photos.</p></div>';
+ h+=grp("Card look",'<div class="chips">'+chip("cg","solid","Solid",x.cg=="solid")+chip("cg","soft","Soft",x.cg=="soft")+chip("cg","glass","Glass",x.cg=="glass")+'</div>');
+ h+='<button type="button" class="btn s" id="bg-rand">🎲 Surprise me</button><button type="button" class="btn s" id="bg-reset" style="color:var(--poor)">Reset background</button>';
+ box.innerHTML=h;bgChips();bgPrev()}
+(function(){var box=$("sv-bg");if(!box)return;
+ box.addEventListener("click",function(e){var t=e.target.closest("[data-bk],[data-bpre],[data-bph],#bg-rand,#bg-reset");if(!t)return;
+  if(t.dataset.bpre){var p=BGP.filter(function(q){return q[0]==t.dataset.bpre})[0];if(p[0]=="photo"&&!bgPh()){$("bg-file").click();return}bgPut(p[2]);return}
+  if(t.dataset.bph=="pick"){$("bg-file").click();return}
+  if(t.dataset.bph=="del"){try{localStorage.removeItem(BGP_K)}catch(x){}bgPut(bgx().m=="photo"?{m:"sky"}:{});toast("Photo removed.");return}
+  if(t.id=="bg-rand"){bgRand();return}
+  if(t.id=="bg-reset"){try{localStorage.removeItem(BGX);localStorage.removeItem(BGK)}catch(x){}tod();bgApply();bgDraw();toast("Background reset.");return}
+  var k=t.dataset.bk,o={};if(!k)return;if(t.dataset.sw)o[k]=bgx()[k]?0:1;else o[k]=t.dataset.bv;bgPut(o)});
+ box.addEventListener("input",function(e){if(e.target.id!="bg-dim")return;var v=+e.target.value;$("bg-dv").textContent=v+"%";bgSave({dm:v});bgApply()});
+ box.addEventListener("change",async function(e){if(e.target.id!="bg-file")return;var f=e.target.files[0];if(!f)return;toast("Preparing your photo…");
+  try{var d=await bgShrink(f);localStorage.setItem(BGP_K,d);bgPut({m:"photo",cl:0,st:0,wv:0,gh:0,ob:0});toast("Photo set as background.")}catch(x){toast(x&&x.name=="QuotaExceededError"?"Not enough space on this device for this photo.":(x&&x.message)||"Could not use this photo.")}});
+})();
 function bgChips(){var b=$("bgc");if(!b)return;var cu=bgGet();b.innerHTML="";BGO.forEach(function(o){var c=document.createElement("button");c.type="button";c.className="chip"+(o[0]==cu?" on":"");c.setAttribute("aria-pressed",o[0]==cu?"true":"false");c.innerHTML='<span class="opt"><i style="background:'+o[2]+'"></i>'+o[1]+'</span>';c.onclick=function(){bgSet(o[0])};b.appendChild(c)});
  var m=$("bgm");if(m)m.textContent=cu=="auto"?"Auto: the sky changes with the time of day.":"Fixed: the sky stays on your choice until you pick Auto."}
-tod();bgChips();setInterval(tod,60000);
+tod();bgApply();bgDraw();setInterval(tod,60000);
 (function(){var ly=window.scrollY||0,tk=false;function upd(){tk=false;var y=window.scrollY||0,d=y-ly,b=document.body,mx=document.documentElement.scrollHeight-window.innerHeight;if(y<=40||y>=mx-40||d<-6)b.classList.remove("nh");else if(d>6)b.classList.add("nh");if(Math.abs(d)>6)ly=y}window.addEventListener("scroll",function(){if(!tk){tk=true;requestAnimationFrame(upd)}},{passive:true});document.addEventListener("click",function(e){var b=document.body,t=e.target;if(b.classList.contains("gate")||!t||!t.closest)return;if(t.closest("a,button,input,select,textarea,label,summary,details,nav,svg,#toast,#mw,.leaflet-container,[onclick],[data-t]"))return;var sl=window.getSelection&&String(window.getSelection());if(sl)return;b.classList.toggle("nh")})})();
 setInterval(function(){var a=$("adm");if(a&&a.classList.contains("on")&&X.adm())render()},30000);
 // ===== Dynamic notifications: stacked, merged, realtime + helpful tips =====
@@ -990,7 +1125,7 @@ function tip(){if(off||!pref("tp")||document.hidden||!window.X||!X.uid()||box().
 setTimeout(tip,25000);setInterval(tip,55000);
 window.addEventListener("offline",function(){add("You are offline. Showing the last loaded data.",{type:"warn",icon:"\u{1F4F4}"})});window.addEventListener("online",function(){add("Back online. Refreshing data\u2026",{type:"ok",icon:"\u{1F310}"})});
 return{add:add,act:act,live:live}})();
-function setView(v){$("set").dataset.v=v||"";if(v=="ax"&&window.AXD)AXD();window.scrollTo(0,0)}
+function setView(v){$("set").dataset.v=v||"";if(v=="ax"&&window.AXD)AXD();if(v=="bg")bgDraw();window.scrollTo(0,0)}
 // ===== Accessibility & display settings (saved on this device only) =====
 (function(){var KEY="gd_ax",DEF={th:"auto",ts:0,fx:"slide",ah:1,rm:0,hc:0,rf:0,ln:1,tp:1,vw:"auto"},ax=Object.assign({},DEF),H=document.documentElement,ap=$("ap"),mq=null;
 try{ax=Object.assign(ax,JSON.parse(localStorage.getItem(KEY))||{})}catch(e){}
@@ -1083,7 +1218,7 @@ document.addEventListener("click",function(e){var t=e.target.closest&&e.target.c
  else if(i=="ex-my"){var m=R.filter(mineR);if(!m.length){T("You have no reports to export yet");return}csv("my-reports.csv",[["Date","Category","Station","Location","Status","Details"]].concat(m.map(function(r){return[r.created_at,r.category,sname(r.station_id),r.location_text,r.status||"reported",r.description]})))}
  else if(i=="ex-sh")shr("Live Ganga water quality and citizen reports");
  else if(i=="ex-cp")copy();
- else if(i=="rs-dev"){if(!confirm("Reset saved theme, background, text size, layout and home station on this device?"))return;["gd_ax","gd_bg","gd_home","ss_pledge"].forEach(function(k){try{localStorage.removeItem(k)}catch(x){}});location.reload()}});
+ else if(i=="rs-dev"){if(!confirm("Reset saved theme, background, text size, layout and home station on this device?"))return;["gd_ax","gd_bg","gd_bgx","gd_bgp","gd_home","ss_pledge"].forEach(function(k){try{localStorage.removeItem(k)}catch(x){}});location.reload()}});
 function shr(t){var d={title:"GangaDrishti",text:t,url:location.href};if(navigator.share)navigator.share(d).catch(function(){});else copy()}
 /* ===== Profile tab: impact, my reports, quick actions ===== */
 var lb=$("lb");
@@ -1140,5 +1275,41 @@ document.addEventListener("click",function(e){var t=e.target.closest&&e.target.c
  else if(d.ri){var r=R5().filter(function(x){return x.id==d.ri})[0];if(r)ics(r)}});
 setTimeout(tick,3000);setInterval(tick,3e4);document.addEventListener("visibilitychange",function(){if(!document.hidden)tick()});
 })();
+</script>
+<script>
+document.addEventListener("input",function(e){var t=e.target;if(t.dataset&&t.dataset.ba)t.parentNode.style.setProperty("--p",t.value+"%")});
+(function(){var el=document.getElementById("top");if(!el)return;
+var BT=[[10,"First Step","🌱"],[50,"Ghat Friend","🌿"],[120,"Ganga Guardian","🛡️"],[250,"Namami Hero","🏆"]],MD=["🥇","🥈","🥉"],MC=["gold","silver","bronze"],HT=[120,96,80],per="all",rows=null,err="",busy=0,first=1,
+FACT=["Dissolved oxygen above 5 mg/L is needed for most river life to thrive.","The Gangetic dolphin is India's national aquatic animal.","BOD shows how much oxygen microbes use to break down waste. Lower is cleaner.","A high coliform count is a sign that sewage is reaching the river.","Namami Gange is the Government of India's flagship programme to clean the Ganga.","Plastic can take hundreds of years to break down, so every bag you remove matters.","A healthy river keeps its pH between 6.5 and 8.5."];
+function tier(p){var t=null;BT.forEach(function(b){if(p>=b[0])t=b});return t}
+function nxt(p){return BT.find(function(b){return p<b[0]})}
+function day(o){return new Date(Date.now()-(o||0)*864e5).toLocaleDateString("en-CA")}
+function sk(){try{return JSON.parse(localStorage.getItem("gd_streak")||"{}")}catch(e){return{}}}
+function ci(){var s=sk();if(s.d==day())return;s={d:day(),n:s.d==day(1)?(s.n||0)+1:1};try{localStorage.setItem("gd_streak",JSON.stringify(s))}catch(e){}if(window.hap)hap("ok");if(window.celebrate)celebrate("Day "+s.n+" streak!");draw()}
+function goal(m,i){if(i<0)return"Earn your first points: report a pollution source (+10) or finish a cleanup (+30).";if(i==0)return"You are #1. Keep your lead!";var g=rows[i-1].pts-m.pts+1,v=m.kind=="volunteer";return"You need "+g+" more points to pass "+esc(rows[i-1].name)+": about "+(v&&g>10?Math.ceil(g/30)+" cleanup"+(g>30?"s":"")+" (+30 each)":Math.ceil(g/10)+" report"+(g>10?"s":"")+" (+10 each)")+"."}
+function cu(){el.querySelectorAll("[data-cu]").forEach(function(e){var to=+e.dataset.cu,t0=performance.now();(function f(t){var k=Math.min(1,(t-t0)/800);e.textContent=Math.round(to*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(f)})(t0)})}
+function draw(){var g=window.GM&&GM.on(),h='<div class="card"><div class="r"><h2>🏆 Leaderboard</h2><button type="button" class="del" data-rf="1">Refresh</button></div>';
+ if(!g)h+='<div class="chips"><button type="button" class="chip'+(per=="all"?" on":"")+'" data-per="all">All time</button><button type="button" class="chip'+(per=="week"?" on":"")+'" data-per="week">This week</button></div>';
+ h+='<p class="note" style="margin:6px 0 0">'+(g?"Guest space: this ranking shows only you. Real members are never visible here.":"Live from the main database. Members and guests are ranked together"+(per=="week"?" (guests are not counted in the weekly board)":"")+".")+'</p>';
+ if(rows==null)h+=err?'<p class="note">'+esc(err)+"</p>":'<p class="note">Loading…</p>';else if(!rows.length)h+='<p class="note">No points yet. Be the first on the board!</p>';
+ else{var t3=rows.slice(0,3),po=t3.length>1?[1,0,2].filter(function(i){return t3[i]}):[0];h+='<div class="pod">'+po.map(function(i){var r=t3[i];return'<div class="pd"><div class="bk '+MC[i]+'" style="height:'+HT[i]+'px;animation-delay:'+(i?i*.12:.3)+'s"><span class="md">'+MD[i]+'</span><span class="pp" data-cu="'+r.pts+'">0</span></div><div class="nm">'+esc(r.name)+(r.kind=="guest"?" 🧪":"")+"</div></div>"}).join("")+"</div>"}
+ h+="</div>";
+ if(rows&&rows.length){var mi=rows.findIndex(function(r){return r.me}),m=mi>=0?rows[mi]:null;
+  if(window.X&&X.uid()){h+='<div class="card"><h2>Your standing</h2>';if(m){var tr=tier(m.pts),nx=nxt(m.pts);h+='<div class="r"><b style="font-size:18px">'+(mi<3?MD[mi]+" ":"")+"Rank #"+m.rnk+'</b><span class="pill good">'+m.pts+' pts</span></div>'+(tr?'<p style="margin:6px 0 0">'+tr[2]+" "+tr[1]+(mi<3?" · "+["Gold","Silver","Bronze"][mi]+" medal":"")+"</p>":"")+(nx?'<div class="bar"><div style="width:'+Math.min(100,m.pts/nx[0]*100)+'%;background:var(--teal)"></div></div><p class="note">'+(nx[0]-m.pts)+' more points for "'+nx[2]+" "+nx[1]+'"</p>':"")+'<p class="note" style="margin:6px 0 0">🎯 '+goal(m,mi)+"</p>"}else h+='<p class="note" style="margin:0">'+goal(null,-1)+"</p>";h+="</div>"}
+  h+=rows.slice(3).map(function(r,i){var tr=tier(r.pts),n=i+3;return'<div class="lr'+(r.me?" me":"")+'" style="animation-delay:'+(first?Math.min(i,12)*.04:0)+'s"><span class="rn">'+r.rnk+'</span><span class="av">'+esc(r.name.charAt(0).toUpperCase())+'</span><div style="flex:1;min-width:0"><b>'+esc(r.name)+(r.me?'<span class="mine">YOU</span>':"")+'</b> <span class="pill '+(r.kind=="guest"?"moderate":r.kind=="volunteer"?"good":"rep")+'">'+(r.kind=="guest"?"🧪 Guest":r.kind=="volunteer"?"Volunteer":"Citizen")+"</span>"+(tr?" <span title=\""+tr[1]+"\">"+tr[2]+"</span>":"")+'<div class="lrb"><i style="width:'+Math.round(r.pts/rows[0].pts*100)+'%"></i></div></div><b>'+r.pts+"</b></div>"}).join("")}
+ var s=sk(),fa=FACT[Math.floor(Date.now()/864e5)%FACT.length],dn=s.d==day();
+ h+='<div class="card"><div class="stk"><span class="fl">'+(dn?"🔥":"🌊")+'</span><div style="flex:1"><b>'+(s.n||0)+'-day Ganga streak</b><div class="note" style="margin:0">Check in daily to keep your streak (a habit tracker, no points).</div></div><button type="button" class="chip'+(dn?"":" on")+'" data-ci="1"'+(dn?" disabled":"")+">"+(dn?"Done ✓":"Check in")+'</button></div><p style="margin:10px 0 0;font-size:13px">💡 <b>Ganga fact:</b> '+fa+"</p></div>";
+ el.innerHTML=h;first=0;cu();
+ el.querySelectorAll("[data-per]").forEach(function(b){b.onclick=function(){per=b.dataset.per;rows=null;first=1;draw();load()}});
+ el.querySelectorAll("[data-rf]").forEach(function(b){b.onclick=function(){first=1;load()}});
+ el.querySelectorAll("[data-ci]").forEach(function(b){b.onclick=ci})}
+async function load(){if(busy)return;busy=1;try{var g=window.GM&&GM.on(),r;
+ if(g){var q=await sb.from("profiles").select("id,name,role,pts").order("pts",{ascending:false}).limit(50);if(q.error)throw q.error;var uid=window.X?X.uid():null;r=(q.data||[]).filter(function(p){return p.pts>0}).map(function(p,i){return{rnk:i+1,name:p.name,pts:p.pts,kind:p.role,me:p.id==uid}})}
+ else{var x=await sb.rpc("get_leaderboard",{p_period:per});if(x.error)throw x.error;r=x.data||[]}
+ rows=r;err="";var m=r.find(function(a){return a.me});if(m&&!g){var k="gd_rk",o=+localStorage.getItem(k)||0;if(o&&m.rnk<o){if(window.toast)toast("🎉 You moved up to #"+m.rnk);if(window.celebrate&&m.rnk<=3)celebrate("You are on the podium!")}try{localStorage.setItem(k,m.rnk)}catch(e){}}
+ }catch(e){err="Could not load the leaderboard: "+(e.message||e);rows=null}busy=0;draw()}
+document.querySelector("nav").addEventListener("click",function(e){var b=e.target.closest("button");if(b&&b.dataset.t=="top"){first=1;load()}});
+setInterval(function(){if(el.classList.contains("on")&&!document.hidden)load()},30000);
+if(location.hash=="#top")load();draw()})();
 </script>
 </body></html>
