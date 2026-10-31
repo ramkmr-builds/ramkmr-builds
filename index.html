@@ -433,6 +433,9 @@ html[data-vw=desktop] body.gate main{display:grid;grid-template-columns:minmax(0
 html[data-vw=desktop] body.gate .hw{max-width:1080px}
 html[data-vw=desktop] body.gate .gx-hero{position:sticky;top:24px;padding:52px 32px 32px}
 html[data-vw=desktop] body.gate .gx-hi b{font-size:34px}
+
+#set[data-v=tl] #sv-tl,#set[data-v=ab] #sv-ab,#set[data-v=tl] #sv-back,#set[data-v=ab] #sv-back{display:block}
+#set[data-v=tl] #sv-menu,#set[data-v=ab] #sv-menu{display:none}
 </style></head><body class="gate"><div id="bg" aria-hidden="true"><div id="st"></div><div id="orb"></div><i class="cl c1"></i><i class="cl c2"></i><i class="cl c3"></i>
 <svg class="gh" viewBox="0 0 520 200" aria-hidden="true"><path d="M0 60V200H520V180H480V160H440V140H400V120H360V100H320V80H0z"/><path d="M40 62V-20Q40 -50 70 -80Q100 -50 100 -20V62z" transform="translate(0 70)"/><path d="M120 132V100Q120 78 150 78Q180 78 180 100V132z"/><path d="M215 132V80Q215 50 245 28Q275 50 275 80V132z"/></svg>
 <svg class="wv w1" viewBox="0 0 2880 200" preserveAspectRatio="none"><path d="M0 100Q180 40 360 100T720 100T1080 100T1440 100T1800 100T2160 100T2520 100T2880 100V200H0z"/></svg>
@@ -495,7 +498,7 @@ var SB_URL="https://jhzkbrznuvvswkmujphw.supabase.co",SB_KEY="sb_publishable_8ha
 var sb=null;
 var CATS=["Drain / sewage","Industrial discharge","Waste dumping","Dead animals","Other"];
 var $=function(i){return document.getElementById(i)},NS="http://www.w3.org/2000/svg";
-var S=[],OUT=[],R=[],V=[],C=[],RT=[],SER=[],CP=[],sel=0,selId="patna",cat=0,thr=2,cid="",ST={};
+var S=[],OUT=[],R=[],V=[],C=[],RT=[],SER=[],CP=[],sel=0,selId=(function(){try{return localStorage.getItem("gd_home")||"patna"}catch(e){return"patna"}})(),cat=0,thr=2,cid="",ST={};
 var FL=["New","Inspecting","Verified","Action taken"];
 
 try{cid=localStorage.getItem("gdc");if(!cid){cid="u"+Math.random().toString(36).slice(2,9);localStorage.setItem("gdc",cid)}}catch(e){cid="u"+Math.random().toString(36).slice(2,9)}
@@ -984,5 +987,54 @@ addEventListener("keydown",function(e){if(e.key==="Escape")cls()});
 new MutationObserver(function(){if(!B.classList.contains("gate")&&(B.classList.contains("gx-login")||B.classList.contains("gx-closing")))B.classList.remove("gx-login","gx-closing")}).observe(B,{attributes:true,attributeFilter:["class"]});
 function sc(){if(q)return;q=1;requestAnimationFrame(function(){q=0;u.classList.toggle("on",B.classList.contains("gate")&&!B.classList.contains("gx-login")&&b.getBoundingClientRect().bottom<0)})}
 addEventListener("scroll",sc,{passive:true});addEventListener("resize",sc)})();
+</script>
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)},T=function(m,o){try{toast(m,o)}catch(e){}},dt=function(s){return new Date(s).toLocaleDateString()};
+function csv(n,rows){var t=rows.map(function(r){return r.map(function(c){c=c==null?"":String(c);return/[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c}).join(",")}).join("\n"),a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+t],{type:"text/csv"}));a.download=n;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500)}
+function copy(){var u=location.origin+location.pathname;if(navigator.clipboard)navigator.clipboard.writeText(u).then(function(){T("Link copied")},function(){});else T(u)}
+/* ===== Settings: Tools & data, About & help ===== */
+function mi(v,ic,t,s){return'<button type="button" class="card mi" onclick="setView(\''+v+'\')"><span class="mic">'+ic+'</span><span class="mt"><b>'+t+'</b><small>'+s+'</small></span><span class="mch">›</span></button>'}
+$("sv-menu").insertAdjacentHTML("beforeend",mi("tl","🧰","Tools &amp; data","Water checker, home station, exports, reset")+mi("ab","ℹ️","About &amp; help","Points, colours, FAQ and data sources"));
+var F=function(i,l,st){return'<div><label>'+l+'</label><input id="'+i+'" type="number" inputmode="decimal" step="'+st+'"></div>'};
+$("sv-ax").insertAdjacentHTML("afterend",'<div class="sv" id="sv-tl"><div class="card"><h2>Water quality checker</h2><p class="leg" style="margin:0">Enter values from a test kit or report to see which CPCB class the water fits. Fill any of them.</p><div class="grid">'+F("wq-ph","pH",".1")+F("wq-do","Dissolved oxygen (mg/L)",".1")+F("wq-bod","BOD (mg/L)",".1")+F("wq-co","Total coliform (MPN/100 mL)","1")+'</div><button type="button" class="btn s" id="wq-cur">Fill from the selected station</button><div id="wq-out" style="margin-top:10px"></div></div>'
++'<div class="card"><h2>My home station</h2><p class="leg" style="margin:0 0 6px">The dashboard opens with this station.</p><select id="hs-sel"></select><button type="button" class="btn s" id="hs-save">Save home station</button></div>'
++'<div class="card"><h2>Export and share</h2><button type="button" class="btn s" id="ex-st">Download station readings (CSV)</button><button type="button" class="btn s" id="ex-my">Download my reports (CSV)</button><button type="button" class="btn s" id="ex-sh">Share this website</button><button type="button" class="btn s" id="ex-cp">Copy website link</button></div>'
++'<div class="card" style="border-color:var(--poor)"><h2>Reset this device</h2><p class="note" style="margin:0">Clears saved theme, background, text size, layout and home station on this device. Your account and reports are not touched.</p><button type="button" class="btn s" id="rs-dev" style="color:var(--poor)">Reset saved preferences</button></div></div>'
++'<div class="sv" id="sv-ab"><div class="card"><h2>How points work</h2><table class="tb"><tr><td>Report a pollution source</td><td><b>+10</b></td></tr><tr><td>Accept a cleanup (volunteers)</td><td><b>+5</b></td></tr><tr><td>Finish a cleanup with an after photo</td><td><b>+30</b></td></tr></table><p class="note">Badges: First Step at 10, Ghat Friend at 50, Ganga Guardian at 120, Namami Hero at 250 points.</p></div>'
++'<div class="card"><h2>Colours and limits</h2><p class="leg" style="margin:0">Green: all within limits. Yellow: one limit crossed. Red: two or more. Grey: no readings yet.</p><p class="note">Limits used: dissolved oxygen at least 5 mg/L, BOD at most 3 mg/L, pH 6.5 to 8.5.</p></div>'
++'<div class="card"><h2>Questions</h2>'+[["Is the data live?","Station cards use demo sensor readings that refresh in real time. The CPCB tables are real yearly values from the CPCB report and are not live."],["Who can see my report?","Everyone can see reports, votes and comments. Admins can reject or remove a report."],["How do I become a volunteer?","Choose Volunteer when you register, or apply from your profile tab. An admin approves each request."],["What is guest mode?","A private sandbox on your device. It never changes the real website or shows real members."],["Why does the site ask to confirm my email?","New accounts may need a confirmation mail before the first login. Check your spam folder too."]].map(function(q){return'<details style="padding:8px 0;border-top:1px solid var(--line)"><summary style="cursor:pointer;font-weight:600">'+q[0]+'</summary><p class="note">'+q[1]+'</p></details>'}).join("")+'</div>'
++'<div class="card"><h2>Data sources</h2><p class="note" style="margin:0">Water quality: CPCB and NWMP. Map: OpenStreetMap with Leaflet. Citizen reports are community-submitted and not official findings.</p></div></div>');
+var _sv=window.setView;window.setView=function(v){_sv(v);if(v=="tl")fillTl()};
+function fillTl(){var h=$("hs-sel"),cu="";try{cu=localStorage.getItem("gd_home")||""}catch(e){}h.innerHTML=S.map(function(s){return'<option value="'+esc(s.id)+'"'+((cu||selId)==s.id?" selected":"")+'>'+esc(s.n)+'</option>'}).join("")}
+function wq(){var g=function(i){var v=$(i).value;return v===""?null:+v},p=g("wq-ph"),d=g("wq-do"),b=g("wq-bod"),c=g("wq-co"),o=$("wq-out");
+ if(p==null&&d==null&&b==null&&c==null){o.innerHTML="";return}
+ var N=[["pH",p,p==null||(p>=6.5&&p<=8.5),p==null||(p>=6.5&&p<=8.5),"6.5 to 8.5"],["Dissolved oxygen",d,d==null||d>=6,d==null||d>=5,"at least 6 (A) or 5 (B)"],["BOD",b,b==null||b<=2,b==null||b<=3,"at most 2 (A) or 3 (B)"],["Coliform",c,c==null||c<=50,c==null||c<=500,"at most 50 (A) or 500 (B)"]],
+ A=N.every(function(x){return x[2]}),B=N.every(function(x){return x[3]}),bad=N.filter(function(x){return x[1]!=null&&!x[3]});
+ o.innerHTML='<span class="pill '+(A?"good":B?"moderate":"poor")+'">'+(A?"Class A":B?"Class B":"Below class B")+'</span><p style="margin:6px 0 0">'+(A?"Fit for drinking after normal disinfection.":B?"Fit for outdoor bathing, not for drinking.":"Not suitable for bathing or drinking.")+'</p>'+bad.map(function(x){return'<div class="al">'+x[0]+' '+x[1]+': needs '+x[4]+'</div>'}).join("")+'<p class="note">Indicative only. Only a lab test is official.</p>'}
+document.addEventListener("input",function(e){if(/^wq-/.test(e.target.id))wq()});
+document.addEventListener("click",function(e){var t=e.target.closest&&e.target.closest("button"),i=t&&t.id;if(!i)return;
+ if(i=="wq-cur"){var s=cur();if(!s){T("No station loaded yet");return}$("wq-ph").value=s.pH==null?"":s.pH;$("wq-do").value=s.DO==null?"":s.DO;$("wq-bod").value=s.BOD==null?"":s.BOD;wq();T("Filled from "+s.n)}
+ else if(i=="hs-save"){var v=$("hs-sel").value;try{localStorage.setItem("gd_home",v)}catch(x){}selId=v;refreshReadings();T("Home station saved")}
+ else if(i=="ex-st")csv("ganga-stations.csv",[["Station","State","Latitude","Longitude","pH","DO mg/L","BOD mg/L","Turbidity NTU","Status","Last reading"]].concat(S.map(function(s){return[s.n,s.state,s.lat,s.lng,s.pH,s.DO,s.BOD,s.T,stat(s),s.at||""]})));
+ else if(i=="ex-my"){var m=R.filter(mineR);if(!m.length){T("You have no reports to export yet");return}csv("my-reports.csv",[["Date","Category","Station","Location","Status","Details"]].concat(m.map(function(r){return[r.created_at,r.category,sname(r.station_id),r.location_text,r.status||"reported",r.description]})))}
+ else if(i=="ex-sh")shr("Live Ganga water quality and citizen reports");
+ else if(i=="ex-cp")copy();
+ else if(i=="rs-dev"){if(!confirm("Reset saved theme, background, text size, layout and home station on this device?"))return;["gd_ax","gd_bg","gd_home","ss_pledge"].forEach(function(k){try{localStorage.removeItem(k)}catch(x){}});location.reload()}});
+function shr(t){var d={title:"GangaDrishti",text:t,url:location.href};if(navigator.share)navigator.share(d).catch(function(){});else copy()}
+/* ===== Profile tab: impact, my reports, quick actions ===== */
+var lb=$("lb");
+function pu(){var id=X.uid(),m=X.prof(id)||{},my=R.filter(mineR),seen=V.filter(function(v){return my.some(function(r){return r.id==v.report_id})}).length,cl=R.filter(function(r){return r.cleaned_by==id}).length,pl=false;try{pl=localStorage.getItem("ss_pledge")=="1"}catch(e){}
+ var K=[[m.pts||0,"Points"],[my.length,"Reports"],[seen,"Confirmed"],[cl,"Cleanups"]];
+ return'<div class="card"><h2>My impact</h2><div class="kpis" style="margin:0">'+K.map(function(k){return'<div class="kp"><b>'+k[0]+'</b><span>'+k[1]+'</span></div>'}).join("")+'</div><p class="note">Confirmed = people who tapped "I see this too" on your reports.</p></div>'
+ +'<div class="card"><h2>Quick actions</h2><div class="chips"><button type="button" class="chip" data-pu="tab:f">📍 Report pollution</button><button type="button" class="chip" data-pu="tab:l">🧹 Cleanup board</button><button type="button" class="chip" data-pu="tab:d">📊 Dashboard</button><button type="button" class="chip" data-pu="tab:set">⚙️ Settings</button><button type="button" class="chip" data-pu="share">🔗 Share my progress</button></div></div>'
+ +'<div class="card"><h2>My recent reports</h2>'+(my.length?my.slice(0,5).map(function(r){return'<div class="r" style="padding:7px 0;border-top:1px solid var(--line);align-items:center;cursor:pointer" data-pu="tab:l"><span>'+esc(r.category)+'<span class="note" style="display:block;margin:0">Near '+esc(sname(r.station_id))+' · '+dt(r.created_at)+'</span></span>'+X.pill(r)+'</div>'}).join(""):'<p class="note" style="margin:0">No reports yet. Your first report earns 10 points.</p>')+'<button type="button" class="btn s" data-pu="csv">Download my reports (CSV)</button></div>'
+ +'<div class="card"><h2>Ganga pledge</h2>'+(pl?'<p style="margin:0">🙏 You took the pledge. Thank you for keeping the Ganga clean.</p>':'<p class="note" style="margin:0 0 6px">I will not litter at the ghat, I will report pollution I see, and I will help others do the same.</p><button type="button" class="btn" data-pu="pledge">I take the pledge</button>')+'</div>'}
+function ins(){if(document.body.classList.contains("gate")||!window.X||!X.uid()||lb.querySelector("#pu")||!lb.querySelector('button.del[onclick="X.out()"]'))return;var d=document.createElement("div");d.id="pu";d.innerHTML=pu();lb.insertBefore(d,lb.lastElementChild)}
+new MutationObserver(ins).observe(lb,{childList:true});setTimeout(ins,800);
+var _r2=window.render;window.render=function(){_r2.apply(this,arguments);var p=$("pu");if(p)try{p.innerHTML=pu()}catch(e){}};
+document.addEventListener("click",function(e){var t=e.target.closest&&e.target.closest("[data-pu]");if(!t)return;var a=t.dataset.pu;
+ if(a.indexOf("tab:")==0)tab(a.slice(4));else if(a=="share"){var m=X.prof(X.uid())||{};shr("I have "+(m.pts||0)+" points on GangaDrishti. Join me in keeping the Ganga clean.")}else if(a=="csv")$("ex-my").click();else if(a=="pledge")X.pledge()});
+})();
 </script>
 </body></html>
