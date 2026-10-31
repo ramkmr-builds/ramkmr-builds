@@ -420,9 +420,9 @@ html[data-vw=desktop] #d>.kpis{gap:14px}
 html[data-vw=desktop] .kp{padding:18px 8px}
 html[data-vw=desktop] .kp b{font-size:32px}
 html[data-vw=desktop] #d>.card:nth-child(2){grid-column:1;grid-row:2}
-html[data-vw=desktop] #det{grid-column:2;grid-row:2/4}
-html[data-vw=desktop] #cp{grid-column:1;grid-row:3}
-html[data-vw=desktop] #hot{grid-column:1/-1;grid-row:4}
+html[data-vw=desktop] #det{grid-column:2;grid-row:2/5}
+html[data-vw=desktop] #cp{grid-column:1;grid-row:4}
+html[data-vw=desktop] #hot{grid-column:1/-1;grid-row:5}
 html[data-vw=desktop] #mw:not(.full){height:440px}
 html[data-vw=desktop] #list{grid-template-columns:repeat(3,minmax(0,1fr))}
 html[data-vw=desktop] #toast{left:268px;bottom:20px}
@@ -439,6 +439,20 @@ html[data-vw=desktop] body.gate .gx-hi b{font-size:34px}
 
 #set[data-v=al] #sv-al,#set[data-v=al] #sv-back{display:block}
 #set[data-v=al] #sv-menu{display:none}
+
+/* ===== Dashboard water checker (plain language, synced with the map) ===== */
+#wqc{border-top:4px solid var(--teal)}
+.wqh{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.wqb{display:flex;gap:12px;align-items:center;padding:14px;border-radius:14px;color:#fff;margin-top:10px;box-shadow:0 6px 16px rgba(0,0,0,.18)}
+.wqb.good{background:linear-gradient(135deg,#2e9e5b,#1d8a99)}.wqb.moderate{background:linear-gradient(135deg,#d99a00,#e58a1f)}.wqb.poor{background:linear-gradient(135deg,#d64545,#b02a5b)}.wqb.nodata{background:linear-gradient(135deg,#64768a,#4a5b6d)}
+.wqb .em{font-size:34px;line-height:1;flex:none}.wqb b{display:block;font-size:17px;line-height:1.25;margin-bottom:2px}.wqb div span{font-size:13px;opacity:.96;line-height:1.4;display:block}
+.wqs{position:relative;display:flex;gap:6px;overflow-x:auto;padding:2px 0 8px;margin-top:8px;scrollbar-width:none}.wqs::-webkit-scrollbar{display:none}
+.wqs .chip{flex:none;white-space:nowrap;display:flex;align-items:center;gap:6px}.wqs .chip i{display:block;width:10px;height:10px;border-radius:50%;box-shadow:0 0 0 2px #fff}
+.wqr{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line)}.wqr:first-child{border-top:0}
+.wqr .ic2{font-size:22px;flex:none;width:30px;text-align:center}.wqr>div{flex:1;min-width:0}.wqr b{font-size:14px;display:block}.wqr small{color:var(--mut);font-size:12px;line-height:1.3;display:block}.wqr .pill{flex:none;max-width:42%;text-align:center}
+.wqt{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}.wqt .p small.x{display:block;margin-top:3px;line-height:1.3}
+.wqd{margin-top:10px;border-top:1px solid var(--line);padding-top:10px}.wqd summary{cursor:pointer;font-weight:700;font-size:14px;color:var(--teal)}
+html[data-vw=desktop] #wqc{grid-column:1;grid-row:3}
 </style></head><body class="gate"><div id="bg" aria-hidden="true"><div id="st"></div><div id="orb"></div><i class="cl c1"></i><i class="cl c2"></i><i class="cl c3"></i>
 <svg class="gh" viewBox="0 0 520 200" aria-hidden="true"><path d="M0 60V200H520V180H480V160H440V140H400V120H360V100H320V80H0z"/><path d="M40 62V-20Q40 -50 70 -80Q100 -50 100 -20V62z" transform="translate(0 70)"/><path d="M120 132V100Q120 78 150 78Q180 78 180 100V132z"/><path d="M215 132V80Q215 50 245 28Q275 50 275 80V132z"/></svg>
 <svg class="wv w1" viewBox="0 0 2880 200" preserveAspectRatio="none"><path d="M0 100Q180 40 360 100T720 100T1080 100T1440 100T1800 100T2160 100T2520 100T2880 100V200H0z"/></svg>
@@ -450,6 +464,11 @@ html[data-vw=desktop] body.gate .gx-hi b{font-size:34px}
 <section id="d" class="sec on"><div class="kpis" id="kp"></div>
  <div class="card"><h2>Monitoring stations</h2><div id="mw"><div id="map" role="region" aria-label="Map of Ganga monitoring stations"></div><button type="button" id="mx" aria-label="Open full screen map">⤢ Open full map</button><button type="button" id="mc" aria-label="Close map">✕ Close</button><div id="mi"></div></div>
  <p class="leg">Tap the map to open it full screen, then drag, pinch or scroll to move and zoom. Tap a pin for details. Green = within limits, yellow = 1 limit crossed, red = 2 or more, grey = no readings yet. Pins update live.</p></div>
+ <div class="card" id="wqc"><div id="wq"></div>
+  <details class="wqd" id="wqd"><summary>🧪 Test your own water sample</summary>
+  <p class="leg" style="margin:6px 0 0">Do you have a test kit or a lab report? Type the values you have. You can leave any box empty.</p>
+  <div class="grid"><div><label>pH</label><input id="wm-ph" type="number" inputmode="decimal" step="0.1"></div><div><label>Oxygen / DO (mg/L)</label><input id="wm-do" type="number" inputmode="decimal" step="0.1"></div><div><label>Waste load / BOD (mg/L)</label><input id="wm-bod" type="number" inputmode="decimal" step="0.1"></div><div><label>Germs / coliform (MPN/100 mL)</label><input id="wm-co" type="number" inputmode="decimal" step="1"></div></div>
+  <button type="button" class="btn s" id="wm-cur">Fill from the selected station</button><div id="wm-out" style="margin-top:10px"></div></details></div>
  <div class="card" id="det">Loading station data…</div>
  <div class="card" id="cp"></div>
  <div class="card" id="hot"></div>
@@ -545,7 +564,7 @@ function setFull(on){FULL=on;var w=$("mw");
  if(LM){["dragging","touchZoom","doubleClickZoom","boxZoom","keyboard","scrollWheelZoom"].forEach(function(h){if(LM[h])LM[h][on?"enable":"disable"]()})}
  info();setTimeout(function(){if(!LM)return;LM.invalidateSize();if(!on)fitMap()},60)}
 function info(){var b=$("mi"),s=cur();if(!b)return;if(!FULL||!s){b.className="";return}var st=stat(s);
- b.className="on";b.innerHTML='<div class="r"><b>'+esc(s.n)+'</b><span class="pill '+(st=="nodata"?"rep":st)+'">'+(st=="nodata"?"no data":st)+'</span></div><button type="button" class="btn s" id="mv">View station details</button>';
+ b.className="on";b.innerHTML='<div class="r"><b>'+esc(s.n)+'</b><span class="pill '+(st=="nodata"?"rep":st)+'">'+(st=="nodata"?"no data":st)+'</span></div><div class="note" style="margin:4px 0 0">'+esc(wqShort(s))+'</div><button type="button" class="btn s" id="mv">View station details</button>';
  $("mv").onclick=function(){setFull(false);setTimeout(function(){var d=$("det");if(d)d.scrollIntoView({behavior:"smooth"})},100)}}
 $("mx").onclick=function(){setFull(true)};$("mc").onclick=function(){setFull(false)};
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&FULL)setFull(false)});
@@ -557,7 +576,56 @@ function map(){var m=$("map");if(!S.length)return;
   k.bindTooltip(s.n,{permanent:true,direction:"top",offset:[0,-8]});
   k.on("click",async function(){sel=i;selId=s.id;map();det();cpc();info();try{await loadSeries();det()}catch(e){}})})}
 function avg(id){var a=RT.filter(function(x){return x.station_id==id});return a.length?{m:a.reduce(function(p,x){return p+x.rating},0)/a.length,n:a.length}:null}
-function det(){var s=cur();if(!s){$("det").innerHTML="No stations found.";return}
+// ----- Water checker on the dashboard: plain-language verdict, synced with the selected map station -----
+function wqEval(v){var h=v.pH,d=v.DO,b=v.BOD,c=v.col;
+ if(h==null&&d==null&&b==null&&c==null)return{lv:"nodata"};
+ var phOk=h==null||(h>=6.5&&h<=8.5),
+ A=phOk&&(d==null||d>=6)&&(b==null||b<=2)&&(c==null||c<=50),
+ bad=(phOk?0:1)+(d!=null&&d<5?1:0)+(b!=null&&b>3?1:0)+(c!=null&&c>500?1:0);
+ return{lv:bad==0?"good":bad==1?"moderate":"poor",A:A,bad:bad}}
+var WQH={good:["✅","Looks fine for a holy dip","All the main readings are inside the safe limits right now."],
+ moderate:["⚠️","Be careful. One reading is not safe","Better to avoid bathing today, especially for children, elderly people and anyone with cuts or skin problems. If you still go in, do not swallow the water and rinse with clean water after."],
+ poor:["🚫","Not safe right now","Two or more readings are outside the safe limits. Please do not bathe in this water, and do not drink it or use it for cooking."],
+ nodata:["❔","No readings yet","There is no reading for this place yet, so we cannot say if the water is safe."]};
+function wqRows(v,e){var d=v.DO,l=e.lv,ok=l=="good"&&e.A;
+ return[["🚰","Drinking",ok?"After treatment":"No",ok?"Never drink river water straight from the Ganga. It must be treated first.":"Not suitable. Do not drink it or cook with it.",ok?"moderate":"poor"],
+ ["🛕","Bathing / holy dip",l=="good"?"Yes":l=="moderate"?"Be careful":"No",l=="good"?"Fine for a dip. Rinse with clean water after.":l=="moderate"?"Better to avoid, especially for children and elderly.":"Avoid dipping in this water.",l],
+ ["🐟","Fish and river life",d==null?"Unknown":d>=5?"Healthy":d>=3?"Under stress":"In danger",d==null?"Oxygen is not measured here.":d>=5?"There is enough oxygen in the water.":"Oxygen is low, so fish find it hard to breathe.",d==null?"nodata":d>=5?"good":d>=3?"moderate":"poor"]]}
+function wqTiles(v){var d=v.DO,b=v.BOD,h=v.pH,t=v.T,c=v.col,T=[];
+ T.push(["Oxygen (DO)",d,"mg/L",d!=null&&d<5,d==null?"Not measured.":d>=6?"High. Fish and river life are happy.":d>=5?"Okay, just above the safe minimum.":"Low. Fish and river life struggle.","Safe: 5 or more"]);
+ T.push(["Waste load (BOD)",b,"mg/L",b!=null&&b>3,b==null?"Not measured.":b<=2?"Low. The water is fairly clean.":b<=3?"Okay, but close to the limit.":"High. Lots of sewage or waste in the water.","Safe: 3 or less"]);
+ T.push(["Acidity (pH)",h,"",h!=null&&(h<6.5||h>8.5),h==null?"Not measured.":h<6.5?"Too acidic.":h>8.5?"Too alkaline.":"Normal.","Safe: 6.5 to 8.5"]);
+ if(t!=null)T.push(["Cloudiness",t,"NTU",false,t<=25?"Fairly clear.":t<=50?"A little cloudy.":"Very cloudy or muddy.","Information only"]);
+ if(c!=null)T.push(["Germs (coliform)",c,"MPN/100 mL",c>500,c<=50?"Very few germs.":c<=500?"Okay for bathing, not for drinking.":"Too many germs. Sewage is likely.","Safe for bathing: 500 or less"]);
+ return T}
+function wqHtml(v,e){var H=WQH[e.lv],h='<div class="wqb '+e.lv+'"><span class="em">'+H[0]+'</span><div><b>'+H[1]+'</b><span>'+H[2]+'</span></div></div>';
+ if(e.lv=="nodata")return h;
+ h+='<div style="margin-top:6px">'+wqRows(v,e).map(function(r){return'<div class="wqr"><span class="ic2">'+r[0]+'</span><div><b>'+r[1]+'</b><small>'+r[3]+'</small></div><span class="pill '+(r[4]=="nodata"?"rep":r[4])+'">'+r[2]+'</span></div>'}).join("")+'</div>';
+ h+='<h2 style="margin-top:12px">Why? The readings in simple words</h2><div class="wqt">'+wqTiles(v).map(function(t){return'<div class="p '+(t[3]?"bad":"ok")+'"><small>'+t[0]+'</small><b>'+show(t[1])+'</b> <small style="display:inline">'+t[2]+'</small><small class="x">'+t[4]+'</small><small class="x">'+t[5]+'</small></div>'}).join("")+'</div>';
+ return h+'<p class="note">Based on CPCB limits. Indicative only: a lab test is the official word, and local advisories come first.</p>'}
+function wqAgo(t){var m=Math.floor((Date.now()-new Date(t))/6e4);return m<1?"just now":m<60?m+" min ago":m<1440?Math.floor(m/60)+" h ago":Math.floor(m/1440)+" d ago"}
+function wqShort(s){var e=wqEval({pH:s.pH,DO:s.DO,BOD:s.BOD});return e.lv=="nodata"?"No readings yet":WQH[e.lv][0]+" "+WQH[e.lv][1]}
+function wqc(){var b=$("wq");if(!b)return;var s=cur();if(!s){b.innerHTML="";return}
+ var o=b.querySelector(".wqs"),x=o?o.scrollLeft:0,v={pH:s.pH,DO:s.DO,BOD:s.BOD,T:s.T},e=wqEval(v),
+ when=s.at?'<span class="lv"></span>Live · updated '+wqAgo(s.at):s.ann?"Based on CPCB "+s.ann+" yearly data (not live)":"No readings yet",
+ h='<div class="wqh"><h2>Is the water safe to use?</h2></div><p class="note" style="margin:0">'+esc(s.n)+' · '+when+(s.demo?" · demo sensor":"")+'</p>';
+ h+='<div class="wqs" role="group" aria-label="Choose a station">'+S.map(function(q,i){return'<button type="button" class="chip'+(i==sel?" on":"")+'" data-wq="'+i+'"><i style="background:'+COL[stat(q)]+'"></i>'+esc(q.n)+'</button>'}).join("")+'</div>';
+ h+=wqHtml(v,e);
+ var cr=CP.filter(function(r){return r.station_id==s.id}),yr=cr.length?Math.max.apply(0,cr.map(function(r){return r.year})):0,fc=null;
+ cr.forEach(function(r){if(r.year==yr&&r.fecal_coliform_max!=null)fc=Math.max(fc==null?0:fc,r.fecal_coliform_max)});
+ if(fc==null)h+='<div class="al" style="border-color:var(--mut)">Germs are not measured by the live sensor. Only a lab test can show them.</div>';
+ else if(fc>2500)h+='<div class="al">Germs: CPCB '+yr+' data shows fecal coliform went up to '+fmt(fc)+' (limit 2,500). Germs cannot be seen or smelled, so be extra careful.</div>';
+ else h+='<div class="al" style="border-color:var(--good)">Germs: CPCB '+yr+' yearly data stayed within the fecal coliform limit. The live sensor does not measure germs.</div>';
+ b.innerHTML=h;
+ b.querySelectorAll("[data-wq]").forEach(function(c){c.onclick=function(){wqPick(+c.dataset.wq)}});
+ var n=b.querySelector(".wqs"),on=b.querySelector(".wqs .on");if(n){n.scrollLeft=x;if(on&&(on.offsetLeft<n.scrollLeft||on.offsetLeft+on.offsetWidth>n.scrollLeft+n.clientWidth))n.scrollLeft=Math.max(0,on.offsetLeft-12)}}
+async function wqPick(i){var s=S[i];if(!s||i==sel)return;sel=i;selId=s.id;map();det();cpc();info();try{await loadSeries();det()}catch(e){}}
+function wqm(){var g=function(i){var v=$(i).value;return v===""?null:+v},v={pH:g("wm-ph"),DO:g("wm-do"),BOD:g("wm-bod"),col:g("wm-co")},o=$("wm-out");
+ if(v.pH==null&&v.DO==null&&v.BOD==null&&v.col==null){o.innerHTML="";return}o.innerHTML=wqHtml(v,wqEval(v))}
+document.addEventListener("input",function(e){if(e.target.id&&e.target.id.indexOf("wm-")==0)wqm()});
+document.addEventListener("click",function(e){var t=e.target.closest&&e.target.closest("#wm-cur");if(!t)return;var s=cur();if(!s){toast("No station loaded yet");return}
+ $("wm-ph").value=s.pH==null?"":s.pH;$("wm-do").value=s.DO==null?"":s.DO;$("wm-bod").value=s.BOD==null?"":s.BOD;wqm();toast("Filled from "+s.n)});
+function det(){var s=cur();wqc();if(!s){$("det").innerHTML="No stations found.";return}
  var v=viol(s),st=stat(s),h='<div class="r"><h2>'+esc(s.n)+' station</h2><span class="pill '+(st=="nodata"?"rep":st)+'">'+(st=="nodata"?"no data":st)+'</span></div><div class="grid">';
  [["pH",s.pH,"",s.pH!=null&&(s.pH<6.5||s.pH>8.5)],["Dissolved oxygen",s.DO,"mg/L",s.DO!=null&&s.DO<5],["BOD",s.BOD,"mg/L",s.BOD!=null&&s.BOD>3],["Turbidity",s.T,"NTU",false]].forEach(function(p){
   h+='<div class="p '+(p[3]?"bad":"ok")+'"><small>'+p[0]+'</small><b>'+show(p[1])+'</b> <small style="display:inline">'+p[2]+'</small></div>'});
@@ -998,9 +1066,8 @@ function csv(n,rows){var t=rows.map(function(r){return r.map(function(c){c=c==nu
 function copy(){var u=location.origin+location.pathname;if(navigator.clipboard)navigator.clipboard.writeText(u).then(function(){T("Link copied")},function(){});else T(u)}
 /* ===== Settings: Tools & data, About & help ===== */
 function mi(v,ic,t,s){return'<button type="button" class="card mi" onclick="setView(\''+v+'\')"><span class="mic">'+ic+'</span><span class="mt"><b>'+t+'</b><small>'+s+'</small></span><span class="mch">›</span></button>'}
-$("sv-menu").insertAdjacentHTML("beforeend",mi("tl","🧰","Tools &amp; data","Water checker, home station, exports, reset")+mi("ab","ℹ️","About &amp; help","Points, colours, FAQ and data sources"));
-var F=function(i,l,st){return'<div><label>'+l+'</label><input id="'+i+'" type="number" inputmode="decimal" step="'+st+'"></div>'};
-$("sv-ax").insertAdjacentHTML("afterend",'<div class="sv" id="sv-tl"><div class="card"><h2>Water quality checker</h2><p class="leg" style="margin:0">Enter values from a test kit or report to see which CPCB class the water fits. Fill any of them.</p><div class="grid">'+F("wq-ph","pH",".1")+F("wq-do","Dissolved oxygen (mg/L)",".1")+F("wq-bod","BOD (mg/L)",".1")+F("wq-co","Total coliform (MPN/100 mL)","1")+'</div><button type="button" class="btn s" id="wq-cur">Fill from the selected station</button><div id="wq-out" style="margin-top:10px"></div></div>'
+$("sv-menu").insertAdjacentHTML("beforeend",mi("tl","🧰","Tools &amp; data","Home station, exports, reset")+mi("ab","ℹ️","About &amp; help","Points, colours, FAQ and data sources"));
+$("sv-ax").insertAdjacentHTML("afterend",'<div class="sv" id="sv-tl">'
 +'<div class="card"><h2>My home station</h2><p class="leg" style="margin:0 0 6px">The dashboard opens with this station.</p><select id="hs-sel"></select><button type="button" class="btn s" id="hs-save">Save home station</button></div>'
 +'<div class="card"><h2>Export and share</h2><button type="button" class="btn s" id="ex-st">Download station readings (CSV)</button><button type="button" class="btn s" id="ex-my">Download my reports (CSV)</button><button type="button" class="btn s" id="ex-sh">Share this website</button><button type="button" class="btn s" id="ex-cp">Copy website link</button></div>'
 +'<div class="card" style="border-color:var(--poor)"><h2>Reset this device</h2><p class="note" style="margin:0">Clears saved theme, background, text size, layout and home station on this device. Your account and reports are not touched.</p><button type="button" class="btn s" id="rs-dev" style="color:var(--poor)">Reset saved preferences</button></div></div>'
@@ -1010,15 +1077,8 @@ $("sv-ax").insertAdjacentHTML("afterend",'<div class="sv" id="sv-tl"><div class=
 +'<div class="card"><h2>Data sources</h2><p class="note" style="margin:0">Water quality: CPCB and NWMP. Map: OpenStreetMap with Leaflet. Citizen reports are community-submitted and not official findings.</p></div></div>');
 var _sv=window.setView;window.setView=function(v){_sv(v);if(v=="tl")fillTl()};
 function fillTl(){var h=$("hs-sel"),cu="";try{cu=localStorage.getItem("gd_home")||""}catch(e){}h.innerHTML=S.map(function(s){return'<option value="'+esc(s.id)+'"'+((cu||selId)==s.id?" selected":"")+'>'+esc(s.n)+'</option>'}).join("")}
-function wq(){var g=function(i){var v=$(i).value;return v===""?null:+v},p=g("wq-ph"),d=g("wq-do"),b=g("wq-bod"),c=g("wq-co"),o=$("wq-out");
- if(p==null&&d==null&&b==null&&c==null){o.innerHTML="";return}
- var N=[["pH",p,p==null||(p>=6.5&&p<=8.5),p==null||(p>=6.5&&p<=8.5),"6.5 to 8.5"],["Dissolved oxygen",d,d==null||d>=6,d==null||d>=5,"at least 6 (A) or 5 (B)"],["BOD",b,b==null||b<=2,b==null||b<=3,"at most 2 (A) or 3 (B)"],["Coliform",c,c==null||c<=50,c==null||c<=500,"at most 50 (A) or 500 (B)"]],
- A=N.every(function(x){return x[2]}),B=N.every(function(x){return x[3]}),bad=N.filter(function(x){return x[1]!=null&&!x[3]});
- o.innerHTML='<span class="pill '+(A?"good":B?"moderate":"poor")+'">'+(A?"Class A":B?"Class B":"Below class B")+'</span><p style="margin:6px 0 0">'+(A?"Fit for drinking after normal disinfection.":B?"Fit for outdoor bathing, not for drinking.":"Not suitable for bathing or drinking.")+'</p>'+bad.map(function(x){return'<div class="al">'+x[0]+' '+x[1]+': needs '+x[4]+'</div>'}).join("")+'<p class="note">Indicative only. Only a lab test is official.</p>'}
-document.addEventListener("input",function(e){if(/^wq-/.test(e.target.id))wq()});
 document.addEventListener("click",function(e){var t=e.target.closest&&e.target.closest("button"),i=t&&t.id;if(!i)return;
- if(i=="wq-cur"){var s=cur();if(!s){T("No station loaded yet");return}$("wq-ph").value=s.pH==null?"":s.pH;$("wq-do").value=s.DO==null?"":s.DO;$("wq-bod").value=s.BOD==null?"":s.BOD;wq();T("Filled from "+s.n)}
- else if(i=="hs-save"){var v=$("hs-sel").value;try{localStorage.setItem("gd_home",v)}catch(x){}selId=v;refreshReadings();T("Home station saved")}
+ if(i=="hs-save"){var v=$("hs-sel").value;try{localStorage.setItem("gd_home",v)}catch(x){}selId=v;refreshReadings();T("Home station saved")}
  else if(i=="ex-st")csv("ganga-stations.csv",[["Station","State","Latitude","Longitude","pH","DO mg/L","BOD mg/L","Turbidity NTU","Status","Last reading"]].concat(S.map(function(s){return[s.n,s.state,s.lat,s.lng,s.pH,s.DO,s.BOD,s.T,stat(s),s.at||""]})));
  else if(i=="ex-my"){var m=R.filter(mineR);if(!m.length){T("You have no reports to export yet");return}csv("my-reports.csv",[["Date","Category","Station","Location","Status","Details"]].concat(m.map(function(r){return[r.created_at,r.category,sname(r.station_id),r.location_text,r.status||"reported",r.description]})))}
  else if(i=="ex-sh")shr("Live Ganga water quality and citizen reports");
