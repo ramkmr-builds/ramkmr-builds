@@ -112,13 +112,19 @@ nav button.on{background:none;box-shadow:none;color:var(--ink)}nav button.on .ap
 nav button.on::after{content:"";width:4px;height:4px;border-radius:50%;background:var(--ink)}
 .logo{width:48px;height:48px;border:0;background:linear-gradient(145deg,#4facfe,#00d2b4);box-shadow:0 5px 14px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.6)}
 .card,.kp{background:color-mix(in srgb,var(--card) 90%,transparent)}
+
+.a6{background:linear-gradient(145deg,#9aa5ff,#5b4bdb)}
+nav{gap:2px}nav button{min-width:50px;padding:2px 3px}
+.opt{display:flex;align-items:center;gap:6px}
+.opt i{display:block;width:12px;height:12px;border-radius:50%;border:1px solid rgba(0,0,0,.25);flex:none}
+.chip:focus-visible,nav button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 </style></head><body class="gate"><div id="bg" aria-hidden="true"><div id="st"></div><div id="orb"></div><i class="cl c1"></i><i class="cl c2"></i><i class="cl c3"></i>
 <svg class="gh" viewBox="0 0 520 200" aria-hidden="true"><path d="M0 60V200H520V180H480V160H440V140H400V120H360V100H320V80H0z"/><path d="M40 62V-20Q40 -50 70 -80Q100 -50 100 -20V62z" transform="translate(0 70)"/><path d="M120 132V100Q120 78 150 78Q180 78 180 100V132z"/><path d="M215 132V80Q215 50 245 28Q275 50 275 80V132z"/></svg>
 <svg class="wv w1" viewBox="0 0 2880 200" preserveAspectRatio="none"><path d="M0 100Q180 40 360 100T720 100T1080 100T1440 100T1800 100T2160 100T2520 100T2880 100V200H0z"/></svg>
 <svg class="wv w2" viewBox="0 0 2880 200" preserveAspectRatio="none"><path d="M0 100Q180 150 360 100T720 100T1080 100T1440 100T1800 100T2160 100T2520 100T2880 100V200H0z"/></svg>
 <svg class="wv w3" viewBox="0 0 2880 200" preserveAspectRatio="none"><path d="M0 100Q180 60 360 100T720 100T1080 100T1440 100T1800 100T2160 100T2520 100T2880 100V200H0z"/></svg></div>
 <header><div class="hw"><span class="logo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s6 6.2 6 10.5A6 6 0 0 1 6 13.5C6 9.2 12 3 12 3z"/><path d="M9 14.5a3 3 0 0 0 3 2.5"/></svg></span><div><h1>GangaDrishti</h1><p class="tag">See the pollution. Trace the source. Drive action.</p></div></div><svg class="wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 30C240 60 480 0 720 30s480 30 720 0V60H0z" fill="var(--bg)"/></svg></header>
-<nav><button class="on" data-t="d"><i class="app a1"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8v8H3zM13 3h8v5h-8zM13 11h8v10h-8zM3 14h8v7H3z"/></svg></i><span class="lb">Dashboard</span></button><button data-t="f"><i class="app a2"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3zM12 10v4M12 17h.01"/></svg></i><span class="lb">Report</span></button><button data-t="l"><i class="app a3"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg></i><span class="lb">Cleanup <span id="cnt"></span></span></button><button data-t="lb"><i class="app a4"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></i><span class="lb">Login</span></button><button data-t="adm" style="display:none"><i class="app a5"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3z"/></svg></i><span class="lb">Admin</span></button></nav>
+<nav><button class="on" data-t="d"><i class="app a1"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8v8H3zM13 3h8v5h-8zM13 11h8v10h-8zM3 14h8v7H3z"/></svg></i><span class="lb">Dashboard</span></button><button data-t="f"><i class="app a2"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3zM12 10v4M12 17h.01"/></svg></i><span class="lb">Report</span></button><button data-t="l"><i class="app a3"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg></i><span class="lb">Cleanup <span id="cnt"></span></span></button><button data-t="lb"><i class="app a4"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></i><span class="lb">Login</span></button><button data-t="set"><i class="app a6"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h8.5M17.5 6H20M4 12h2.5M11.5 12H20M4 18h9.5M18.5 18H20"/><circle cx="15" cy="6" r="2.5"/><circle cx="9" cy="12" r="2.5"/><circle cx="16" cy="18" r="2.5"/></svg></i><span class="lb">Settings</span></button><button data-t="adm" style="display:none"><i class="app a5"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3z"/></svg></i><span class="lb">Admin</span></button></nav>
 <main>
 <section id="d" class="sec on"><div class="kpis" id="kp"></div>
  <div class="card"><h2>Monitoring stations</h2><div id="mw"><div id="map" role="region" aria-label="Map of Ganga monitoring stations"></div><button type="button" id="mx" aria-label="Open full screen map">⤢ Open full map</button><button type="button" id="mc" aria-label="Close map">✕ Close</button><div id="mi"></div></div>
@@ -137,6 +143,7 @@ nav button.on::after{content:"";width:4px;height:4px;border-radius:50%;backgroun
  <button class="btn" id="sub" type="button">Submit report</button><p class="note" id="msg"></p></div></section>
 <section id="l" class="sec"><div id="list"></div><p class="note" id="mode"></p></section>
 <section id="lb" class="sec"><div class="card">Loading…</div></section>
+<section id="set" class="sec"><div class="card"><h2>Settings</h2><p class="note" style="margin:0">Change how GangaDrishti looks for you. Your choices are saved on this device only.</p></div><div class="card"><h2>Background</h2><p class="leg" style="margin:0 0 8px">Pick the sky behind the app. Auto follows your phone clock.</p><div class="chips" id="bgc" role="group" aria-label="Background"></div><p class="note" id="bgm"></p></div></section>
 <section id="adm" class="sec"></section>
 
 
@@ -223,7 +230,7 @@ function det(){var s=cur();if(!s){$("det").innerHTML="No stations found.";return
  if(a.length>1){var p=a.map(function(v,i){return(8+i*(304/(a.length-1))).toFixed(1)+","+y(v).toFixed(1)}).join(" ");el("polyline",{points:p,fill:"none",stroke:"#1d8a99","stroke-width":2.5,"stroke-linejoin":"round"},c)}
  else{var n=el("text",{x:160,y:60,"text-anchor":"middle","font-size":11,fill:"var(--mut)"},c);n.textContent="Not enough readings yet"}
  $("go").onclick=function(){$("rs").value=s.id;tab("f")}}
-function tab(t){var O=["d","f","l","lb","adm"],cu=document.querySelector(".sec.on"),ci=cu?O.indexOf(cu.id):0;document.documentElement.style.setProperty("--dir",O.indexOf(t)>=ci?1:-1);var pb=document.querySelector('nav button[data-t="'+t+'"]');if(pb){pb.classList.remove("pop");void pb.offsetWidth;pb.classList.add("pop")}document.querySelectorAll(".sec").forEach(function(e){e.classList.toggle("on",e.id==t)});document.querySelectorAll("nav button").forEach(function(b){b.classList.toggle("on",b.dataset.t==t)});try{history.replaceState(null,"","#"+t)}catch(e){}if(t=="d")setTimeout(fitMap,60);window.scrollTo(0,0)}
+function tab(t){var O=["d","f","l","lb","set","adm"],cu=document.querySelector(".sec.on"),ci=cu?O.indexOf(cu.id):0;document.documentElement.style.setProperty("--dir",O.indexOf(t)>=ci?1:-1);var pb=document.querySelector('nav button[data-t="'+t+'"]');if(pb){pb.classList.remove("pop");void pb.offsetWidth;pb.classList.add("pop")}document.querySelectorAll(".sec").forEach(function(e){e.classList.toggle("on",e.id==t)});document.querySelectorAll("nav button").forEach(function(b){b.classList.toggle("on",b.dataset.t==t)});try{history.replaceState(null,"","#"+t)}catch(e){}if(t=="d")setTimeout(fitMap,60);window.scrollTo(0,0)}
 document.querySelectorAll("nav button").forEach(function(b){b.onclick=function(){tab(b.dataset.t)}});
 (function(){var h=location.hash.slice(1),e=h&&document.getElementById(h);if(e&&e.classList.contains("sec"))tab(h)})();
 function chips(){$("rc").innerHTML="";CATS.forEach(function(c,i){var b=document.createElement("button");b.type="button";b.className="chip"+(i==cat?" on":"");b.textContent=c;b.onclick=function(){cat=i;chips()};$("rc").appendChild(b)})}chips();
@@ -412,8 +419,15 @@ return{init:init,sub:sub,uid:function(){return uid},role:role,pill:pill,media:me
  out:async function(){try{await sb.auth.signOut({scope:"local"})}catch(e){}try{Object.keys(localStorage).forEach(function(k){if(/^sb-.*-auth-token/.test(k))localStorage.removeItem(k)})}catch(e){}location.reload()},
  pledge:function(){try{localStorage.setItem("ss_pledge","1")}catch(e){}draw();toast("Thank you for the pledge!")},
  share:async function(){var d={title:"GangaDrishti",text:"Report pollution, volunteer to clean and earn points for the Ganga ghats.",url:location.href};try{if(navigator.share){await navigator.share(d);return}}catch(e){if(e.name=="AbortError")return}window.open("https://wa.me/?text="+encodeURIComponent(d.text+" "+d.url),"_blank","noopener")}}})();
-function tod(){var d=new Date(),h=d.getHours()+d.getMinutes()/60,t=h>=5&&h<8?"dawn":h>=8&&h<17?"day":h>=17&&h<19.5?"dusk":"night",day=h>=5.5&&h<19,p=day?(h-5.5)/13.5:((h<5.5?h+24:h)-19)/10.5;p=Math.min(1,Math.max(0,p));
+var BGK="gd_bg",BGO=[["auto","Auto","linear-gradient(135deg,#2f8cff,#ff8a4c,#13245c)"],["dawn","\u{1F305} Morning","linear-gradient(135deg,#6a5acd,#ffd7a0)"],["day","\u2600\uFE0F Day","linear-gradient(135deg,#2f8cff,#d8f2ff)"],["dusk","\u{1F307} Evening","linear-gradient(135deg,#3b2a7a,#ff8a4c)"],["night","\u{1F319} Night","linear-gradient(135deg,#050c24,#2c2f7a)"]];
+function bgGet(){var v="auto";try{v=localStorage.getItem(BGK)||"auto"}catch(e){}return BGO.some(function(o){return o[0]==v})?v:"auto"}
+function bgSet(v){try{if(v=="auto")localStorage.removeItem(BGK);else localStorage.setItem(BGK,v)}catch(e){}tod();bgChips()}
+function tod(){var pf=bgGet(),d=new Date(),h=d.getHours()+d.getMinutes()/60,t=h>=5&&h<8?"dawn":h>=8&&h<17?"day":h>=17&&h<19.5?"dusk":"night",day=h>=5.5&&h<19,p=day?(h-5.5)/13.5:((h<5.5?h+24:h)-19)/10.5;
+ if(pf!="auto"){t=pf;day=pf!="night";p=pf=="dawn"?.08:pf=="dusk"?.9:.5}
+ p=Math.min(1,Math.max(0,p));
  document.documentElement.dataset.tod=t;var o=$("orb");if(o){o.style.left=(8+p*84)+"%";o.style.top=(60-Math.sin(Math.PI*p)*44)+"%";o.className=day?"sun":"moon"}}
-tod();setInterval(tod,60000);
+function bgChips(){var b=$("bgc");if(!b)return;var cu=bgGet();b.innerHTML="";BGO.forEach(function(o){var c=document.createElement("button");c.type="button";c.className="chip"+(o[0]==cu?" on":"");c.setAttribute("aria-pressed",o[0]==cu?"true":"false");c.innerHTML='<span class="opt"><i style="background:'+o[2]+'"></i>'+o[1]+'</span>';c.onclick=function(){bgSet(o[0])};b.appendChild(c)});
+ var m=$("bgm");if(m)m.textContent=cu=="auto"?"Auto: the sky changes with the time of day.":"Fixed: the sky stays on your choice until you pick Auto."}
+tod();bgChips();setInterval(tod,60000);
 start();
 </script></body></html>
