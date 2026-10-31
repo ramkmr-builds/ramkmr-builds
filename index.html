@@ -487,6 +487,16 @@ html[data-cg=glass] .card,html[data-cg=glass] .kp{background:color-mix(in srgb,v
 .rn{width:28px;text-align:center;font-weight:800;color:var(--mut)}.av{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;background:linear-gradient(135deg,#4facfe,#a66bff)}
 .lrb{height:5px;border-radius:9px;background:var(--line);overflow:hidden;margin-top:4px}.lrb i{display:block;height:100%;background:linear-gradient(90deg,#34c38f,#1d8a99);transition:width .8s var(--eas)}
 .stk{display:flex;align-items:center;gap:12px}.stk .fl{font-size:34px}
+
+/* ===== background mode ===== */
+.bgmw{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.bgm{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:12px;border-radius:16px;border:1px solid var(--line);background:var(--card);cursor:pointer;font-family:inherit;color:var(--ink);transition:transform .28s var(--spr),box-shadow .25s,border-color .2s}
+.bgm .bmi{font-size:24px}.bgm small{font-size:11.5px;color:var(--mut);line-height:1.3}
+.bgm.on{border-color:var(--teal);box-shadow:0 0 0 3px rgba(29,138,153,.2),0 8px 20px rgba(29,138,153,.18);background:linear-gradient(135deg,rgba(79,172,254,.12),rgba(166,107,255,.12))}
+.bgm:active{transform:scale(.97)}
+.bgnx{height:4px;border-radius:9px;background:var(--line);overflow:hidden;margin-top:8px}.bgnx i{display:block;height:100%;width:100%;transform-origin:left;background:linear-gradient(90deg,#4facfe,#a66bff);animation:bgn 30s linear forwards}
+@keyframes bgn{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.bglk{transition:opacity .3s}.bglk.lk{opacity:.4;pointer-events:none;filter:grayscale(.4)}
 </style></head><body class="gate"><div id="bg" aria-hidden="true"><div id="st"></div><div id="orb"></div><i class="cl c1"></i><i class="cl c2"></i><i class="cl c3"></i>
 <svg class="gh" viewBox="0 0 520 200" aria-hidden="true"><path d="M0 60V200H520V180H480V160H440V140H400V120H360V100H320V80H0z"/><path d="M40 62V-20Q40 -50 70 -80Q100 -50 100 -20V62z" transform="translate(0 70)"/><path d="M120 132V100Q120 78 150 78Q180 78 180 100V132z"/><path d="M215 132V80Q215 50 245 28Q275 50 275 80V132z"/></svg>
 <svg class="wv w1" viewBox="0 0 2880 200" preserveAspectRatio="none"><path d="M0 100Q180 40 360 100T720 100T1080 100T1440 100T1800 100T2160 100T2520 100T2880 100V200H0z"/></svg>
@@ -1048,7 +1058,7 @@ function bgFx(){var x=bgx(),rm=document.documentElement.dataset.rm||matchMedia("
  if(sig==FX.sig&&FX.run)return;FX.sig=sig;cancelAnimationFrame(FX.t);fxInit();FX.k=x.fx;
  var n=Math.round(BGN[x.fx]*(BGA[x.fa]||1)),a=[],i;for(i=0;i<n;i++)a.push({x:Math.random()*FX.w,y:Math.random()*FX.h,s:.6+Math.random()*.9,r:Math.random()*6.28,v:Math.random()*6.28,ph:Math.random()*6.28});
  FX.p=a;FX.run=1;FX.t=requestAnimationFrame(fxLoop)}
-function bgRand(){var P=BGP.slice(0,4),r=function(a){return a[Math.floor(Math.random()*a.length)]},p=r(P)[2];
+function bgRand(){if(bgAuto()){toast("Auto mode already changes the style every 30 seconds.");return}var P=BGP.slice(0,4),r=function(a){return a[Math.floor(Math.random()*a.length)]},p=r(P)[2];
  try{localStorage.setItem(BGK,r(BGO.slice(1))[0])}catch(e){}tod();bgPut(Object.assign({},p,{wc:r(["auto"].concat(Object.keys(BGW))),fx:r(["none","petals","rain","fire"])}));toast("Fresh look applied.")}
 function bgDraw(){var box=$("sv-bg");if(!box)return;var x=bgx(),ph=bgPh(),H=document.documentElement,
  chip=function(k,v,t,on){return'<button type="button" class="chip'+(on?" on":"")+'" aria-pressed="'+(on?"true":"false")+'" data-bk="'+k+'" data-bv="'+v+'">'+t+'</button>'},
@@ -1056,14 +1066,14 @@ function bgDraw(){var box=$("sv-bg");if(!box)return;var x=bgx(),ph=bgPh(),H=docu
  grp=function(t,b,n){return'<div class="ax-g"><b>'+t+'</b>'+b+(n||"")+'</div>'},
  h='<h2>Background</h2><div class="bgp" id="bgp"><span class="bgo"></span><i class="b1"></i><i class="b2"></i></div><p class="leg" style="margin:0">Changes apply instantly. Saved on this device only.</p>';
  if(H.dataset.rm)h+='<div class="al" style="border-color:var(--mod)">Reduce motion is on in Accessibility, so the background is hidden. Turn it off to see these settings.</div>';
- h+=grp("Time of day",'<div class="chips" id="bgc" role="group" aria-label="Time of day"></div>','<p class="note" id="bgm"></p>');
+ h+=bgMode()+'<div class="bglk'+(bgAuto()?" lk":"")+'">';h+=grp("Time of day",'<div class="chips" id="bgc" role="group" aria-label="Time of day"></div>','<p class="note" id="bgm"></p>');
  h+=grp("Style",'<div class="chips">'+BGP.map(function(p){var on=Object.keys(p[2]).every(function(k){return x[k]==p[2][k]});return'<button type="button" class="chip'+(on?" on":"")+'" data-bpre="'+p[0]+'">'+p[1]+'</button>'}).join("")+'</div>',
   '<div class="chips" style="margin-top:8px"><button type="button" class="chip" data-bph="pick">📷 '+(ph?"Change photo":"Upload a photo")+'</button>'+(ph?'<button type="button" class="chip" data-bph="del" style="color:var(--poor)">Remove photo</button>':"")+'</div><p class="note">Your photo stays on this device and is shrunk to save space.</p><input type="file" id="bg-file" accept="image/*" hidden>');
  h+=grp("Layers",sw("ob","Sun and moon","Moves across the sky with the time")+sw("cl","Clouds","Slow drifting clouds")+sw("st","Stars","Twinkling stars at night")+sw("wv","River waves","Moving water at the bottom")+sw("gh","Ghat and temple","Silhouette on the left"));
  h+=grp("River colour",'<div class="chips">'+chip("wc","auto","Auto",x.wc=="auto")+Object.keys(BGW).map(function(k){var w=BGW[k];return chip("wc",k,'<span class="opt"><i style="background:linear-gradient(135deg,'+w[1]+','+w[3]+')"></i>'+w[0]+'</span>',x.wc==k)}).join("")+'</div>');
  h+=grp("Floating effect",'<div class="chips">'+chip("fx","none","None",x.fx=="none")+chip("fx","petals","🌼 Petals",x.fx=="petals")+chip("fx","rain","🌧️ Rain",x.fx=="rain")+chip("fx","fire","✨ Fireflies",x.fx=="fire")+'</div>',
   x.fx=="none"?"":'<div class="chips" style="margin-top:8px">'+chip("fa","few","Few",x.fa=="few")+chip("fa","normal","Normal",x.fa=="normal")+chip("fa","many","Many",x.fa=="many")+'</div>');
- h+=grp("Motion speed",'<div class="chips">'+chip("sp","calm","Calm",x.sp=="calm")+chip("sp","normal","Normal",x.sp=="normal")+chip("sp","lively","Lively",x.sp=="lively")+'</div>');
+ h+='</div>';h+=grp("Motion speed",'<div class="chips">'+chip("sp","calm","Calm",x.sp=="calm")+chip("sp","normal","Normal",x.sp=="normal")+chip("sp","lively","Lively",x.sp=="lively")+'</div>');
  h+='<div class="ax-g"><b>Dim the background <span id="bg-dv" class="note" style="margin:0 0 0 6px">'+x.dm+'%</span></b><input type="range" id="bg-dim" min="0" max="60" step="5" value="'+x.dm+'" aria-label="Dim background"><p class="note">More dimming makes text easier to read on bright skies or photos.</p></div>';
  h+=grp("Card look",'<div class="chips">'+chip("cg","solid","Solid",x.cg=="solid")+chip("cg","soft","Soft",x.cg=="soft")+chip("cg","glass","Glass",x.cg=="glass")+'</div>');
  h+='<button type="button" class="btn s" id="bg-rand">🎲 Surprise me</button><button type="button" class="btn s" id="bg-reset" style="color:var(--poor)">Reset background</button>';
@@ -1074,15 +1084,26 @@ function bgDraw(){var box=$("sv-bg");if(!box)return;var x=bgx(),ph=bgPh(),H=docu
   if(t.dataset.bph=="pick"){$("bg-file").click();return}
   if(t.dataset.bph=="del"){try{localStorage.removeItem(BGP_K)}catch(x){}bgPut(bgx().m=="photo"?{m:"sky"}:{});toast("Photo removed.");return}
   if(t.id=="bg-rand"){bgRand();return}
-  if(t.id=="bg-reset"){try{localStorage.removeItem(BGX);localStorage.removeItem(BGK)}catch(x){}tod();bgApply();bgDraw();toast("Background reset.");return}
+  if(t.id=="bg-reset"){try{localStorage.removeItem(BGX);localStorage.removeItem(BGK);localStorage.removeItem(BGM);localStorage.removeItem(BGSN)}catch(x){}tod();bgApply();bgDraw();toast("Background reset.");return}
   var k=t.dataset.bk,o={};if(!k)return;if(t.dataset.sw)o[k]=bgx()[k]?0:1;else o[k]=t.dataset.bv;bgPut(o)});
  box.addEventListener("input",function(e){if(e.target.id!="bg-dim")return;var v=+e.target.value;$("bg-dv").textContent=v+"%";bgSave({dm:v});bgApply()});
  box.addEventListener("change",async function(e){if(e.target.id!="bg-file")return;var f=e.target.files[0];if(!f)return;toast("Preparing your photo…");
   try{var d=await bgShrink(f);localStorage.setItem(BGP_K,d);bgPut({m:"photo",cl:0,st:0,wv:0,gh:0,ob:0});toast("Photo set as background.")}catch(x){toast(x&&x.name=="QuotaExceededError"?"Not enough space on this device for this photo.":(x&&x.message)||"Could not use this photo.")}});
 })();
+var BGM="gd_bgmode",BGSN="gd_bgsnap",AU={i:0,t:Date.now()};
+function bgAuto(){try{return localStorage.getItem(BGM)=="auto"}catch(e){return false}}
+function bgMode(){var a=bgAuto(),c=function(v,ic,t,d,on){return'<button type="button" class="bgm'+(on?" on":"")+'" data-bmode="'+v+'" aria-pressed="'+on+'"><span class="bmi">'+ic+'</span><b>'+t+'</b><small>'+d+'</small></button>'};
+ return'<div class="ax-g"><b>Background mode</b><div class="bgmw">'+c("auto","🤖","Auto","Sky follows the clock and the style changes every 30 seconds",a)+c("manual","🎛️","Manual","You choose every setting yourself",!a)+'</div>'+(a?'<div class="bgnx"><i></i></div><p class="note" id="bgnt">Auto mode is on. Switch to Manual to choose your own settings.</p>':'<p class="note">Manual mode keeps exactly what you pick below.</p>')+'</div>'}
+function autoStyle(){var t=document.documentElement.dataset.tod||"day",P=BGP.slice(0,4),i=AU.i++,W={dawn:["auto","sunset","blue"],day:["blue","green","auto"],dusk:["sunset","violet","auto"],night:["violet","blue","auto"]}[t]||["auto"],F={dawn:["petals","none"],day:["petals","none","rain"],dusk:["fire","petals","none"],night:["fire","none","rain"]}[t]||["none"],v=i+Math.floor(i/P.length);
+ bgPut(Object.assign({},P[i%P.length][2],{m:"sky",wc:W[v%W.length],fx:F[v%F.length]}))}
+function autoTick(){if(!bgAuto()||document.hidden||document.documentElement.dataset.rm)return;try{localStorage.removeItem(BGK)}catch(e){}tod();autoStyle();AU.t=Date.now()}
+function bgModeSet(m){if(m=="auto"){if(bgAuto())return;try{localStorage.setItem(BGSN,JSON.stringify({x:localStorage.getItem(BGX),k:localStorage.getItem(BGK)}));localStorage.setItem(BGM,"auto")}catch(e){toast("Could not save this setting on this device.");return}autoTick();toast("Auto mode on: the sky follows the clock and the style changes every 30 seconds.")}
+ else{if(!bgAuto())return;try{var n=JSON.parse(localStorage.getItem(BGSN)||"null");if(n){if(n.x)localStorage.setItem(BGX,n.x);else localStorage.removeItem(BGX);if(n.k)localStorage.setItem(BGK,n.k);else localStorage.removeItem(BGK)}localStorage.removeItem(BGSN);localStorage.removeItem(BGM)}catch(e){}tod();bgApply();bgDraw();toast("Manual mode: your own settings are back.")}
+ bgDraw()}
+(function(){var box=$("sv-bg");if(box)box.addEventListener("click",function(e){var t=e.target.closest("[data-bmode]");if(t)bgModeSet(t.dataset.bmode)})})();
 function bgChips(){var b=$("bgc");if(!b)return;var cu=bgGet();b.innerHTML="";BGO.forEach(function(o){var c=document.createElement("button");c.type="button";c.className="chip"+(o[0]==cu?" on":"");c.setAttribute("aria-pressed",o[0]==cu?"true":"false");c.innerHTML='<span class="opt"><i style="background:'+o[2]+'"></i>'+o[1]+'</span>';c.onclick=function(){bgSet(o[0])};b.appendChild(c)});
  var m=$("bgm");if(m)m.textContent=cu=="auto"?"Auto: the sky changes with the time of day.":"Fixed: the sky stays on your choice until you pick Auto."}
-tod();bgApply();bgDraw();setInterval(tod,60000);
+tod();bgApply();bgDraw();setInterval(tod,60000);setInterval(autoTick,30000);document.addEventListener("visibilitychange",function(){if(!document.hidden&&bgAuto()&&Date.now()-AU.t>=30000)autoTick()});setInterval(function(){var e=$("bgnt");if(e&&bgAuto())e.textContent="Auto mode is on. Next style change in "+Math.max(0,Math.round(30-(Date.now()-AU.t)/1000))+" s. Switch to Manual to choose your own settings."},1000);
 (function(){var ly=window.scrollY||0,tk=false;function upd(){tk=false;var y=window.scrollY||0,d=y-ly,b=document.body,mx=document.documentElement.scrollHeight-window.innerHeight;if(y<=40||y>=mx-40||d<-6)b.classList.remove("nh");else if(d>6)b.classList.add("nh");if(Math.abs(d)>6)ly=y}window.addEventListener("scroll",function(){if(!tk){tk=true;requestAnimationFrame(upd)}},{passive:true});document.addEventListener("click",function(e){var b=document.body,t=e.target;if(b.classList.contains("gate")||!t||!t.closest)return;if(t.closest("a,button,input,select,textarea,label,summary,details,nav,svg,#toast,#mw,.leaflet-container,[onclick],[data-t]"))return;var sl=window.getSelection&&String(window.getSelection());if(sl)return;b.classList.toggle("nh")})})();
 setInterval(function(){var a=$("adm");if(a&&a.classList.contains("on")&&X.adm())render()},30000);
 // ===== Dynamic notifications: stacked, merged, realtime + helpful tips =====
@@ -1218,7 +1239,7 @@ document.addEventListener("click",function(e){var t=e.target.closest&&e.target.c
  else if(i=="ex-my"){var m=R.filter(mineR);if(!m.length){T("You have no reports to export yet");return}csv("my-reports.csv",[["Date","Category","Station","Location","Status","Details"]].concat(m.map(function(r){return[r.created_at,r.category,sname(r.station_id),r.location_text,r.status||"reported",r.description]})))}
  else if(i=="ex-sh")shr("Live Ganga water quality and citizen reports");
  else if(i=="ex-cp")copy();
- else if(i=="rs-dev"){if(!confirm("Reset saved theme, background, text size, layout and home station on this device?"))return;["gd_ax","gd_bg","gd_bgx","gd_bgp","gd_home","ss_pledge"].forEach(function(k){try{localStorage.removeItem(k)}catch(x){}});location.reload()}});
+ else if(i=="rs-dev"){if(!confirm("Reset saved theme, background, text size, layout and home station on this device?"))return;["gd_ax","gd_bg","gd_bgx","gd_bgp","gd_bgmode","gd_bgsnap","gd_home","ss_pledge"].forEach(function(k){try{localStorage.removeItem(k)}catch(x){}});location.reload()}});
 function shr(t){var d={title:"GangaDrishti",text:t,url:location.href};if(navigator.share)navigator.share(d).catch(function(){});else copy()}
 /* ===== Profile tab: impact, my reports, quick actions ===== */
 var lb=$("lb");
