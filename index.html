@@ -165,11 +165,11 @@ html[data-rf] body{font-family:Verdana,Tahoma,"Segoe UI",sans-serif;letter-spaci
 @keyframes axm{0%{opacity:0;transform:translateX(0)}20%{opacity:1;transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}100%{transform:none}}
 @media(prefers-reduced-motion:reduce){.ax-m{animation:none}}
 body.gate.gx-login #nt{right:auto;left:50%;transform:translateX(-50%);width:min(92vw,372px)}
-html[data-vw=mobile]{--vw:430px}html[data-vw=tablet]{--vw:820px}html[data-vw=desktop]{--vw:1180px}
+html[data-vw=mobile]{--vw:430px}html[data-vw=desktop]{--vw:1180px}
 html[data-vw] main,html[data-vw] header .hw{max-width:var(--vw)}html[data-vw] nav{max-width:min(var(--vw),700px)}
 html[data-vw] #tq,html[data-vw] #ap,html[data-vw] #nt{right:max(10px,calc(50vw - var(--vw)/2 + 10px))}
 html[data-vw=desktop] #d.on{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;align-items:start}html[data-vw=desktop] #d>.kpis{grid-column:1/-1}
-html[data-vw=tablet] #list,html[data-vw=desktop] #list{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;align-items:start}
+html[data-vw=desktop] #list{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;align-items:start}
 html[data-vw=desktop] #f,html[data-vw=desktop] #lb,html[data-vw=desktop] #set,html[data-vw=desktop] #adm{max-width:720px;margin:0 auto}
 
 .gwrap{display:flex;justify-content:center;margin:2px 0 14px}
@@ -432,7 +432,6 @@ html[data-vw=desktop] .kp b{font-size:32px}
 html[data-vw=desktop] #d>.card:nth-child(2){grid-column:1;grid-row:2}
 html[data-vw=desktop] #det{grid-column:2;grid-row:2/5}
 html[data-vw=desktop] #cp{grid-column:1;grid-row:4}
-html[data-vw=desktop] #hot{grid-column:1/-1;grid-row:5}
 html[data-vw=desktop] #mw:not(.full){height:440px}
 html[data-vw=desktop] #list{grid-template-columns:repeat(3,minmax(0,1fr))}
 html[data-vw=desktop] #toast{left:268px;bottom:20px}
@@ -530,13 +529,39 @@ html[data-nocl] .cl,html[data-nost] #st,html[data-nowv] .wv,html[data-nogh] .gh,
 #bg.bgbl{animation:bgbl 1.8s ease}
 @keyframes bgbl{40%{filter:brightness(1.1) saturate(1.25)}}
 @media (prefers-reduced-motion:reduce){#bgsw{display:none}#orb.pulse,#bg.bgbl{animation:none}}
+
+/* ===== Hotspots tab ===== */
+.a7{background:linear-gradient(145deg,#ffb15a,#e11d48)}
+.hs-g{display:block}
+html[data-vw=desktop] .hs-g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px;align-items:start}
+#hs-ctl input[type=search]{height:44px}
+.hs-h{display:flex;align-items:center;gap:12px}
+.hs-t{flex:1;min-width:0}.hs-t .r b{overflow:hidden;text-overflow:ellipsis}
+.hs-ring{--v:0;--c:var(--mut);flex:none;position:relative;width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--c) calc(var(--v)*1%),var(--line) 0)}
+.hs-ring::before{content:"";position:absolute;inset:6px;border-radius:50%;background:var(--card)}
+.hs-ring b{position:relative;font-size:15px}
+.hs-tr{font-weight:700;font-size:11px}.hs-tr.up{color:var(--poor)}.hs-tr.dn{color:var(--good)}.hs-tr.same{color:var(--mut)}
+.hsc .bar{margin-top:10px}
+.hs-why{list-style:none;margin:10px 0 0;padding:0;font-size:13px}
+.hs-why li{position:relative;padding:3px 0 3px 18px}.hs-why li::before{content:"";position:absolute;left:4px;top:11px;width:6px;height:6px;border-radius:50%;background:var(--teal)}
+.hs-m{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.hs-m span{font-size:12px;padding:3px 9px;border-radius:99px;background:var(--bg);border:1px solid var(--line);color:var(--ink)}
+.hs-a{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.hs-a .chip{font-size:12.5px;padding:6px 11px}
+.hs-b{display:flex;gap:6px;flex:none}
+.hs-it{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.hs-it:first-of-type{border-top:0}
+.hs-ck{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:9px 10px;margin-top:6px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);font:inherit;font-size:14px;cursor:pointer}
+.hs-ck .bx{flex:none;width:22px;height:22px;border-radius:7px;border:2px solid var(--line);display:grid;place-items:center;color:#fff;font-weight:800;font-size:13px}
+.hs-ck.on{border-color:var(--good)}.hs-ck.on .bx{background:var(--good);border-color:var(--good)}
+.hs-ck.on .t{color:var(--mut);text-decoration:line-through}
+#hs-cu .ax-r:first-of-type{border-top:0}
 </style></head><body class="gate"><noscript><p style="padding:24px;font:16px system-ui,sans-serif;text-align:center">GangaDrishti needs JavaScript to show live water quality data. Please turn it on and reload.</p></noscript><div id="bg" aria-hidden="true"><div id="st"></div><div id="orb"></div><i class="cl c1"></i><i class="cl c2"></i><i class="cl c3"></i>
 <svg class="gh" viewBox="0 0 520 200" aria-hidden="true"><path d="M0 60V200H520V180H480V160H440V140H400V120H360V100H320V80H0z"/><path d="M40 62V-20Q40 -50 70 -80Q100 -50 100 -20V62z" transform="translate(0 70)"/><path d="M120 132V100Q120 78 150 78Q180 78 180 100V132z"/><path d="M215 132V80Q215 50 245 28Q275 50 275 80V132z"/></svg>
 <svg class="wv w1" viewBox="0 0 2880 200" preserveAspectRatio="none"><path d="M0 100Q180 40 360 100T720 100T1080 100T1440 100T1800 100T2160 100T2520 100T2880 100V200H0z"/></svg>
 <svg class="wv w2" viewBox="0 0 2880 200" preserveAspectRatio="none"><path d="M0 100Q180 150 360 100T720 100T1080 100T1440 100T1800 100T2160 100T2520 100T2880 100V200H0z"/></svg>
 <svg class="wv w3" viewBox="0 0 2880 200" preserveAspectRatio="none"><path d="M0 100Q180 60 360 100T720 100T1080 100T1440 100T1800 100T2160 100T2520 100T2880 100V200H0z"/></svg></div>
 <header><div class="hw"><span class="logo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s6 6.2 6 10.5A6 6 0 0 1 6 13.5C6 9.2 12 3 12 3z"/><path d="M9 14.5a3 3 0 0 0 3 2.5"/></svg></span><div><h1>GangaDrishti</h1><p class="tag">See the pollution. Trace the source. Drive action.</p></div></div><svg class="wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 30C240 60 480 0 720 30s480 30 720 0V60H0z" fill="var(--bg)"/></svg></header>
-<nav><button class="on" data-t="d"><i class="app a1"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8v8H3zM13 3h8v5h-8zM13 11h8v10h-8zM3 14h8v7H3z"/></svg></i><span class="lb">Dashboard</span></button><button data-t="f"><i class="app a2"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3zM12 10v4M12 17h.01"/></svg></i><span class="lb">Report</span></button><button data-t="l"><i class="app a3"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg></i><span class="lb">Cleanup <span id="cnt"></span></span></button><button data-t="top"><i class="app a5"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0zM6 5H3v2a3 3 0 0 0 3 3M18 5h3v2a3 3 0 0 1-3 3M12 13v4M8 21h8M10 17h4"/></svg></i><span class="lb">Ranks</span></button><button data-t="lb"><i class="app a4"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></i><span class="lb">Login</span></button><button data-t="set"><i class="app a6"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h8.5M17.5 6H20M4 12h2.5M11.5 12H20M4 18h9.5M18.5 18H20"/><circle cx="15" cy="6" r="2.5"/><circle cx="9" cy="12" r="2.5"/><circle cx="16" cy="18" r="2.5"/></svg></i><span class="lb">Settings</span></button><button data-t="adm" style="display:none"><i class="app a5"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3z"/></svg></i><span class="lb">Admin</span></button></nav>
+<nav><button class="on" data-t="d"><i class="app a1"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8v8H3zM13 3h8v5h-8zM13 11h8v10h-8zM3 14h8v7H3z"/></svg></i><span class="lb">Dashboard</span></button><button data-t="hs"><i class="app a7"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 .3 1.5 1 2 2 2 0-3-1-5 1-8z"/></svg></i><span class="lb">Hotspots</span></button><button data-t="f"><i class="app a2"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3zM12 10v4M12 17h.01"/></svg></i><span class="lb">Report</span></button><button data-t="l"><i class="app a3"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg></i><span class="lb">Cleanup <span id="cnt"></span></span></button><button data-t="top"><i class="app a5"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0zM6 5H3v2a3 3 0 0 0 3 3M18 5h3v2a3 3 0 0 1-3 3M12 13v4M8 21h8M10 17h4"/></svg></i><span class="lb">Ranks</span></button><button data-t="lb"><i class="app a4"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></i><span class="lb">Login</span></button><button data-t="set"><i class="app a6"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h8.5M17.5 6H20M4 12h2.5M11.5 12H20M4 18h9.5M18.5 18H20"/><circle cx="15" cy="6" r="2.5"/><circle cx="9" cy="12" r="2.5"/><circle cx="16" cy="18" r="2.5"/></svg></i><span class="lb">Settings</span></button><button data-t="adm" style="display:none"><i class="app a5"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3z"/></svg></i><span class="lb">Admin</span></button></nav>
 <main>
 <section id="d" class="sec on"><div class="kpis" id="kp"></div>
  <div class="card"><h2>Monitoring stations</h2><div id="mw"><div id="map" role="region" aria-label="Map of Ganga monitoring stations"></div><button type="button" id="mx" aria-label="Open full screen map">⤢ Open full map</button><button type="button" id="mc" aria-label="Close map">✕ Close</button><div id="mi"></div></div>
@@ -548,7 +573,6 @@ html[data-nocl] .cl,html[data-nost] #st,html[data-nowv] .wv,html[data-nogh] .gh,
   <button type="button" class="btn s" id="wm-cur">Fill from the selected station</button><div id="wm-out" style="margin-top:10px"></div></details></div>
  <div class="card" id="det">Loading station data…</div>
  <div class="card" id="cp"></div>
- <div class="card" id="hot"></div>
 </section>
 <section id="f" class="sec"><div class="card"><h2>Report a pollution source</h2>
  <label>Nearest station</label><select id="rs"></select>
@@ -561,6 +585,7 @@ html[data-nocl] .cl,html[data-nost] #st,html[data-nowv] .wv,html[data-nogh] .gh,
  <label>Photo of the waste <span class="rq">required</span></label><input id="rp" type="file" accept="image/*" capture="environment"><img id="rpv" class="ph" alt="Photo preview" style="display:none;margin-top:6px;max-height:160px;object-fit:cover">
  <button class="btn" id="sub" type="button">Submit report</button><p class="note" id="msg"></p></div></section>
 <section id="l" class="sec"><div id="list"></div><p class="note" id="mode"></p></section>
+<section id="hs" class="sec"></section>
 <div class="gdeco gx-hero"><div class="gx-hi"><b id="gx-g">Namaste</b><span id="gx-t"></span></div><p>Join citizens and volunteers keeping the Ganga clean. Tap below to open the login window, or explore as a guest.</p><span class="gx-pill" id="gx-on">&#9679; Online</span><span class="gx-pill" id="gx-s">&#128752; Live monitoring</span><button type="button" class="gx-go" id="gx-go"><span>Log in / Register</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button><button type="button" class="gx-gs" id="gx-gs">or continue as Guest</button></div>
 <section id="lb" class="sec"><div class="card">Loading…</div></section><div class="gdeco gx-wrap">
 <div class="gx-sec"><h3 class="gx-h">How you earn points</h3>
@@ -723,7 +748,7 @@ function det(){var s=cur();wqc();if(!s){$("det").innerHTML="No stations found.";
  if(a.length>1){var p=a.map(function(v,i){return(8+i*(304/(a.length-1))).toFixed(1)+","+y(v).toFixed(1)}).join(" ");el("polyline",{points:p,fill:"none",stroke:"#1d8a99","stroke-width":2.5,"stroke-linejoin":"round"},c)}
  else{var n=el("text",{x:160,y:60,"text-anchor":"middle","font-size":11,fill:"var(--mut)"},c);n.textContent="Not enough readings yet"}
  $("go").onclick=function(){$("rs").value=s.id;tab("f")}}
-function tab(t){var O=["d","f","l","top","lb","set","adm"],cu=document.querySelector(".sec.on"),ci=cu?O.indexOf(cu.id):0;document.documentElement.style.setProperty("--dir",O.indexOf(t)>=ci?1:-1);var pb=document.querySelector('nav button[data-t="'+t+'"]');if(pb){pb.classList.remove("pop");void pb.offsetWidth;pb.classList.add("pop")}document.querySelectorAll(".sec").forEach(function(e){e.classList.toggle("on",e.id==t)});document.querySelectorAll("nav button").forEach(function(b){b.classList.toggle("on",b.dataset.t==t)});try{history.replaceState(null,"","#"+t)}catch(e){}if(t=="d")setTimeout(fitMap,60);if(t=="set")setView("");if(t=="adm")try{X.admHome()}catch(e){}window.scrollTo(0,0)}
+function tab(t){var O=["d","hs","f","l","top","lb","set","adm"],cu=document.querySelector(".sec.on"),ci=cu?O.indexOf(cu.id):0;document.documentElement.style.setProperty("--dir",O.indexOf(t)>=ci?1:-1);var pb=document.querySelector('nav button[data-t="'+t+'"]');if(pb){pb.classList.remove("pop");void pb.offsetWidth;pb.classList.add("pop")}document.querySelectorAll(".sec").forEach(function(e){e.classList.toggle("on",e.id==t)});document.querySelectorAll("nav button").forEach(function(b){b.classList.toggle("on",b.dataset.t==t)});try{history.replaceState(null,"","#"+t)}catch(e){}if(t=="d")setTimeout(fitMap,60);if(t=="hs")try{hot()}catch(e){}if(t=="set")setView("");if(t=="adm")try{X.admHome()}catch(e){}window.scrollTo(0,0)}
 document.querySelectorAll("nav button").forEach(function(b){b.onclick=function(){tab(b.dataset.t)}});
 (function(){var h=location.hash.slice(1),e=h&&document.getElementById(h);if(e&&e.classList.contains("sec"))tab(h)})();
 function chips(){$("rc").innerHTML="";CATS.forEach(function(c,i){var b=document.createElement("button");b.type="button";b.className="chip"+(i==cat?" on":"");b.textContent=c;b.onclick=function(){cat=i;chips()};$("rc").appendChild(b)})}chips();
@@ -804,8 +829,7 @@ function cpsrc(){if(!$("cps"))return;var by={};CP.forEach(function(r){(by[r.stat
 // ----- hotspots, source investigation, alerts -----
 function sc(s){return Math.max(0,(s.BOD||0)-3)+Math.max(0,s.DO==null?0:5-s.DO)*1.5+(s.T>50?1:0)}
 function flag(o){return o.dn.BOD!=null&&o.up.BOD!=null&&(o.dn.BOD-o.up.BOD>=thr||(o.up.DO!=null&&o.dn.DO!=null&&o.up.DO-o.dn.DO>=1.5))}
-function hot(){var a=S.slice().sort(function(x,y){return sc(y)-sc(x)});
- $("hot").innerHTML="<h2>Pollution hotspots (ranked)</h2>"+a.map(function(s,i){var w=Math.min(100,sc(s)*14+4),st=stat(s);return'<div style="margin-top:8px"><div class="r"><span>'+(i+1)+". "+esc(s.n)+'</span><span class="pill '+(st=="nodata"?"rep":st)+'">'+(st=="nodata"?"no data":st)+'</span></div><div class="bar"><div style="width:'+w+"%;background:"+COL[st]+'"></div></div></div>'}).join("")}
+function hot(){try{if(window.HS)HS.draw()}catch(e){}}
 function src(){if(!$("so"))return;var a=OUT.slice().sort(function(x,y){return((y.dn.BOD||0)-(y.up.BOD||0))-((x.dn.BOD||0)-(x.up.BOD||0))});
  $("so").innerHTML=a.map(function(o){var f=flag(o),rows=[["BOD (mg/L)","BOD"],["Dissolved oxygen (mg/L)","DO"],["pH","pH"],["Turbidity (NTU)","T"]].map(function(r){var u=o.up[r[1]],d=o.dn[r[1]],c=(u==null||d==null)?null:d-u;return"<tr><td>"+r[0]+"</td><td>"+show(u)+"</td><td>"+show(d)+"</td><td><b>"+(c==null?"–":(c>0?"+":"")+c.toFixed(1))+"</b></td></tr>"}).join("");
   return'<div class="card"><div class="r"><div><b>'+esc(o.n)+'</b><div class="note" style="margin:0">'+esc(o.t)+'</div></div><span class="pill '+(f?"poor":"good")+'">'+(f?"Inspect":"Normal")+'</span></div><table class="tb"><tr><td></td><td>Upstream</td><td>Downstream</td><td>Change</td></tr>'+rows+"</table>"+(f?'<div class="al">Water quality drops sharply after this outlet. Possible source: send for inspection and sampling.</div>':"")+"</div>"}).join("")+'<p class="note">A change between two points suggests a possible source. It does not prove who is responsible. Other drains, river flow and weather also matter, so samples and inspection are needed.</p>'}
@@ -1180,7 +1204,7 @@ function live(){var c=sb.channel("gd-notify"),me=function(r){return r.client_id=
  O("readings","INSERT",function(r){var d=r.do_mgl;L("New reading at "+sname(r.station_id)+(d!=null?" \u00B7 DO "+d+" mg/L":""),{icon:"\u{1F4E1}",type:d!=null&&d<5?"warn":"live",tab:"d",key:"rd2",fmt:function(n){return n+" new sensor readings"}})});
  c.subscribe()}
 var G=["Water is within limits when DO is at least 5 mg/L, BOD at most 3 mg/L and pH is 6.5\u20138.5.","Use the \u267F button (top right) for dark mode, larger text and tab effects.","Tap empty space on a page to hide or show the bottom tabs.","Station colours: green is within limits, yellow is watch, red is critical."],
-TP={d:["Tap the map to open it full screen, then tap a pin for station details.","Compare upstream and downstream values to spot where pollution starts."],f:["Add a photo and a ghat name so volunteers can find the spot quickly.","Use the GPS button to fill in your location in one tap."],l:["Tap \u201CI see this too\u201D to confirm a report. More confirmations mean more attention."],lb:["Reports earn +10 points. Cleanups earn even more."],set:["Your settings are saved on this device only."],adm:["Check Volunteer requests regularly so helpers are not kept waiting."]};
+TP={hs:["Tap Watch on a ghat to get an alert when its water turns bad.","Volunteers: plan a route to clean the nearest spots in one trip.","Use Customize on this page to hide the tools you do not need."],d:["Tap the map to open it full screen, then tap a pin for station details.","Compare upstream and downstream values to spot where pollution starts."],f:["Add a photo and a ghat name so volunteers can find the spot quickly.","Use the GPS button to fill in your location in one tap."],l:["Tap \u201CI see this too\u201D to confirm a report. More confirmations mean more attention."],lb:["Reports earn +10 points. Cleanups earn even more."],set:["Your settings are saved on this device only."],adm:["Check Volunteer requests regularly so helpers are not kept waiting."]};
 function tip(){if(off||!pref("tp")||document.hidden||!window.X||!X.uid()||box().children.length||Q.length)return;var a=document.activeElement,mw=$("mw");if((a&&/INPUT|SELECT|TEXTAREA/.test(a.tagName))||(mw&&mw.classList.contains("full")))return;
  var sc=document.querySelector(".sec.on"),id=sc?sc.id:"d",L=(TP[id]||[]).concat(G);if(id=="l"||id=="lb")L.push(X.role()=="volunteer"?"Accept a cleanup for +5 points, then upload an after photo for +30.":"Want to help clean up? Apply to become a volunteer from your profile tab.");
  L=L.filter(function(t){return seen.indexOf(t)<0});if(!L.length){seen=[];return}var t=L[Math.floor(Math.random()*L.length)];seen.push(t);add(t,{tip:1,type:"tip",icon:"\u{1F4A1}"})}
@@ -1191,15 +1215,16 @@ function setView(v){$("set").dataset.v=v||"";if(v=="ax"&&window.AXD)AXD();if(v==
 // ===== Accessibility & display settings (saved on this device only) =====
 (function(){var KEY="gd_ax",DEF={th:"auto",ts:0,fx:"slide",ah:1,rm:0,hc:0,rf:0,ln:1,tp:1,vw:"auto"},ax=Object.assign({},DEF),H=document.documentElement,ap=$("ap"),mq=null;
 try{ax=Object.assign(ax,JSON.parse(localStorage.getItem(KEY))||{})}catch(e){}
+if(ax.vw=="tablet")ax.vw="auto";
 try{mq=matchMedia("(prefers-color-scheme:dark)")}catch(e){}
 function dark(){return ax.th=="dark"||(ax.th=="auto"&&!!mq&&mq.matches)}
-function apply(){var d=H.dataset;if(ax.th=="auto")H.removeAttribute("data-theme");else H.setAttribute("data-theme",ax.th);H.style.setProperty("--tz",[1,1.15,1.3][ax.ts]||1);d.fx=ax.fx;d.ah=ax.ah?"on":"off";var wd=null;try{wd=matchMedia("(min-width:1024px)")}catch(e){}if(ax.vw=="auto"){if(wd&&wd.matches)d.vw="desktop";else delete d.vw}else d.vw=ax.vw;var mt=document.querySelector("meta[name=viewport]"),W={tablet:820,desktop:1180}[ax.vw],sw=screen.width;if(mt)mt.content=W&&sw<W?"width="+W+",initial-scale="+(sw/W).toFixed(3)+",viewport-fit=cover":"width=device-width, initial-scale=1, viewport-fit=cover";["rm","hc","rf"].forEach(function(k){if(ax[k])d[k]="1";else delete d[k]});$("tq-t").textContent=dark()?"\u2600\uFE0F":"\u{1F319}"}
+function apply(){var d=H.dataset;if(ax.th=="auto")H.removeAttribute("data-theme");else H.setAttribute("data-theme",ax.th);H.style.setProperty("--tz",[1,1.15,1.3][ax.ts]||1);d.fx=ax.fx;d.ah=ax.ah?"on":"off";var wd=null;try{wd=matchMedia("(min-width:1024px)")}catch(e){}if(ax.vw=="auto"){if(wd&&wd.matches)d.vw="desktop";else delete d.vw}else d.vw=ax.vw;var mt=document.querySelector("meta[name=viewport]"),W={desktop:1180}[ax.vw],sw=screen.width;if(mt)mt.content=W&&sw<W?"width="+W+",initial-scale="+(sw/W).toFixed(3)+",viewport-fit=cover":"width=device-width, initial-scale=1, viewport-fit=cover";["rm","hc","rf"].forEach(function(k){if(ax[k])d[k]="1";else delete d[k]});$("tq-t").textContent=dark()?"\u2600\uFE0F":"\u{1F319}"}
 function put(k,v){ax[k]=v;try{localStorage.setItem(KEY,JSON.stringify(ax))}catch(e){toast("Could not save settings on this device.")}apply();draw();if(k=="vw")setTimeout(function(){fitMap()},200)}
 function grp(t,k,o){return'<div class="ax-g"><b>'+t+'</b><div class="chips">'+o.map(function(x){return'<button type="button" class="chip'+(String(ax[k])===String(x[0])?" on":"")+'" data-k="'+k+'" data-v="'+x[0]+'">'+x[1]+'</button>'}).join("")+'</div></div>'}
 function sw(t,sub,k){return'<div class="ax-r"><span>'+t+'<small>'+sub+'</small></span><button type="button" class="sw" role="switch" aria-label="'+t+'" aria-checked="'+(ax[k]?"true":"false")+'" data-k="'+k+'" data-t="1"></button></div>'}
 function body(){return ''
 +grp("Theme","th",[["auto","Auto"],["light","\u2600\uFE0F Light"],["dark","\u{1F319} Dark"]])
-+grp("Layout","vw",[["auto","Auto"],["mobile","\u{1F4F1} Mobile"],["tablet","\u{1F4CB} Tablet"],["desktop","\u{1F5A5}\uFE0F Desktop"]])
++grp("Layout","vw",[["auto","Auto"],["mobile","\u{1F4F1} Mobile"],["desktop","\u{1F5A5}\uFE0F Desktop"]])
 +grp("Text size","ts",[[0,"Normal"],[1,"Large"],[2,"Extra large"]])
 +grp("Tab switch effect","fx",[["slide","Slide"],["fade","Fade"],["zoom","Zoom"],["none","None"]])
 +sw("Live notifications","Pop-ups for new reports, members and readings","ln")
@@ -1373,5 +1398,180 @@ async function load(){if(busy)return;busy=1;try{var g=window.GM&&GM.on(),r;
 document.querySelector("nav").addEventListener("click",function(e){var b=e.target.closest("button");if(b&&b.dataset.t=="top"){first=1;load()}});
 setInterval(function(){if(el.classList.contains("on")&&!document.hidden)load()},30000);
 if(location.hash=="#top")load();draw()})();
+</script>
+<script>
+/* ===== Hotspots tab: ranked ghats, filters, priority queue, route planner, citizen and volunteer tools ===== */
+(function(){
+var $=function(i){return document.getElementById(i)},T=function(m,o){try{toast(m,o)}catch(e){}};
+var PK="gd_hs",KK="gd_hs_kit",TK="gd_hs_tally",SK="gd_hs_snap";
+function ld(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}}
+function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){T("Could not save on this device.")}}
+var MODS=[["pri","🎯","Priority queue"],["rt","🧭","Cleanup route planner"],["sf","🛟","Safest ghats today"],["mx","📊","Pollution mix"],["ck","🧰","Cleanup kit checklist"],["gd","♻️","Waste handling guide"],["tl","📒","My cleanup log"]];
+var DEF={sort:"sev",f:"all",w:0,den:"det",m:{}};MODS.forEach(function(m){DEF.m[m[0]]=1});
+var P=Object.assign({},DEF,ld(PK,{}));P.m=Object.assign({},DEF.m,P.m||{});
+var q="",open={},pos=null,rt=null,base=null,snapped=false,OR=[];
+var CI={"Drain / sewage":"🚰","Industrial discharge":"🏭","Waste dumping":"🗑️","Dead animals":"🐾","Other":"❓"};
+var KIT=[["gl","🧤","Gloves"],["mk","😷","Mask"],["sh","🥾","Closed shoes, no slippers"],["bg","🛍️","Strong bags, dry and wet kept apart"],["tg","🥢","Tongs or a stick for sharp things"],["wt","💧","Drinking water and sanitiser"],["fa","🩹","Basic first aid"],["ph","🔋","Phone charged, GPS on"],["bd","🧑‍🤝‍🧑","A buddy, and tell someone where you go"],["cm","📸","Before and after photos ready"]];
+function save(){sv(PK,P)}
+function Wl(){var a=ld("gd_watch",[]);return Array.isArray(a)?a:[]}
+function home(){try{return localStorage.getItem("gd_home")||""}catch(e){return""}}
+function uid(){try{return X.uid()}catch(e){return null}}
+function isVol(){try{return X.role()=="volunteer"}catch(e){return false}}
+function openR(){return R.filter(function(r){var s=r.status||"reported";return s=="reported"||s=="assigned"})}
+function stOf(id){return S.filter(function(s){return s.id==id})[0]}
+function hl(s){if(stat(s)=="nodata")return null;return Math.max(0,Math.round(100-Math.min(100,viol(s).length*15+sc(s)*10)))}
+function days(r){return Math.max(0,(Date.now()-new Date(r.created_at))/864e5)}
+function votes(id){return V.filter(function(v){return v.report_id==id}).length}
+function hav(a,b){var t=Math.PI/180,x=(b.lat-a.lat)*t/2,y=(b.lng-a.lng)*t/2,z=Math.sin(x)*Math.sin(x)+Math.cos(a.lat*t)*Math.cos(b.lat*t)*Math.sin(y)*Math.sin(y);return 12742*Math.asin(Math.sqrt(z))}
+function km(d){return d<1?Math.round(d*1000)+" m":d.toFixed(1)+" km"}
+function pc(st){return st=="nodata"?"rep":st}
+function lbl(st){return st=="poor"?"critical":st=="moderate"?"watch":st=="good"?"within limits":"no data"}
+function dir(a,b){return"https://www.google.com/maps/dir/?api=1&travelmode=driving&destination="+a+","+b}
+function mc(t,sub,body){return'<div class="card"><h2>'+t+'</h2>'+(sub?'<p class="leg" style="margin:0 0 6px">'+sub+'</p>':'')+body+'</div>'}
+function why(s){var a=[];if(stat(s)=="nodata")return["No readings yet for this place."];
+ if(s.DO!=null&&s.DO<5)a.push("Low oxygen: "+s.DO+" mg/L (needs 5 or more). Fish and river life struggle.");
+ if(s.BOD!=null&&s.BOD>3)a.push("High waste load (BOD): "+s.BOD+" mg/L (limit 3). Likely sewage or organic waste.");
+ if(s.pH!=null&&(s.pH<6.5||s.pH>8.5))a.push("pH "+s.pH+" is outside 6.5 to 8.5.");
+ if(s.T!=null&&s.T>50)a.push("Very cloudy water ("+s.T+" NTU).");
+ if(!a.length)a.push("All readings are inside the safe limits.");return a}
+function trend(s){if(!base||!base.v||base.v[s.id]==null)return"";var d=sc(s)-base.v[s.id],t=' title="Compared with your last visit ('+wqAgo(base.at)+')"';
+ if(Math.abs(d)<.3)return' · <span class="hs-tr same"'+t+'>● steady</span>';return' · <span class="hs-tr '+(d>0?"up":"dn")+'"'+t+'>'+(d>0?"▲ worse":"▼ better")+' since last visit</span>'}
+function capture(){if(snapped)return;snapped=true;var o=ld(SK,null),cur={};S.forEach(function(s){cur[s.id]=+sc(s).toFixed(2)});if(o&&o.v)base=o;if(!o||!o.v||Date.now()-o.at>18e5)sv(SK,{at:Date.now(),v:cur})}
+/* ----- shell (built once so the search box keeps focus) ----- */
+function shell(h){h.innerHTML='<div class="kpis" id="hs-k"></div><div id="hs-pre" class="hs-g"></div>'
++'<div class="card" id="hs-ctl"><h2>Pollution hotspots</h2><p class="leg" style="margin:0 0 8px" id="hs-sub"></p><input id="hs-q" type="search" placeholder="🔍 Search ghat or state" autocomplete="off" aria-label="Search ghat or state"><label>Show</label><div class="chips" id="hs-fc"></div><label>Sort by</label><div class="chips" id="hs-sc"></div>'
++'<div class="hs-a"><button type="button" class="chip" data-a="share-all">📤 Share top hotspots</button><button type="button" class="chip" data-a="csv">⬇️ Download CSV</button></div>'
++'<details id="hs-cu" class="wqd"><summary>⚙️ Customize this page</summary><div id="hs-cui"></div></details></div>'
++'<div id="hs-list" class="hs-g"></div><div id="hs-post" class="hs-g"></div>'
++'<p class="note" id="hs-ft">Health score (0 to 100) is a simple guide built from the latest readings. A rise between two points suggests a possible source, it does not prove who is responsible. Indicative only: lab tests and local advisories come first.</p>';
+ h.addEventListener("click",onClick);
+ $("hs-q").addEventListener("input",function(){q=this.value.trim().toLowerCase();list()});
+ h.addEventListener("toggle",function(e){var d=e.target;if(d&&d.dataset&&d.dataset.o)open[d.dataset.o]=d.open},true)}
+function chips(){var F=[["all","All"],["poor","🔴 Critical"],["moderate","🟡 Watch"],["good","🟢 OK"],["nodata","⚪ No data"]],
+ SO=[["sev","Most polluted"],["cln","Cleanest"],["rep","Most reports"],["rate","Top rated"],["name","A to Z"]],
+ c=function(a,on,at){return'<button type="button" class="chip'+(on?" on":"")+'" '+at+'>'+a+'</button>'};
+ $("hs-fc").innerHTML=F.map(function(f){return c(f[1],P.f==f[0],'data-hf="'+f[0]+'"')}).join("")+c("🔔 My watched",P.w,'data-hw="1"');
+ $("hs-sc").innerHTML=SO.map(function(f){return c(f[1],P.sort==f[0],'data-hso="'+f[0]+'"')}).join("");
+ $("hs-cui").innerHTML='<p class="leg" style="margin:8px 0 0">Choose which tools appear on this page. Saved on this device only.</p>'
+ +MODS.map(function(m){return'<div class="ax-r"><span>'+m[1]+' '+m[2]+'</span><button type="button" class="sw" role="switch" aria-label="'+m[2]+'" aria-checked="'+(P.m[m[0]]?"true":"false")+'" data-hm="'+m[0]+'"></button></div>'}).join("")
+ +'<div class="ax-g"><b>Ghat card style</b><div class="chips">'+c("Detailed",P.den=="det",'data-hd="det"')+c("Compact",P.den=="cmp",'data-hd="cmp"')+'</div></div>'
+ +'<button type="button" class="btn s" data-a="reset">Reset this page</button>'}
+/* ----- KPIs ----- */
+function kpis(){var c={poor:0,moderate:0,good:0,nodata:0};S.forEach(function(s){c[stat(s)]++});var cl=R.filter(function(r){return r.status=="cleaned"}).length,
+ K=[["Critical",c.poor,"var(--poor)","#ff8a7a,#e11d48","🔴"],["Watch",c.moderate,"var(--mod)","#ffd75e,#f59e0b","🟡"],["Open reports",OR.length,"var(--navy)","#4facfe,#2b6ef5","📝"],["Cleaned",cl,"var(--good)","#5be584,#16a34a","✅"]];
+ $("hs-k").innerHTML=K.map(function(k){return'<div class="kp"><i class="app sm" style="background:linear-gradient(145deg,'+k[3]+');font-style:normal;font-size:16px">'+k[4]+'</i><b style="color:'+k[2]+'">'+k[1]+'</b><span>'+k[0]+'</span></div>'}).join("")}
+/* ----- ranked ghat list ----- */
+function card(o,rank,cnt,cl,W,hm){var s=o.s,st=o.st,h=hl(s),col=COL[st],w=st=="nodata"?0:Math.min(100,o.sc*14+4),id=esc(s.id),av=avg(s.id),den=P.den,
+ src=s.at?"Live · "+wqAgo(s.at):s.ann?"CPCB "+s.ann+" yearly data":"No readings",watching=W.indexOf(s.id)>-1,
+ head='<div class="hs-h"><div class="hs-ring" style="--v:'+(h==null?0:h)+';--c:'+col+'"><b>'+(h==null?"–":h)+'</b></div><div class="hs-t"><div class="r"><b>#'+rank+' '+esc(s.n)+'</b><span class="pill '+pc(st)+'">'+lbl(st)+'</span></div><div class="note" style="margin:2px 0 0">'+esc(s.state||"")+' · '+src+(s.demo?" · demo sensor":"")+trend(s)+'</div></div></div>',
+ bar='<div class="bar"><div style="width:'+w+'%;background:'+col+'"></div></div>',
+ wh='<ul class="hs-why">'+why(s).map(function(x){return'<li>'+esc(x)+'</li>'}).join("")+'</ul>',
+ mt='<div class="hs-m">'+(s.id==hm?'<span>🏠 Home</span>':"")+(watching?'<span>🔔 Watching</span>':"")+'<span>📝 '+(cnt[s.id]||0)+' open</span><span>✅ '+(cl[s.id]||0)+' cleaned</span>'+(av?'<span>★ '+av.m.toFixed(1)+' ('+av.n+')</span>':"")+'</div>',
+ b=function(a,t,on){return'<button type="button" class="chip'+(on?" on":"")+'" data-a="'+a+'" data-id="'+id+'">'+t+'</button>'},
+ ac='<div class="hs-a">'+b("dash","📊 Dashboard")+b("rep","📍 Report here")+b("nav","🧭 Navigate")+b("watch",watching?"🔔 Watching":"🔕 Watch",watching)+b("share","📤 Share")+'</div>',
+ rows=[["pH",s.pH,"6.5 to 8.5",s.pH!=null&&(s.pH<6.5||s.pH>8.5)],["Oxygen (DO)",s.DO,"5 or more mg/L",s.DO!=null&&s.DO<5],["Waste load (BOD)",s.BOD,"3 or less mg/L",s.BOD!=null&&s.BOD>3],["Cloudiness",s.T,"NTU",false]],
+ tb='<table class="tb"><tr><td>Reading</td><td>Value</td><td>Safe limit</td></tr>'+rows.map(function(r){return'<tr><td>'+r[0]+'</td><td'+(r[3]?' style="color:var(--poor);font-weight:700"':'')+'>'+show(r[1])+'</td><td>'+r[2]+'</td></tr>'}).join("")+'</table>';
+ if(den=="cmp")return'<div class="card hsc">'+head+bar+mt+'<details class="wqd" data-o="c:'+id+'"'+(open["c:"+s.id]?" open":"")+'><summary>More details</summary>'+wh+ac+tb+'</details></div>';
+ return'<div class="card hsc">'+head+bar+wh+mt+ac+'<details class="wqd" data-o="r:'+id+'"'+(open["r:"+s.id]?" open":"")+'><summary>🧪 Readings</summary>'+tb+'</details></div>'}
+function list(){var box=$("hs-list");if(!box)return;if(!S.length){box.innerHTML='<div class="card">Loading stations…</div>';return}
+ var cnt={},cl={},hm=home(),W=Wl();OR.forEach(function(r){cnt[r.station_id]=(cnt[r.station_id]||0)+1});R.forEach(function(r){if(r.status=="cleaned")cl[r.station_id]=(cl[r.station_id]||0)+1});
+ var all=S.map(function(s){return{s:s,st:stat(s),sc:sc(s)}}),rk={};all.slice().sort(function(a,b){return b.sc-a.sc||a.s.n.localeCompare(b.s.n)}).forEach(function(o,i){rk[o.s.id]=i+1});
+ var a=all.filter(function(o){if(P.f!="all"&&o.st!=P.f)return false;if(P.w&&W.indexOf(o.s.id)<0)return false;if(q&&(o.s.n+" "+(o.s.state||"")).toLowerCase().indexOf(q)<0)return false;return true}),
+ SO={sev:function(x,y){return y.sc-x.sc||x.s.n.localeCompare(y.s.n)},cln:function(x,y){return(x.st=="nodata")-(y.st=="nodata")||x.sc-y.sc||x.s.n.localeCompare(y.s.n)},rep:function(x,y){return(cnt[y.s.id]||0)-(cnt[x.s.id]||0)||y.sc-x.sc},rate:function(x,y){var p=avg(x.s.id),r=avg(y.s.id);return(r?r.m:0)-(p?p.m:0)||y.sc-x.sc},name:function(x,y){return x.s.n.localeCompare(y.s.n)}};
+ a.sort(SO[P.sort]||SO.sev);
+ box.innerHTML=a.length?a.map(function(o){return card(o,rk[o.s.id],cnt,cl,W,hm)}).join(""):'<div class="card"><p class="note" style="margin:0">'+(P.w&&!W.length?"You are not watching any ghat yet. Tap Watch on a ghat card.":"No ghats match. Try clearing the search or the filters.")+'</p></div>';
+ var sub=$("hs-sub");if(sub)sub.textContent="Showing "+a.length+" of "+S.length+" ghats · ranked by pollution score · updates live"}
+/* ----- tools ----- */
+function mPri(){var me=uid(),v=isVol(),
+ a=OR.filter(function(r){return(r.status||"reported")=="reported"||(me&&r.assigned_to==me)}).map(function(r){var st=stOf(r.station_id),b=st?sc(st):0,vt=votes(r.id),d=days(r),x=r.category=="Dead animals"?1.5:(r.category=="Industrial discharge"||r.category=="Drain / sewage")?1:0,w=[];
+  if(st&&stat(st)=="poor")w.push("🔴 ghat is critical");else if(st&&stat(st)=="moderate")w.push("🟡 ghat on watch");
+  if(vt)w.push("👁 "+vt+" confirmed");if(d>=1)w.push("⏳ "+Math.floor(d)+" d old");if(x>=1.5)w.push("⚠️ health risk");else if(x)w.push("🏭 pollution source");
+  return{r:r,p:b+vt*1.5+Math.min(d,7)*.5+x,why:w,st:st}}).sort(function(x,y){return y.p-x.p}).slice(0,5),
+ sub=v?"The reports that need a volunteer most. Accept one in the Cleanup board.":"These reports need help first. Tap “I see this too” on a report to raise its priority.";
+ if(!a.length)return mc("🎯 Priority queue",sub,'<p class="note" style="margin:0">No open reports right now. 🎉</p>');
+ return mc("🎯 Priority queue",sub,a.map(function(x,i){var r=x.r,lv=x.p>=6?["High","poor"]:x.p>=3?["Medium","moderate"]:["Low","good"];
+  return'<div class="hs-it"><div style="min-width:0"><div><b>'+(i+1)+'. '+(CI[r.category]||"")+' '+esc(r.category)+'</b> <span class="pill '+lv[1]+'">'+lv[0]+'</span>'+(me&&r.assigned_to==me?' <span class="mine">YOURS</span>':'')+'</div><div class="note" style="margin:2px 0 0">Near '+esc(x.st?x.st.n:sname(r.station_id))+(r.location_text?" · "+esc(r.location_text):"")+'</div><div class="hs-m">'+x.why.map(function(w){return'<span>'+w+'</span>'}).join("")+'</div></div><div class="hs-b"><button type="button" class="chip" data-a="navr" data-id="'+esc(r.id)+'" aria-label="Navigate">🧭</button><button type="button" class="chip" data-a="board">Open</button></div></div>'}).join(""))}
+function ll(p){return(+p.lat).toFixed(6)+","+(+p.lng).toFixed(6)}
+function gm(stops,from){var d=stops[stops.length-1],wp=stops.slice(0,-1).map(ll).join("|"),u="https://www.google.com/maps/dir/?api=1&travelmode=driving&destination="+ll(d);if(from)u+="&origin="+ll(from);if(wp)u+="&waypoints="+encodeURIComponent(wp);return u}
+function build(){var me=uid(),pool=openR().filter(function(r){return(r.status||"reported")=="reported"||(me&&r.assigned_to==me)}).map(function(r){var st=stOf(r.station_id),ap=r.lat==null;return{r:r,ap:ap,lat:ap?(st?st.lat:null):+r.lat,lng:ap?(st?st.lng:null):+r.lng}}).filter(function(p){return p.lat!=null&&p.lng!=null&&!isNaN(p.lat)}),
+ cur=pos||(pool[0]?{lat:pool[0].lat,lng:pool[0].lng}:null),out=[],tot=0;
+ while(pool.length&&out.length<8){var bi=0,bd=1e18;pool.forEach(function(p,i){var d=hav(cur,p);if(d<bd){bd=d;bi=i}});var n=pool.splice(bi,1)[0];n.d=bd;tot+=bd;out.push(n);cur=n}
+ rt={stops:out,tot:tot,from:!!pos,at:Date.now()}}
+function plan(){if(!navigator.geolocation){pos=null;build();mods();T("GPS is not available here. The route starts from the first spot.");return}
+ T("Finding your position…");navigator.geolocation.getCurrentPosition(function(p){pos={lat:p.coords.latitude,lng:p.coords.longitude};build();mods()},function(){pos=null;build();mods();T("Could not read your position, so the route starts from the first spot.")},{enableHighAccuracy:true,timeout:12000,maximumAge:30000})}
+function mRt(){var t="🧭 Cleanup route planner";
+ if(!isVol())return mc(t,"Made for volunteers: it puts the nearest open reports in order and opens the whole trip in Google Maps.",'<button type="button" class="btn s" data-a="login">'+(uid()?"Apply to become a volunteer (profile tab)":"Log in as a volunteer")+'</button>');
+ var me=uid(),n=openR().filter(function(r){return(r.status||"reported")=="reported"||(me&&r.assigned_to==me)}).length,
+ b='<button type="button" class="btn" data-a="route" style="margin-top:6px">📍 '+(rt?"Plan again":"Plan my route")+'</button>';
+ if(rt){if(!rt.stops.length)b+='<p class="note">No open reports to plan right now.</p>';else{var rd=rt.tot*1.3;
+  b+='<div style="margin-top:8px">'+rt.stops.map(function(p,i){return'<div class="hs-it"><div style="min-width:0"><b>'+(i+1)+'. '+(CI[p.r.category]||"")+' '+esc(p.r.category)+'</b>'+(p.ap?' <span class="note">≈ ghat area</span>':"")+'<div class="note" style="margin:2px 0 0">Near '+esc(sname(p.r.station_id))+' · '+(i==0&&!rt.from?"start here":km(p.d)+(i==0?" from you":" from the previous stop"))+'</div></div></div>'}).join("")+'</div>'
+  +'<p class="note">'+rt.stops.length+' stop'+(rt.stops.length==1?"":"s")+' · about '+km(rd)+' by road · roughly '+Math.max(1,Math.round(rd/25*60))+' min of driving (rough estimate). Planned '+wqAgo(rt.at)+'.</p>'
+  +'<a class="btn" target="_blank" rel="noopener" style="display:block;text-align:center;text-decoration:none" href="'+gm(rt.stops,rt.from?pos:null)+'">🗺️ Open full route in Google Maps</a>'}}
+ return mc(t,n+" open spot"+(n==1?"":"s")+" available. Uses your live position to pick the nearest first (up to 8 stops).",b)}
+function mSf(){var hm=home(),a=S.map(function(s){return{s:s,st:stat(s),sc:sc(s)}}),
+ g=a.filter(function(o){return o.st=="good"}).sort(function(x,y){return((y.s.id==hm)-(x.s.id==hm))||x.sc-y.sc}).slice(0,3),
+ pr=a.filter(function(o){return o.st=="poor"}),mo=a.filter(function(o){return o.st=="moderate"}),nm=function(l){return l.map(function(o){return esc(o.s.n)}).join(", ")},h="";
+ h+=g.length?g.map(function(o){return'<div class="hs-it"><div style="min-width:0"><b>'+esc(o.s.n)+'</b> <span class="pill good">within limits</span><div class="note" style="margin:2px 0 0">Fine for a dip. Rinse with clean water after.</div></div><div class="hs-b"><button type="button" class="chip" data-a="dash" data-id="'+esc(o.s.id)+'">Details</button></div></div>'}).join(""):'<p class="note" style="margin:0">No ghat is fully within limits right now. Better to avoid bathing today.</p>';
+ if(mo.length)h+='<div class="al" style="border-color:var(--mod)">⚠️ Be careful at: '+nm(mo)+'</div>';
+ if(pr.length)h+='<div class="al">🚫 Avoid today: '+nm(pr)+'</div>';
+ return mc("🛟 Safest ghats today","Best choices for a holy dip right now, using the live readings.",h+'<p class="note">Indicative only. Local advisories and lab tests come first.</p>')}
+function mMx(){var cat={},mx=1,cl=R.filter(function(r){return r.status=="cleaned"}).length,tot=cl+OR.length,rate=tot?Math.round(cl/tot*100):0;CATS.forEach(function(c){cat[c]=0});OR.forEach(function(r){cat[r.category]=(cat[r.category]||0)+1});
+ Object.keys(cat).forEach(function(k){mx=Math.max(mx,cat[k])});
+ var h=Object.keys(cat).map(function(k){return'<div style="margin-top:8px"><div class="r"><span>'+(CI[k]||"")+' '+esc(k)+'</span><b>'+cat[k]+'</b></div><div class="bar"><div style="width:'+Math.round(cat[k]/mx*100)+'%;background:linear-gradient(90deg,#4facfe,#a66bff)"></div></div></div>'}).join("");
+ return mc("📊 Pollution mix","What is being reported right now (open reports only).",(OR.length?h:'<p class="note" style="margin:0">No open reports.</p>')+'<div style="margin-top:12px"><div class="r"><span>🧹 Cleanup rate</span><b>'+rate+'%</b></div><div class="bar"><div style="width:'+rate+'%;background:var(--good)"></div></div><p class="note" style="margin:4px 0 0">'+cl+' of '+tot+' reports cleaned so far.</p></div>')}
+function mCk(){var k=ld(KK,{}),n=KIT.filter(function(x){return k[x[0]]}).length,crit=S.some(function(s){return stat(s)=="poor"}),
+ h=(crit?'<div class="al">🚫 At least one ghat is critical. Work from the bank and never enter the water.</div>':'')
+ +'<div class="r" style="margin-top:6px"><span>'+n+' of '+KIT.length+' ready</span><button type="button" class="del" data-hk="__reset">Reset</button></div><div class="bar"><div style="width:'+Math.round(n/KIT.length*100)+'%;background:var(--good)"></div></div>'
+ +KIT.map(function(x){var on=!!k[x[0]];return'<button type="button" class="hs-ck'+(on?" on":"")+'" data-hk="'+x[0]+'" aria-pressed="'+on+'"><span class="bx">'+(on?"✓":"")+'</span><span class="t">'+x[1]+' '+x[2]+'</span></button>'}).join("")
+ +(n==KIT.length?'<p style="margin:10px 0 0">✅ All set. Stay safe and thank you for helping the Ganga.</p>':"");
+ return mc("🧰 Cleanup kit checklist","Tick what you have before you go. Saved on this device.",h)}
+function mGd(){var R5=[["🧴","Dry waste","Plastic, packets, bottles. Bag it and put it in a dry-waste bin."],["🌼","Wet waste","Flowers, food, leaves. Keep it apart from dry waste so it can be composted."],["🧪","Hazardous","Needles, glass, medical or chemical waste, batteries. Do not touch with bare hands. Use tongs and gloves, or leave it and report it."],["🐾","Dead animals","Do not touch. Take a photo, report it here and inform the municipal office."]];
+ return mc("♻️ Waste handling guide","How to deal with what you find.",'<details class="wqd" data-o="gd"'+(open.gd?" open":"")+'><summary>Show the guide</summary>'+R5.map(function(r){return'<div class="hs-it"><div><b>'+r[0]+' '+r[1]+'</b><div class="note" style="margin:2px 0 0">'+r[2]+'</div></div></div>'}).join("")+'<p class="note">In any emergency call 112.</p></details>')}
+function mTl(){var t=ld(TK,{bags:0,min:0}),b=function(a,x){return'<button type="button" class="chip" data-ht="'+a+'">'+x+'</button>'};
+ return mc("📒 My cleanup log","Your own tally, only on this device. It does not give points.",'<div class="grid"><div class="p"><small>🛍️ Bags collected</small><b>'+t.bags+'</b><div class="hs-a" style="margin-top:6px">'+b("bag-","−1")+b("bag+","+1")+'</div></div><div class="p"><small>⏱️ Minutes spent</small><b>'+t.min+'</b><div class="hs-a" style="margin-top:6px">'+b("min-","−15")+b("min+","+15")+'</div></div></div><button type="button" class="del" data-ht="rst" style="margin-top:6px">Clear log</button>')}
+function tally(a){var t=ld(TK,{bags:0,min:0});if(a=="bag+")t.bags++;else if(a=="bag-")t.bags=Math.max(0,t.bags-1);else if(a=="min+")t.min+=15;else if(a=="min-")t.min=Math.max(0,t.min-15);else if(a=="rst"){if(!confirm("Clear your cleanup log on this device?"))return;t={bags:0,min:0}}sv(TK,t);mods()}
+function mods(){var v=isVol(),pre=v?["pri","rt"]:["sf"],post=v?["ck","mx","tl","gd","sf"]:["pri","mx","rt","ck","gd","tl"],F={pri:mPri,rt:mRt,sf:mSf,mx:mMx,ck:mCk,gd:mGd,tl:mTl},
+ mk=function(a){return a.filter(function(k){return P.m[k]}).map(function(k){return F[k]()}).join("")};
+ var a=$("hs-pre"),b=$("hs-post");if(a)a.innerHTML=mk(pre);if(b)b.innerHTML=mk(post)}
+/* ----- share, export, actions ----- */
+function topText(){var a=S.map(function(s){return{s:s,st:stat(s),sc:sc(s)}}).filter(function(o){return o.st=="poor"||o.st=="moderate"}).sort(function(x,y){return y.sc-x.sc}).slice(0,3),u=location.href.split("#")[0];
+ return a.length?"Ganga hotspots right now:\n"+a.map(function(o,i){return(i+1)+". "+o.s.n+" ("+lbl(o.st)+")"}).join("\n")+"\nSee live status and report pollution: "+u:"All monitored Ganga ghats are within limits right now. Live status: "+u}
+function doShare(text){if(navigator.share){navigator.share({title:"GangaDrishti",text:text}).catch(function(){});return}
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){T("Copied. Paste it anywhere to share.")},function(){T("Could not copy.")});return}
+ var t=document.createElement("textarea");t.value=text;document.body.appendChild(t);t.select();try{document.execCommand("copy");T("Copied. Paste it anywhere to share.")}catch(e){T("Could not copy.")}t.remove()}
+function csv(){var cnt={},cl={};OR.forEach(function(r){cnt[r.station_id]=(cnt[r.station_id]||0)+1});R.forEach(function(r){if(r.status=="cleaned")cl[r.station_id]=(cl[r.station_id]||0)+1});
+ var a=S.map(function(s){return{s:s,sc:sc(s)}}).sort(function(x,y){return y.sc-x.sc}),rows=[["Rank","Station","State","Status","Health score","pH","DO mg/L","BOD mg/L","Turbidity NTU","Open reports","Cleaned reports","Citizen rating","Data source"]];
+ a.forEach(function(o,i){var s=o.s,av=avg(s.id);rows.push([i+1,s.n,s.state,lbl(stat(s)),hl(s),s.pH,s.DO,s.BOD,s.T,cnt[s.id]||0,cl[s.id]||0,av?av.m.toFixed(1):"",s.at?"live":s.ann?"CPCB "+s.ann:"none"])});
+ var t=rows.map(function(r){return r.map(function(c){c=c==null?"":String(c);return/[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c}).join(",")}).join("\n"),x=document.createElement("a");
+ x.href=URL.createObjectURL(new Blob(["﻿"+t],{type:"text/csv"}));x.download="ganga-hotspots.csv";document.body.appendChild(x);x.click();setTimeout(function(){URL.revokeObjectURL(x.href);x.remove()},500)}
+function act(a,d){var s=d.id?stOf(d.id):null;
+ if(a=="dash"&&s){var i=S.indexOf(s);try{wqPick(i)}catch(e){}tab("d")}
+ else if(a=="rep"&&s){$("rs").value=s.id;tab("f")}
+ else if(a=="nav"&&s)window.open(dir(s.lat,s.lng),"_blank","noopener");
+ else if(a=="watch"&&s){var w=Wl(),i2=w.indexOf(s.id);if(i2>-1){w.splice(i2,1);T("Stopped watching "+s.n)}else{w.push(s.id);T("Watching "+s.n+". You get an alert if its water goes on watch or critical.")}sv("gd_watch",w);try{all()}catch(e){list();chips()}}
+ else if(a=="share"&&s){var st=stat(s);doShare(s.n+" ghat: water is "+lbl(st)+(hl(s)!=null?" (health score "+hl(s)+"/100)":"")+".\nLive status: "+location.href.split("#")[0])}
+ else if(a=="share-all")doShare(topText());
+ else if(a=="csv")csv();
+ else if(a=="route")plan();
+ else if(a=="navr"){var r=R.filter(function(x){return x.id==d.id})[0];if(!r)return;var st2=stOf(r.station_id),la=r.lat!=null?r.lat:(st2?st2.lat:null),ln=r.lng!=null?r.lng:(st2?st2.lng:null);if(la==null){T("No location for this report.");return}window.open(dir(la,ln),"_blank","noopener")}
+ else if(a=="board")tab("l");
+ else if(a=="login")tab("lb");
+ else if(a=="reset"){if(!confirm("Reset filters, sorting and tool choices on this page?"))return;P=Object.assign({},DEF);P.m=Object.assign({},DEF.m);save();q="";var qi=$("hs-q");if(qi)qi.value="";draw(true)}}
+function onClick(e){var t=e.target.closest("[data-a],[data-hf],[data-hw],[data-hso],[data-hm],[data-hd],[data-hk],[data-ht]");if(!t)return;var d=t.dataset;
+ if(d.hf){P.f=d.hf;save();chips();list();return}
+ if(d.hw){P.w=P.w?0:1;save();chips();list();return}
+ if(d.hso){P.sort=d.hso;save();chips();list();return}
+ if(d.hm){P.m[d.hm]=P.m[d.hm]?0:1;save();chips();mods();return}
+ if(d.hd){P.den=d.hd;save();chips();list();return}
+ if(d.hk){var k=ld(KK,{});if(d.hk=="__reset")k={};else k[d.hk]=k[d.hk]?0:1;sv(KK,k);mods();return}
+ if(d.ht){tally(d.ht);return}
+ if(d.a)act(d.a,d)}
+function draw(force){var h=$("hs");if(!h)return;if(!$("hs-k"))shell(h);var ae=document.activeElement;if(!force&&ae&&ae.id=="hs-q")return;
+ OR=openR();kpis();mods();chips();list()}
+window.HS={draw:draw};
+var _r=window.render;window.render=function(){_r.apply(this,arguments);try{draw()}catch(e){}};
+var tries=0,iv=setInterval(function(){tries++;if(S.length&&(CP.length||tries>=8)){clearInterval(iv);capture();draw()}else if(tries>=15)clearInterval(iv)},2000);
+document.addEventListener("visibilitychange",function(){if(!document.hidden&&$("hs")&&$("hs").classList.contains("on"))draw()});
+})();
 </script>
 </body></html>
