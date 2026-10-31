@@ -154,7 +154,7 @@ html[data-rf] body{font-family:Verdana,Tahoma,"Segoe UI",sans-serif;letter-spaci
 .mi{display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;color:var(--ink);font:inherit;margin-bottom:10px}.mi:active{transform:scale(.99)}
 .mic{font-size:22px;flex:none;width:34px;text-align:center}.mt{flex:1;min-width:0}.mt b{display:block;font-size:15px}.mt small{color:var(--mut);font-size:12px}.mch{color:var(--mut);font-size:22px}.mbd{background:var(--poor);color:#fff;border-radius:99px;font:700 11px inherit;padding:2px 8px}
 #set .sv{display:none}#set[data-v=bg] #sv-bg,#set[data-v=ax] #sv-ax,#set[data-v=bg] #sv-back,#set[data-v=ax] #sv-back{display:block}#set[data-v=bg] #sv-menu,#set[data-v=ax] #sv-menu{display:none}
-#nt{position:fixed;top:calc(58px + env(safe-area-inset-top,0px));right:10px;z-index:35;display:flex;flex-direction:column;gap:8px;width:min(340px,calc(100vw - 20px));pointer-events:none}body:has(#ap.on) #nt,body:has(#mw.full) #nt{display:none}
+#nt{position:fixed;top:calc(58px + env(safe-area-inset-top,0px));right:10px;z-index:1200;display:flex;flex-direction:column;gap:8px;width:min(340px,calc(100vw - 20px));pointer-events:none}body:has(#ap.on) #nt,body:has(#mw.full) #nt{display:none}
 .nt-i{pointer-events:auto;display:flex;align-items:flex-start;gap:10px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px;padding:10px 8px 10px 12px;box-shadow:0 6px 20px rgba(0,0,0,.25);font-size:13px;line-height:1.35;cursor:pointer;animation:nti .3s cubic-bezier(.2,.8,.2,1)}
 .nt-i.out{opacity:0;transform:translateX(24px);transition:.18s}.nt-ic{flex:none;font-size:16px}.nt-m{flex:1;min-width:0;overflow-wrap:anywhere}.nt-x{flex:none;border:0;background:none;color:var(--mut);font-size:13px;cursor:pointer;padding:0 4px}
 .nt-i.ok{border-left-color:var(--good)}.nt-i.err{border-left-color:var(--poor)}.nt-i.warn{border-left-color:var(--mod)}.nt-i.tip{border-left-color:#8a6cf0}
@@ -1140,7 +1140,7 @@ bgAuto();tod();if(bgAuto()&&!localStorage.getItem(BGX))autoStyle();bgApply();bgD
 setInterval(function(){var a=$("adm");if(a&&a.classList.contains("on")&&X.adm())render()},30000);
 // ===== Dynamic notifications: stacked, merged, realtime + helpful tips =====
 var NT=(function(){
-var Q=[],last=0,tA=0,tL=0,dm=0,off=0,seen=[],ERR=/could not|can.t|error|failed|expired|no longer|not available|only volunteers|not your|already/i,OK=/submitted|saved|deleted|accepted|recorded|approved|updated|thank|removed|done|sent|welcome/i;
+var Q=[],last=0,tA=0,tL=0,dm=0,off=0,seen=[],ERR=/could not|can.t|error|failed|expired|no longer|not available|only volunteers|not your|already|invalid|incorrect|not confirmed|rate limit/i,OK=/submitted|saved|deleted|accepted|recorded|approved|updated|thank|removed|done|sent|welcome/i;
 function pref(k){try{return(JSON.parse(localStorage.getItem("gd_ax"))||{})[k]!==0}catch(e){return true}}
 function box(){return $("nt")}
 function close(e,man){if(!e.parentNode)return;clearTimeout(e._h);if(man&&e._tip&&++dm>=3)off=1;e.classList.add("out");setTimeout(function(){e.remove();pump()},180)}
