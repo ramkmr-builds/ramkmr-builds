@@ -436,6 +436,9 @@ html[data-vw=desktop] body.gate .gx-hi b{font-size:34px}
 
 #set[data-v=tl] #sv-tl,#set[data-v=ab] #sv-ab,#set[data-v=tl] #sv-back,#set[data-v=ab] #sv-back{display:block}
 #set[data-v=tl] #sv-menu,#set[data-v=ab] #sv-menu{display:none}
+
+#set[data-v=al] #sv-al,#set[data-v=al] #sv-back{display:block}
+#set[data-v=al] #sv-menu{display:none}
 </style></head><body class="gate"><div id="bg" aria-hidden="true"><div id="st"></div><div id="orb"></div><i class="cl c1"></i><i class="cl c2"></i><i class="cl c3"></i>
 <svg class="gh" viewBox="0 0 520 200" aria-hidden="true"><path d="M0 60V200H520V180H480V160H440V140H400V120H360V100H320V80H0z"/><path d="M40 62V-20Q40 -50 70 -80Q100 -50 100 -20V62z" transform="translate(0 70)"/><path d="M120 132V100Q120 78 150 78Q180 78 180 100V132z"/><path d="M215 132V80Q215 50 245 28Q275 50 275 80V132z"/></svg>
 <svg class="wv w1" viewBox="0 0 2880 200" preserveAspectRatio="none"><path d="M0 100Q180 40 360 100T720 100T1080 100T1440 100T1800 100T2160 100T2520 100T2880 100V200H0z"/></svg>
@@ -1035,6 +1038,47 @@ new MutationObserver(ins).observe(lb,{childList:true});setTimeout(ins,800);
 var _r2=window.render;window.render=function(){_r2.apply(this,arguments);var p=$("pu");if(p)try{p.innerHTML=pu()}catch(e){}};
 document.addEventListener("click",function(e){var t=e.target.closest&&e.target.closest("[data-pu]");if(!t)return;var a=t.dataset.pu;
  if(a.indexOf("tab:")==0)tab(a.slice(4));else if(a=="share"){var m=X.prof(X.uid())||{};shr("I have "+(m.pts||0)+" points on GangaDrishti. Join me in keeping the Ganga clean.")}else if(a=="csv")$("ex-my").click();else if(a=="pledge")X.pledge()});
+})();
+</script>
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)},T=function(m,o){try{toast(m,o)}catch(e){}};
+var LS=function(k,d){try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}},SV=function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){T("Could not save on this device.")}};
+var DAYS=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],PRE=[["Check the ghat status","d"],["Report pollution I see","f"],["Join a cleanup at the ghat","l"],["Check my points and reports","lb"]];
+$("sv-menu").insertAdjacentHTML("beforeend",'<button type="button" class="card mi" onclick="setView(\'al\')"><span class="mic">🔔</span><span class="mt"><b>Alerts &amp; reminders</b><small>Ghat water alerts and repeating reminders</small></span><span class="mch">›</span></button>');
+$("sv-ab").insertAdjacentHTML("beforebegin",'<div class="sv" id="sv-al"><div class="card"><h2>Ghat alerts</h2><p class="leg" style="margin:0 0 8px">Pick the ghats you care about. You get an alert when their water goes on watch or critical.</p><div class="chips" id="al-ch"></div><label>Alert me when</label><select id="al-lv"><option value="any">Watch or critical (any limit crossed)</option><option value="poor">Critical only (2 or more limits)</option></select><div id="al-st"></div><button type="button" class="btn s" id="al-now">Check my ghats now</button><button type="button" class="btn s" id="al-perm">Allow browser notifications</button><p class="note">Alerts work while this site is open in your browser. To be reminded when it is closed, use Add to calendar on a reminder below.</p></div>'
++'<div class="card"><h2>Reminders</h2><label>Remind me to</label><select id="rm-m">'+PRE.map(function(p,i){return'<option value="'+i+'">'+p[0]+'</option>'}).join("")+'</select><label>Repeat</label><select id="rm-f"><option value="d">Every day</option><option value="w">Every week</option></select><div id="rm-dw" style="display:none"><label>Day</label><select id="rm-d">'+DAYS.map(function(d,i){return'<option value="'+i+'"'+(i==6?" selected":"")+'>'+d+'</option>'}).join("")+'</select></div><label>Time</label><input id="rm-t" type="time" value="07:00"><button type="button" class="btn" id="rm-add">Add reminder</button><div id="rm-ls"></div><p class="note">Up to 5 reminders, saved on this device only. They pop up here while the site is open.</p></div></div>');
+function dl(n,t,ty){var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([t],{type:ty}));a.download=n;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500)}
+function ntf(title,body,tb,ic){try{NT.add((ic||"🔔")+" "+title+(body?": "+body:""),{type:"warn",tab:tb})}catch(e){}if(window.Notification&&Notification.permission=="granted"&&document.hidden)try{new Notification(title,{body:body})}catch(e){}}
+/* ghat alerts */
+var W=function(){return LS("gd_watch",[])};
+function chkA(force){var w=W(),lv=LS("gd_wlvl","any"),st=LS("gd_wst",{}),n=0;
+ S.forEach(function(s){if(w.indexOf(s.id)<0||s.ann)return;var k=stat(s),bad=lv=="poor"?k=="poor":(k=="poor"||k=="moderate");
+  if(bad&&(force||st[s.id]!==k)){n++;ntf(s.n+" ghat","water is "+(k=="poor"?"critical":"on watch")+" ("+viol(s).join(", ")+")","d","🌊")}st[s.id]=k});
+ SV("gd_wst",st);if(force&&!n)T(w.length?"All your watched ghats are within limits.":"Pick at least one ghat to watch first.")}
+var _all=window.all;window.all=function(){_all();try{chkA()}catch(e){}};
+function renA(){var w=W();$("al-lv").value=LS("gd_wlvl","any");$("al-ch").innerHTML=S.map(function(s){return'<button type="button" class="chip'+(w.indexOf(s.id)>-1?" on":"")+'" data-w="'+esc(s.id)+'">'+esc(s.n)+'</button>'}).join("")||'<span class="note">Stations are still loading.</span>';
+ $("al-st").innerHTML=S.filter(function(s){return w.indexOf(s.id)>-1}).map(function(s){var k=stat(s);return'<div class="r" style="padding:6px 0;border-top:1px solid var(--line);align-items:center"><span>'+esc(s.n)+'</span><span class="pill '+(k=="nodata"?"rep":k)+'">'+(k=="nodata"?"no data":k)+'</span></div>'}).join("");
+ var p=window.Notification?Notification.permission:"none";$("al-perm").textContent=p=="granted"?"Browser notifications are on":p=="none"?"Notifications not supported here":"Allow browser notifications"}
+/* reminders */
+var R5=function(){return LS("gd_rem",[])};
+function due(r,now){var p=r.t.split(":"),d=new Date(now);d.setHours(+p[0],+p[1],0,0);if(d>now)d.setDate(d.getDate()-1);if(r.f=="w")while(d.getDay()!=r.d)d.setDate(d.getDate()-1);return d.getTime()}
+function tick(){var L=R5(),now=new Date(),ch=false;L.forEach(function(r){if(r.last<due(r,now)){r.last=Date.now();ch=true;ntf("Reminder",r.m,r.tb,"⏰")}});if(ch)SV("gd_rem",L)}
+function renR(){var L=R5();$("rm-ls").innerHTML=L.map(function(r){return'<div class="card" style="margin:10px 0 0;padding:10px"><div class="r"><b>'+esc(r.m)+'</b><button type="button" class="del" data-rd="'+r.id+'">Delete</button></div><div class="note" style="margin:2px 0 6px">'+(r.f=="w"?"Every "+DAYS[r.d]:"Every day")+" at "+esc(r.t)+'</div><button type="button" class="btn s" style="margin:0" data-ri="'+r.id+'">Add to calendar (.ics)</button></div>'}).join("")}
+function ics(r){var now=new Date(),n=new Date(),p=r.t.split(":");n.setHours(+p[0],+p[1],0,0);if(r.f=="w")while(n.getDay()!=r.d||n<now)n.setDate(n.getDate()+1);else if(n<now)n.setDate(n.getDate()+1);
+ var z=function(x){return String(x).padStart(2,"0")},f=function(d){return d.getFullYear()+z(d.getMonth()+1)+z(d.getDate())+"T"+z(d.getHours())+z(d.getMinutes())+"00"};
+ dl("gangadrishti-reminder.ics",["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//GangaDrishti//EN","BEGIN:VEVENT","UID:gd-"+r.id+"@gangadrishti","DTSTAMP:"+new Date().toISOString().replace(/[-:]|\.\d+/g,""),"DTSTART:"+f(n),"DTEND:"+f(new Date(n.getTime()+9e5)),"RRULE:FREQ="+(r.f=="w"?"WEEKLY;BYDAY="+["SU","MO","TU","WE","TH","FR","SA"][r.d]:"DAILY"),"SUMMARY:GangaDrishti: "+r.m,"DESCRIPTION:"+location.href,"BEGIN:VALARM","TRIGGER:PT0M","ACTION:DISPLAY","DESCRIPTION:"+r.m,"END:VALARM","END:VEVENT","END:VCALENDAR"].join("\r\n"),"text/calendar")}
+var _s3=window.setView;window.setView=function(v){_s3(v);if(v=="al"){renA();renR()}};
+document.addEventListener("change",function(e){if(e.target.id=="rm-f")$("rm-dw").style.display=e.target.value=="w"?"block":"none";if(e.target.id=="al-lv")SV("gd_wlvl",e.target.value)});
+document.addEventListener("click",function(e){var t=e.target.closest&&e.target.closest("button");if(!t)return;var d=t.dataset;
+ if(d.w){var w=W(),i=w.indexOf(d.w);if(i>-1)w.splice(i,1);else w.push(d.w);SV("gd_wlvl",$("al-lv").value);SV("gd_watch",w);renA();chkA()}
+ else if(t.id=="al-now")chkA(true);
+ else if(t.id=="al-perm"){if(!window.Notification){T("This browser does not support notifications.");return}Notification.requestPermission().then(function(p){T(p=="granted"?"Browser notifications are on.":"Notifications were not allowed.");renA()})}
+ else if(t.id=="rm-add"){var L=R5();if(L.length>=5){T("You can keep up to 5 reminders.");return}var m=PRE[+$("rm-m").value],tm=$("rm-t").value;if(!tm){T("Pick a time first.");return}
+  L.push({id:Date.now().toString(36),m:m[0],tb:m[1],f:$("rm-f").value,d:+$("rm-d").value,t:tm,last:Date.now()});SV("gd_rem",L);renR();T("Reminder added.")}
+ else if(d.rd){SV("gd_rem",R5().filter(function(r){return r.id!=d.rd}));renR();T("Reminder deleted.")}
+ else if(d.ri){var r=R5().filter(function(x){return x.id==d.ri})[0];if(r)ics(r)}});
+setTimeout(tick,3000);setInterval(tick,3e4);document.addEventListener("visibilitychange",function(){if(!document.hidden)tick()});
 })();
 </script>
 </body></html>
