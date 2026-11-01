@@ -1,0 +1,82 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,top=0.6in,bottom=0.6in,left=0.8in,right=0.8in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{array,colortbl,tabularx}
+\usepackage{enumitem}
+\usepackage{parskip}
+
+\definecolor{navy}{HTML}{0B1230}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+
+\newcommand{\sect}[1]{\vspace{12pt}{\large\bfseries\MakeUppercase{#1}}\par\vspace{4pt}}
+
+\begin{document}
+
+\begin{center}{\fontsize{26}{30}\selectfont\bfseries RESUME}\end{center}
+\vspace{4pt}
+
+% ---------- HEADER (photo.jpg rakhoge to dikhegi, warna blank) ----------
+\begin{minipage}[t]{0.68\textwidth}
+{\Large\bfseries RAM KUMAR}\\[5pt]
+{\normalsize\bfseries Computer Science \& Engineering}\\[5pt]
+{\small ramkmr270485@gmail.com \;|\; +91 6206458259}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.25\textwidth}
+\raggedleft
+\IfFileExists{photo.jpg}{\includegraphics[width=2.6cm]{photo.jpg}}{}
+\end{minipage}
+
+\sect{Career Objective}
+\small
+To build a strong foundation in computer science by combining logical problem-solving with creativity, while continuously developing practical skills and contributing to meaningful technology projects.
+\normalsize
+
+\sect{Personal Details}
+\renewcommand{\arraystretch}{1.7}
+\begin{tabular}{@{\hspace{0.3in}}>{\bfseries\small}p{1.6in}>{\small}p{4.2in}}
+Name & RAM KUMAR\\
+Father's Name & UMESH PRASAD\\
+Date of Birth & 23 September, 2008\\
+Languages & English, Hindi\\
+Interests & Reading, video \& photo editing, football, cricket, chess, Rubik's Cube
+\end{tabular}
+
+\sect{Education}
+\renewcommand{\arraystretch}{1.9}
+\noindent\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}|>{\small}p{1.55in}|>{\small}p{0.9in}|>{\small}p{1.3in}|>{\small}p{2.0in}|}
+\hline
+\rowcolor{navy}\textcolor{white}{\bfseries Qualification} & \textcolor{white}{\bfseries Year} & \textcolor{white}{\bfseries Institution} & \textcolor{white}{\bfseries Result}\\
+\hline
+CBSE Class 10th & 2024 & CBSE & 92 \%\\
+\hline
+CBSE Class 12th & 2026 & CBSE & 86 \%\\
+\hline
+B.Tech / CSE & 2026--2031 & NIT Patna & JEE Main \& Advanced Qualified\\
+\hline
+\end{tabular*}
+
+\sect{Key Strengths}
+\small
+\begin{itemize}[leftmargin=1.2em,itemsep=2pt,topsep=2pt]
+\item Quick to learn new concepts and adapt to new challenges.
+\item Creative and analytical approach to problem-solving.
+\item Comfortable taking initiative and coordinating with teams.
+\item Persistent and willing to take responsibility for assigned work.
+\end{itemize}
+\normalsize
+
+\sect{Declaration}
+\small
+I declare that the information provided above is accurate to the best of my knowledge.
+
+\vspace{6pt}
+Ram Kumar\\
+Place: Patna\\
+Date: 06/09/26
+
+\end{document}
