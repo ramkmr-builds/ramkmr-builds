@@ -903,6 +903,8 @@ async function refreshCpcb(){try{await loadCpcb();all()}catch(e){}}
 async function loadAlerts(){var r=await sb.from("alert_status").select("alert_id,status");if(r.error)throw r.error;var o={};r.data.forEach(function(x){o[x.alert_id]=x.status});ST=o}
 async function refreshAlerts(){try{await loadAlerts();alr()}catch(e){}}
 async function refreshCommunity(){try{await loadCommunity();render();det()}catch(e){status("Could not refresh reports: "+(e.message||e))}}
+var UMAMI_ID="6f0027e3-a315-4f47-8960-a193d6a4eeb2",UMAMI_DOMAIN="namamigangeproject.netlify.app";
+(function(){try{if(!UMAMI_ID||location.hostname!==UMAMI_DOMAIN)return;var u=document.createElement("script");u.defer=true;u.src="https://cloud.umami.is/script.js";u.setAttribute("data-website-id",UMAMI_ID);u.setAttribute("data-domains",UMAMI_DOMAIN);document.head.appendChild(u)}catch(e){}})();
 var CID=(function(){try{var i=localStorage.getItem("gd_cid");if(!i){i=(window.crypto&&crypto.randomUUID?crypto.randomUUID():Date.now()+"-"+Math.random().toString(36).slice(2));localStorage.setItem("gd_cid",i)}return i}catch(e){return"anon-"+Math.random().toString(36).slice(2)}})();
 function track(ev,meta){try{if(!sb||adm)return;sb.from("events").insert({event:ev,user_id:uid||null,client_id:CID,is_guest:false,path:(location.pathname+location.hash).slice(0,200),meta:meta||{}}).then(function(){},function(){})}catch(e){}}
 var ES=null,esd=7,esT=0;
@@ -917,6 +919,7 @@ var d=s.daily||[],mx=Math.max.apply(null,d.map(function(x){return x.visitors}).c
 if(d.length)h+='<p class="note" style="margin:10px 0 4px">Daily visitors</p><div style="display:flex;align-items:flex-end;gap:3px;height:70px">'+d.map(function(x){return'<div title="'+esc(x.day)+": "+x.visitors+" visitors, "+x.views+' views" style="flex:1;min-width:4px;background:var(--teal);border-radius:3px 3px 0 0;height:'+Math.max(4,Math.round(x.visitors/mx*100))+'%"></div>'}).join("")+'</div>';
 var t=s.top_tabs||[];
 if(t.length)h+='<p class="note" style="margin:10px 0 4px">Most opened tabs</p>'+t.map(function(x){return'<div class="r" style="padding:4px 0;border-top:1px solid var(--line)"><span>'+esc(tabName(x.tab))+'</span><span class="note">'+x.n+'</span></div>'}).join("");
+h+=UMAMI_ID?'<a class="btn s" style="display:block;text-align:center;text-decoration:none;margin-top:10px" target="_blank" rel="noopener" href="https://cloud.umami.is/websites/'+esc(UMAMI_ID)+'">\u{1F4CA} Open Umami analytics (country, device, referrers)</a>':'<p class="note" style="margin-top:10px">Umami analytics is not connected yet.</p>';
 return h+'<p class="note">Counts devices, not people. Admin visits are not counted. Only admins can see this.</p></div>'}
 function later(fn){clearTimeout(later[fn.name]);later[fn.name]=setTimeout(fn,400)}
 async function start(){
